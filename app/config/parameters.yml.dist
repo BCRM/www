@@ -1,0 +1,24 @@
+parameters:
+    database_driver:   pdo_mysql
+    database_host:     localhost
+    database_port:     ~
+    database_name:     wemoof
+    database_user:     root
+    database_password: ~
+
+    mailer_transport:  smtp
+    mailer_host:       127.0.0.1
+    mailer_user:       ~
+    mailer_password:   ~
+    mailer_port:       ~
+    mail_from_email:   m@wemoof.de
+    mail_from_name:    Webmontag Offenbach
+
+    scheme_and_host:   http://wemoof.de
+
+    locale:            de
+    secret:            changeme
+
+    sass_bin:          /usr/bin/sass
+
+    assets_version:    1
