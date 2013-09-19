@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "c4d5f1556a00d3bf4dbe437f5d9c06a3",
+    "hash": "b108dddc99926f7ad54c32608341929e",
     "packages": [
         {
             "name": "beberlei/lite-cqrs",
