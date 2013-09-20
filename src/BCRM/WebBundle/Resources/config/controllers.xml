@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="bcrm.web.controller.web.class">BCRM\WebBundle\Controller\WebController</parameter>
+    </parameters>
+    <services>
+        <service id="bcrm.web.controller.web" class="%bcrm.web.controller.web.class%" scope="request">
+            <argument type="service" id="bcrm.web.contentReader"/>
+        </service>
+    </services>
+</container>

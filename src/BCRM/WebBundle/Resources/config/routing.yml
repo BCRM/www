@@ -1,0 +1,22 @@
+# Static pages
+bcrmweb_index:
+    path: /
+    methods:  [GET]
+    defaults:
+        _controller: bcrm.web.controller.web:indexAction
+
+bcrmweb_page:
+    path: /p/{path}
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.web:pageAction
+    requirements:
+        path: ".+"
+
+bcrmweb_content:
+    path: /c/{path}
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.web:contentAction
+    requirements:
+        path: ".+"

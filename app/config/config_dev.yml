@@ -27,3 +27,9 @@ assetic:
 
 #swiftmailer:
 #    delivery_address: me@example.com
+
+liip_doctrine_cache:
+    namespaces:
+        content:
+            namespace: deinbusdata
+            type: array

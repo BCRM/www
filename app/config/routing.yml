@@ -1,0 +1,3 @@
+bcrm_web:
+    resource: "@BCRMWebBundle/Resources/config/routing.yml"
+    prefix:   /

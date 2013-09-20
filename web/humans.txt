@@ -1,0 +1,16 @@
+# TEAM
+
+    Markus Tacker -- coder::by(♥); // Freelance Señor Web Backend Dev -- m@coderbyheart.de
+    Martin Kraft -- Interaction Designer -- mail@martinKraft.com
+    Alex Wenz -- Frontend Developer -- mail@alexwenz.de
+
+# THANKS
+
+    http://symfony.com/
+    http://html5boilerplate.com/
+
+# TECHNOLOGY USED
+
+    Symfony2
+    HTML5, CSS3
+    Normalize.css, jQuery, Modernizr

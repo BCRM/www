@@ -1,0 +1,82 @@
+{% import "BCRMWebBundle::macros.html.twig" as pagemacro %}
+<!DOCTYPE html><!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]--><!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]--><!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]--><!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>BarCamp RheinMain | Dieburg 23./24.11.2013 </title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    {% stylesheets filter="yui_css,cssrewrite"
+    "bundles/bcrmweb/vendor/h5bp/normalize.css"
+    "bundles/bcrmweb/vendor/h5bp/main.css"
+    "bundles/bcrmweb/css/styles.scss"
+    %}
+    <link href="{{ asset_url }}" type="text/css" rel="stylesheet"/>
+    {% endstylesheets %}
+
+    {% javascripts filter="yui_js"
+    "bundles/bcrmweb/vendor/modernizr/modernizr-2.6.2-with-respond.min.js"
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+</head>
+<body>
+<!--[if lt IE 9]><p class="chromeframe">You are using an <strong>outdated</strong> browser. Please
+    <a href="http://browsehappy.com/">upgrade your browser</a> or
+    <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your
+    experience.</p><![endif]-->
+<div class="wrapper">
+    <header>
+        <hr>
+        <h1 id="logo">
+            <a href="{{ path('bcrmweb_index') }}" rel="index"><img src="{{ asset('bundles/bcrmweb/images/barcamp_logo.png') }}" alt="BarCamp"><span class="region">RheinMain</span><span class="location-date">Dieburg 23./24.11.2013</span></a>
+        </h1>
+        <nav class="event">
+            <a href="{{ path('bcrmweb_index') }}"
+                {% if app.request.get('_route') == 'bcrmweb_index' %}class="active"{% endif %}
+                    rel="index">Das BarCamp</a>
+            {{ pagemacro.pagelink('Location', 'Location', app.request.get('path')) }}
+            {{ pagemacro.pagelink('Sponsoren', 'Sponsoren', app.request.get('path')) }}
+        </nav>
+        <hr>
+        <nav class="main">
+            {{ pagemacro.pagelink('Kontakt/Index', 'Kontakt', app.request.get('path')) }}
+            {{ pagemacro.pagelink('Kontakt/Impressum', 'Impressum', app.request.get('path')) }}
+        </nav>
+        <hr>
+    </header>
+    <div class="main">
+        {% for item in page.subnav %}
+        {% if loop.first %}<nav>{% endif %}
+            <a href="{{ path('bcrmweb_page', {'path': item.path}) }}"
+                {% if path == item.path %}class="active"{% endif %}
+            >{{ item.title }}</a>
+        {% if loop.last %}</nav>{% endif %}
+        {% endfor %}
+        <article>
+        {% block content %}{{ page.content|raw }}{% endblock content %}
+        </article>
+    </div>
+</div>
+<footer>
+    <div class="inner-wrap">
+        <article id="sponsors">
+            {{ sponsors.content|raw }}
+        </article>
+    </div>
+</footer>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+{% javascripts filter="yui_js"
+"bundles/bcrmweb/vendor/h5bp/console.js"
+"bundles/bcrmweb/js/main.js"
+%}
+<script type="text/javascript" src="{{ asset_url }}"></script>
+{% endjavascripts %}
+</body>
+</html>

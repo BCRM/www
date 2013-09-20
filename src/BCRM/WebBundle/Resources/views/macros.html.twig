@@ -1,0 +1,5 @@
+{% macro pagelink(pagepath, label, currentpath) %}{% spaceless %}
+    <a href="{{ path('bcrmweb_page', {'path': pagepath}) }}"
+            {% if currentpath == pagepath %}class="active"{% endif %}
+            >{{ label }}</a>
+{% endspaceless %}{% endmacro %}

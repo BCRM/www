@@ -1,4 +1,5 @@
 /web/bundles/
+/web/content/
 /app/bootstrap.php.cache
 /app/cache/*
 /app/logs/*
@@ -9,5 +10,6 @@
 .idea
 app/config/parameters.yml
 /web/css
+/web/js
 /*.sql*
 

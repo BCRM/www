@@ -1,0 +1,393 @@
+/*
+Source: http://nicolasgallagher.com/micro-clearfix-hack/
+*/
+/**
+ * For modern browsers
+ * 1. The space content is one way to avoid an Opera bug when the
+ *    contenteditable attribute is included anywhere else in the document.
+ *    Otherwise it causes space to appear at the top and bottom of elements
+ *    that are clearfixed.
+ * 2. The use of `table` rather than `block` is only necessary if using
+ *    `:before` to contain the top-margins of child elements.
+ */
+.cf:before, .wrapper:before, fieldset.input-with-button:before, form:before,
+.cf:after,
+.wrapper:after,
+fieldset.input-with-button:after,
+form:after {
+  content: " ";
+  /* 1 */
+  display: table;
+  /* 2 */ }
+
+.cf:after, .wrapper:after, fieldset.input-with-button:after, form:after {
+  clear: both; }
+
+/**
+ * For IE 6/7 only
+ * Include this rule to trigger hasLayout and contain floats.
+ */
+.cf, .wrapper, fieldset.input-with-button, form {
+  *zoom: 1; }
+
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box; }
+
+html, body {
+  height: 100%; }
+
+body {
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 160%;
+  color: #797978;
+  text-align: left;
+  background: white url("../images/bg.png") no-repeat center top; }
+
+strong, b {
+  font-weight: 700; }
+
+/*  ***************************************************************
+    WRAPPER
+    ***************************************************************/
+header {
+  width: 100%;
+  max-width: 990px;
+  margin: 0 auto; }
+
+div.main {
+  width: 100%;
+  max-width: 990px;
+  margin: 0 auto;
+  padding-bottom: 6.25em; }
+
+.push {
+  clear: left;
+  height: 24.875em; }
+
+/*  ***************************************************************
+    HEADER
+    ***************************************************************/
+/*  Vertical Lines  */
+header hr {
+  display: none; }
+
+@media screen and (min-width: 990px) {
+  header {
+    position: relative;
+    height: 180px;
+    margin-bottom: 40px; }
+    header hr {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      border-width: 0;
+      background-color: #FFFFFF;
+      height: auto;
+      margin: 0;
+      -moz-box-shadow: 2px 2px 4px #7F7F7F;
+      -webkit-box-shadow: 2px 2px 4px #7F7F7F;
+      box-shadow: 2px 2px 4px #7F7F7F; }
+    header hr:first-child {
+      left: 0;
+      display: none; }
+    header hr {
+      right: 14.25em;
+      display: block; }
+    header hr:last-child {
+      right: 0;
+      display: none; } }
+@media screen and (min-width: 1090px) {
+  header hr:first-child {
+    display: block; }
+  header hr:last-child {
+    display: block; } }
+/* Logo */
+header h1 {
+  margin: 1em 5%;
+  font-size: 0.5em;
+  position: relative;
+  width: 90%;
+  max-width: 444px; }
+  header h1 span {
+    font-weight: 700;
+    color: #FFFFFF;
+    text-transform: uppercase; }
+  header h1 span.location-date {
+    position: absolute;
+    left: 30%;
+    bottom: 0; }
+  header h1 span.region {
+    position: absolute;
+    right: 1%;
+    top: 12%; }
+  header h1 img {
+    width: 100%; }
+
+@media screen and (min-width: 300px) {
+  header h1 {
+    letter-spacing: 0.2em; } }
+@media screen and (min-width: 400px) {
+  header h1 {
+    font-size: 0.75em; } }
+@media screen and (min-width: 500px) {
+  header h1 {
+    font-size: 1em; } }
+@media screen and (min-width: 990px) {
+  header h1 {
+    margin: 0;
+    position: absolute;
+    left: 3.75em;
+    top: 2.125em; } }
+/*  Navigationen    */
+header nav {
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.75);
+  padding: 0.5em;
+  text-align: center; }
+  header nav a {
+    padding: 0 0.5em;
+    font-weight: 300;
+    color: white;
+    text-shadow: 1px 1px 2px #7F7F7F;
+    text-decoration: none;
+    letter-spacing: 0.0625em;
+    white-space: nowrap; }
+  header nav a:hover {
+    color: #E52479; }
+  header nav a.active {
+    font-weight: 700; }
+
+@media screen and (min-width: 990px) {
+  header nav {
+    text-align: left;
+    position: absolute;
+    width: 10em;
+    top: 0.75em;
+    border: 0; }
+    header nav a {
+      display: block;
+      margin: 0;
+      padding: 0;
+      line-height: 1.85em; }
+  header nav.event {
+    right: 16.75em;
+    width: 7em; }
+  header nav.main {
+    right: 2em; } }
+/*  ***************************************************************
+    MAIN CONTENT
+    ***************************************************************/
+/*  Visual   */
+.visual {
+  -moz-box-shadow: 2px 2px 4px #7F7F7F;
+  -webkit-box-shadow: 2px 2px 4px #7F7F7F;
+  box-shadow: 2px 2px 4px #7F7F7F; }
+
+/*  Spalten */
+div.main article {
+  padding: 0 1em; }
+div.main nav {
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.75);
+  padding: 0.5em;
+  text-align: center;
+  margin-bottom: 1.5em; }
+  div.main nav a {
+    padding: 0 0.5em;
+    font-weight: 300;
+    color: rgba(0, 0, 0, 0.75);
+    text-shadow: 1px 1px 2px #7F7F7F;
+    text-decoration: none;
+    letter-spacing: 0.0625em;
+    white-space: nowrap; }
+  div.main nav a:hover {
+    color: #E52479; }
+  div.main nav a.active {
+    font-weight: 700; }
+
+@media screen and (min-width: 750px) {
+  div.main article {
+    padding: 0 2em;
+    float: left;
+    width: 75%;
+    margin-top: 2.75em; }
+  div.main nav {
+    float: right;
+    width: 25%;
+    margin-top: 2.75em;
+    padding: 0.5 0; } }
+/* Navigation in Content */
+@media screen and (min-width: 750px) {
+  div.main nav {
+    text-align: left;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding: 1.75em 0; }
+    div.main nav a {
+      margin: .25em 0;
+      padding: 0;
+      color: #000;
+      display: block;
+      text-shadow: none; }
+    div.main nav a:hover {
+      color: #E52479; } }
+/*  Textauszeichnungen  */
+article h1 {
+  font-weight: 300;
+  font-size: 45px;
+  font-size: 2.8125rem;
+  line-height: 1.155555555555556em;
+  letter-spacing: 1px; }
+
+article > h1 {
+  margin-top: 0; }
+
+.col.c-main strong,
+.col.c-main b {
+  color: #000; }
+
+/*  Content-Module  */
+blockquote {
+  border-top: 1px solid #000;
+  border-bottom: 1px solid #000;
+  margin: 2em 0;
+  padding: 0.5em 0; }
+
+/*  Formulare       */
+::-webkit-input-placeholder {
+  color: #FFFFFF;
+  font-style: italic; }
+
+:-moz-placeholder {
+  color: #FFFFFF;
+  opacity: 1;
+  font-style: italic; }
+
+::-moz-placeholder {
+  color: #FFFFFF;
+  opacity: 1;
+  font-style: italic; }
+
+:-ms-input-placeholder {
+  color: #FFFFFF;
+  font-style: italic; }
+
+fieldset {
+  margin-top: 1.75em;
+  position: relative; }
+
+input[type=text], input[type=email] {
+  width: 100%;
+  border: none;
+  color: #FFFFFF;
+  background-color: #000000;
+  font: normal 1rem 'Ubuntu', sans-serif;
+  height: 50px;
+  padding: .7em 1.25em .5em;
+  -webkit-appearance: none;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box; }
+
+button {
+  text-align: left;
+  font-family: 'Ubuntu';
+  font-size: 16px;
+  font-size: 1rem;
+  color: #FFFFFF;
+  padding: 0 24px 0 20px;
+  height: 50px;
+  border: none;
+  position: relative;
+  background-image: -moz-radial-gradient(#ff8800 1%, #ffe000 99%);
+  background-image: -webkit-gradient(radial, color-stop(0.01, #ff8800), color-stop(0.99, #ffe000));
+  background-image: -webkit-radial-gradient(#ff8800 1%, #ffe000 99%);
+  background-image: -ms-radial-gradient(#ff8800 1%, #ffe000 99%);
+  background-image: radial-gradient(#ff8800 1%, #ffe000 99%);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Style=2)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Style=2); }
+
+fieldset {
+  margin-top: 1.75em; }
+
+fieldset.input-with-button button {
+  float: right;
+  width: 150px; }
+  fieldset.input-with-button button .arrow {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    margin-top: -15px;
+    display: block;
+    width: 30px;
+    height: 30px;
+    background: transparent url("../images/bx_controls.png") no-repeat -30px -30px; }
+fieldset.input-with-button button:hover .arrow {
+  background-position: -30px 0; }
+fieldset.input-with-button input {
+  width: 100%; }
+fieldset.input-with-button label {
+  display: none; }
+
+@media screen and (min-width: 550px) {
+  fieldset.input-with-button button {
+    float: left;
+    width: 26%; }
+  fieldset.input-with-button input {
+    float: left;
+    width: 74%; } }
+label.checkbox {
+  margin-top: 1.75em; }
+  label.checkbox input[type=checkbox] {
+    display: none; }
+  label.checkbox span {
+    background-color: #000000;
+    float: left;
+    width: 25px;
+    height: 25px;
+    position: relative;
+    margin: 0 10px 0 0; }
+  label.checkbox input[type=checkbox]:checked + span {
+    background: black url("../images/checkbox.png") no-repeat center center; }
+
+form {
+  margin-bottom: 1.75em; }
+
+/*  ***************************************************************
+    FOOTER
+    ***************************************************************/
+footer {
+  margin-top: 10em;
+  min-height: 24.875em;
+  background: #ffe100 url("../images/bg_footer.png") no-repeat center top; }
+  footer h2 {
+    color: #FFFFFF;
+    text-shadow: 1px 1px 2px #7F7F7F;
+    font-size: 1em; }
+  footer .inner-wrap {
+    width: 100%;
+    max-width: 990px;
+    margin: 0 auto;
+    padding: 1em; }
+  footer #sponsors {
+    width: 100%; }
+    footer #sponsors ul {
+      list-style: none; }
+      footer #sponsors ul li {
+        float: left;
+        margin: 0;
+        padding: 0;
+        width: 14%;
+        min-width: 80px;
+        max-width: 126px; }
+        footer #sponsors ul li a img {
+          width: 100%; }
+
+@media screen and (min-width: 750px) {
+  footer .inner-wrap {
+    padding: 2em; } }

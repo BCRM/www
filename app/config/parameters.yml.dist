@@ -20,5 +20,6 @@ parameters:
     secret:            changeme
 
     sass_bin:          /usr/bin/sass
+    java_bin:          /opt/java/bin/java
 
     assets_version:    1
