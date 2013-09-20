@@ -25,6 +25,7 @@ class BCRMWebExtension extends Extension
         $configuration = new Configuration();
         $config        = $this->processConfiguration($configuration, $configs);
         $container->setParameter('bcrm_web.content_dir', $config['content_dir']);
+        $container->setParameter('bcrm_web.content_path', $config['content_path']);
 
         $loader = new Loader\XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('controllers.xml');

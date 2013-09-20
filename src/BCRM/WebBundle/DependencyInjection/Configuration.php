@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
         $rootNode
             ->children()
             ->scalarNode('content_dir')->defaultValue('%kernel.root_dir%/../web/content')->end()
+            ->scalarNode('content_path')->defaultValue('/content')->end()
             ->end();
         return $treeBuilder;
     }

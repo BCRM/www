@@ -31,12 +31,18 @@ class CachedContentReader implements ContentReader
      */
     private $parser;
 
-    public function __construct($contentDir, Cache $cache, MarkdownParserInterface $parser)
+    /**
+     * @var string
+     */
+    private $contentPath;
+
+    public function __construct($contentDir, $contentPath, Cache $cache, MarkdownParserInterface $parser)
     {
-        $this->contentDir = new \SplFileInfo($contentDir);
-        $this->cache      = $cache;
-        $this->parser     = $parser;
-        $this->properties = new  ArrayCollection();
+        $this->contentDir  = new \SplFileInfo($contentDir);
+        $this->contentPath = $contentPath;
+        $this->cache       = $cache;
+        $this->parser      = $parser;
+        $this->properties  = new  ArrayCollection();
     }
 
     /**
@@ -60,7 +66,9 @@ class CachedContentReader implements ContentReader
             $cacheEntry->properties = $this->readProperties($markdown);
             $cacheEntry->subnav     = $this->getSubnav(new \SplFileInfo($file));
             $markdown               = $this->removeProperties($markdown);
-            $cacheEntry->html       = $this->parser->transformMarkdown($markdown);
+            $html                   = $this->parser->transformMarkdown($markdown);
+            $html                   = $this->fixLinks($html, $page);
+            $cacheEntry->html       = $html;
             $this->cache->save($page, $cacheEntry, 86400);
         }
         $cacheEntry = $this->cache->fetch($page);
@@ -106,5 +114,16 @@ class CachedContentReader implements ContentReader
     protected function removeProperties($markdown)
     {
         return preg_replace(static::PROPERTIES_MATCH, '', $markdown);
+    }
+
+    protected function fixLinks($html, $page)
+    {
+        if (!preg_match_all('/src="([^"]+)"/', $html, $matches, PREG_SET_ORDER)) return $html;
+        $path = $this->contentPath . '/' . dirname($page) . '/';
+        foreach ($matches as $match) {
+            $srcpath = $path . $match[1];
+            $html    = str_replace($match[1], $srcpath, $html);
+        }
+        return $html;
     }
 }
