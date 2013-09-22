@@ -51,6 +51,7 @@
         <hr>
     </header>
     <div class="main">
+        <div class="visual"></div>
         {% for item in page.subnav %}
         {% if loop.first %}<nav>{% endif %}
             <a href="{{ path('bcrmweb_page', {'path': item.path}) }}"

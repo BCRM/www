@@ -23,8 +23,9 @@ Modernizr.load([
                     accepts: 'text/html',
                     dataType: 'html',
                     success: function (data) {
-                        var slider = $('<div class="visual slider" />').html(data);
-                        $('div.main').prepend(slider);
+                        var visual = $('div.visual');
+                        visual.html(data);
+                        visual.addClass('slider');
                         $('.slider ul').bxSlider(
                             {
                                 captions: true,
