@@ -1,18 +1,30 @@
 {% extends "BCRMWebBundle::page.html.twig" %}
+{% block visual %}
+<div class="visual"></div>
+{% endblock visual %}
 {% block content %}
         {{ page.content|raw }}
-        <form method="post" action="/" class="form-infomail">
+        <form method="post" action="{{ path('bcrmweb_newsletter_subscribe') }}" class="form-infomail">
             <fieldset class="input-with-button">
                 <label for="email">E-Mail</label>
-                <input type="email" required placeholder="Schickt mir ne Mail, wenn sich was tut." tabindex="1" size="20" value="" id="email" name="email">
+                <input type="email" required placeholder="Schickt mir ne Mail, wenn sich was tut." tabindex="1" size="20" value="" id="email" name="newsletter_subscribe[email]">
                 <button type="submit" tabindex="100" class="button" name="submit"><span>Absenden</span><span class="arrow"></span></button>
             </fieldset>
             <fieldset>
                 <label class="checkbox">
-                    <input type="checkbox" tabindex="20" value="1" id="newsletter" name="newsletter">
+                    <input type="checkbox" tabindex="20" value="1" id="futurebarcamps" name="newsletter_subscribe[futurebarcamps]">
                     <span></span>
                     Informiert mich auch über zukünftige BarCamps
                 </label>
             </fieldset>
+            {{ form_row(form._token) }}
         </form>
 {% endblock content %}
+{% block javascript %}
+    {{ parent() }}
+    {% javascripts filter="yui_js"
+    "bundles/bcrmweb/js/slider.js"
+    %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock javascript %}

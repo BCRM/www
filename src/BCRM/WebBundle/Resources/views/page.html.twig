@@ -51,7 +51,9 @@
         <hr>
     </header>
     <div class="main">
-        <div class="visual"></div>
+        {% block visual %}{% endblock visual %}
+        {% if page is defined and page.properties.subnav %}
+        {% if page.subnav|length > 1 %}
         {% for item in page.subnav %}
         {% if loop.first %}<nav>{% endif %}
             <a href="{{ path('bcrmweb_page', {'path': item.path}) }}"
@@ -59,6 +61,8 @@
             >{{ item.title }}</a>
         {% if loop.last %}</nav>{% endif %}
         {% endfor %}
+        {% endif %}
+        {% endif %}
         <article>
         {% block content %}{{ page.content|raw }}{% endblock content %}
         </article>
@@ -72,6 +76,7 @@
     </div>
 </footer>
 
+{% block javascript %}
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 {% javascripts filter="yui_js"
 "bundles/bcrmweb/vendor/h5bp/console.js"
@@ -79,5 +84,6 @@
 %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}
+{% endblock javascript %}
 </body>
 </html>
