@@ -25,7 +25,8 @@
         "doctrine/migrations": "dev-master@dev",
         "doctrine/doctrine-migrations-bundle": "dev-master@dev",
         "phpoption/phpoption": "dev-master",
-        "knplabs/knp-markdown-bundle": "1.2.*@dev"
+        "knplabs/knp-markdown-bundle": "1.2.*@dev",
+        "beberlei/lite-cqrs": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [

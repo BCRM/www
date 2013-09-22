@@ -4,10 +4,19 @@
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
         <parameter key="bcrm.web.controller.web.class">BCRM\WebBundle\Controller\WebController</parameter>
+        <parameter key="bcrm.web.controller.newsletter.class">BCRM\WebBundle\Controller\NewsletterController</parameter>
     </parameters>
     <services>
         <service id="bcrm.web.controller.web" class="%bcrm.web.controller.web.class%" scope="request">
             <argument type="service" id="bcrm.web.contentReader"/>
+            <argument type="service" id="form.factory"/>
+        </service>
+        <service id="bcrm.web.controller.newsletter" class="%bcrm.web.controller.newsletter.class%" scope="request">
+            <argument type="service" id="bcrm.web.contentReader"/>
+            <argument type="service" id="form.factory"/>
+            <argument type="service" id="router"/>
+            <argument type="service" id="command_bus"/>
+            <argument type="service" id="bcrm.backend.repo.subscription" />
         </service>
     </services>
 </container>

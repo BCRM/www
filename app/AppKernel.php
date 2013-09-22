@@ -19,7 +19,9 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Ornicar\GravatarBundle\OrnicarGravatarBundle(),
             new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
-            new BCRM\WebBundle\BCRMWebBundle()
+            new LiteCQRS\Plugin\SymfonyBundle\LiteCQRSBundle(),
+            new BCRM\WebBundle\BCRMWebBundle(),
+            new BCRM\BackendBundle\BCRMBackendBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

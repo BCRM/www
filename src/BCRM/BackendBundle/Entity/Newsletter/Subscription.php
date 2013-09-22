@@ -1,0 +1,162 @@
+<?php
+
+namespace BCRM\BackendBundle\Entity\Newsletter;
+
+use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Security\Core\Util\SecureRandom;
+use Symfony\Component\Validator\Constraints as Assert;
+use LiteCQRS\Plugin\CRUD\AggregateResource;
+
+
+/**
+ * Subscription
+ *
+ * @ORM\Table(name="subscription")
+ * @ORM\Entity(repositoryClass="BCRM\BackendBundle\Entity\Newsletter\DoctrineSubscriptionRepository")
+ */
+class Subscription extends AggregateResource
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Email()
+     */
+    protected $email;
+
+    /**
+     * @Gedmo\Timestampable(on="create")
+     * @ORM\Column(type="datetime")
+     * @var \DateTime
+     */
+    protected $created;
+
+    /**
+     * @Gedmo\Timestampable(on="update")
+     * @ORM\Column(type="datetime", nullable=true)
+     * @var \DateTime
+     */
+    protected $updated;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Assert\Type(type="boolean")
+     * @var boolean
+     */
+    protected $confirmed = false;
+
+    /**
+     * @ORM\Column(type="boolean", name="future_barcamps")
+     * @Assert\Type(type="boolean")
+     * @var boolean
+     */
+    protected $futureBarcamps = false;
+
+    /**
+     * @ORM\Column(type="string", nullable=false, name="confirmation_key", length=40)
+     * @var string Confirmation Key
+     * @Assert\Length(min=40, max=40)
+     */
+    protected $confirmationKey;
+
+    public function __construct()
+    {
+        $sr                    = new SecureRandom();
+        $this->confirmationKey = sha1($sr->nextBytes(40), false);
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     *
+     * @return Subscription
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getConfirmed()
+    {
+        return $this->confirmed;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * @param boolean $futureBarcamps
+     */
+    public function setFutureBarcamps($futureBarcamps)
+    {
+        $this->futureBarcamps = (boolean)$futureBarcamps;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getFutureBarcamps()
+    {
+        return $this->futureBarcamps;
+    }
+
+    /**
+     * @return string
+     */
+    public function getConfirmationKey()
+    {
+        return $this->confirmationKey;
+    }
+
+
+}

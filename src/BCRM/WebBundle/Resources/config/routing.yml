@@ -20,3 +20,23 @@ bcrmweb_content:
         _controller: bcrm.web.controller.web:contentAction
     requirements:
         path: ".+"
+
+bcrmweb_newsletter_subscribe:
+    path: /newsletter/subscribe
+    methods: [POST]
+    defaults:
+        _controller: bcrm.web.controller.newsletter:subscribeAction
+
+bcrmweb_newsletter_ok:
+    path: /newsletter/ok
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.web:pageAction
+        path: Newsletter/Ok
+
+bcrmweb_newsletter_already_subscribed:
+    path: /newsletter/schon-drin
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.web:pageAction
+        path: Newsletter/SchonDrin

@@ -67,3 +67,8 @@ swiftmailer:
     password:  %mailer_password%
     port:      %mailer_port%
     spool:     { type: memory }
+
+# LiteCQRS Configuration
+lite_cqrs:
+    crud:     true
+    orm:      true

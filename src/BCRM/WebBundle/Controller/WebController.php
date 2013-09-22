@@ -8,7 +8,9 @@
 namespace BCRM\WebBundle\Controller;
 
 use BCRM\WebBundle\Content\ContentReader;
+use BCRM\WebBundle\Form\NewsletterSubscribeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -22,9 +24,15 @@ class WebController
      */
     private $reader;
 
-    public function __construct(ContentReader $reader)
+    /**
+     * @var \Symfony\Component\Form\FormFactoryInterface
+     */
+    private $formFactory;
+
+    public function __construct(ContentReader $reader, FormFactoryInterface $formFactory)
     {
-        $this->reader = $reader;
+        $this->reader      = $reader;
+        $this->formFactory = $formFactory;
     }
 
     /**
@@ -36,7 +44,11 @@ class WebController
      */
     public function indexAction(Request $request)
     {
-        return $this->pageAction($request, 'Index');
+        $response = $this->pageAction($request, 'Index');
+        if ($response instanceof Response) return $response;
+        $form             = $this->formFactory->create(new NewsletterSubscribeType());
+        $response['form'] = $form->createView();
+        return $response;
     }
 
     /**
