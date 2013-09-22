@@ -29,7 +29,9 @@ class Page extends Info
     public function __construct()
     {
         $this->subnav     = new ArrayCollection();
-        $this->properties = new ArrayCollection();
+        $this->properties = new ArrayCollection(
+            array('subnav' => 1)
+        );
     }
 
     /**

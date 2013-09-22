@@ -83,7 +83,7 @@ class FileContentReader implements ContentReader
         $html       = $this->parser->transformMarkdown($markdown);
         $html       = $this->fixLinks($html, $page);
         $p->setContent($html);
-        $p->setProperties(new ArrayCollection($properties));
+        $p->setProperties(new ArrayCollection(array_merge($p->getProperties()->toArray(), $properties)));
         if ($fetchSubNav) {
             $subnav = array();
             foreach ($this->getSubnav($file) as $subpage) {
