@@ -67,9 +67,3 @@ swiftmailer:
     password:  %mailer_password%
     port:      %mailer_port%
     spool:     { type: memory }
-
-liip_doctrine_cache:
-    namespaces:
-        content:
-            namespace: bcrmcontent
-            type: file_system

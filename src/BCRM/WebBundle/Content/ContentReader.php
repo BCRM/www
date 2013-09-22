@@ -15,4 +15,11 @@ interface ContentReader
      * @return Page
      */
     public function getPage($page);
+
+    /**
+     * @param string $page
+     *
+     * @return Info
+     */
+    public function getInfo($page);
 }

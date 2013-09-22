@@ -7,12 +7,10 @@
 
 namespace BCRM\WebBundle\Content;
 
-use BCRM\WebBundle\Exception\InvalidArgumentException;
-use Doctrine\Common\Cache\Cache;
 use Doctrine\Common\Collections\ArrayCollection;
 use Knp\Bundle\MarkdownBundle\MarkdownParserInterface;
 
-class CachedContentReader implements ContentReader
+class FileContentReader implements ContentReader
 {
     const PROPERTIES_MATCH = '/@([a-z0-9]+)=([^\n]+)\n/';
 
@@ -20,11 +18,6 @@ class CachedContentReader implements ContentReader
      * @var \SplFileInfo
      */
     private $contentDir;
-
-    /**
-     * @var \Doctrine\Common\Cache\Cache
-     */
-    private $cache;
 
     /**
      * @var \Knp\Bundle\MarkdownBundle\MarkdownParserInterface
@@ -36,13 +29,26 @@ class CachedContentReader implements ContentReader
      */
     private $contentPath;
 
-    public function __construct($contentDir, $contentPath, Cache $cache, MarkdownParserInterface $parser)
+    public function __construct($contentDir, $contentPath, MarkdownParserInterface $parser)
     {
         $this->contentDir  = new \SplFileInfo($contentDir);
         $this->contentPath = $contentPath;
-        $this->cache       = $cache;
         $this->parser      = $parser;
         $this->properties  = new  ArrayCollection();
+    }
+
+    /**
+     * Build content information for the given page.
+     *
+     * @return Info
+     */
+    public function getInfo($page)
+    {
+        $file = $this->getFilePath($page);
+        $info = new Info();
+        $info->setLastModified(new \DateTime('@' . filemtime($file)));
+        $info->setEtag(md5_file($file));
+        return $info;
     }
 
     /**
@@ -55,28 +61,32 @@ class CachedContentReader implements ContentReader
         return $this->buildPage($page);
     }
 
-    protected function buildPage($page, $fetchSubNav = true)
+    /**
+     * @param $page
+     *
+     * @return \SplFileInfo
+     */
+    protected function getFilePath($page)
     {
         $contentdir = $this->contentDir->getPathname() . DIRECTORY_SEPARATOR;
+        $file       = $contentdir . $page . '.md';
+        return new \SplFileInfo($file);
+    }
+
+    protected function buildPage($page, $fetchSubNav = true)
+    {
+        $file       = $this->getFilePath($page);
         $p          = new Page();
-        if (!$this->cache->contains($page)) {
-            $file                   = $contentdir . $page . '.md';
-            $markdown               = file_get_contents($file);
-            $cacheEntry             = new \stdClass();
-            $cacheEntry->properties = $this->readProperties($markdown);
-            $cacheEntry->subnav     = $this->getSubnav(new \SplFileInfo($file));
-            $markdown               = $this->removeProperties($markdown);
-            $html                   = $this->parser->transformMarkdown($markdown);
-            $html                   = $this->fixLinks($html, $page);
-            $cacheEntry->html       = $html;
-            $this->cache->save($page, $cacheEntry, 86400);
-        }
-        $cacheEntry = $this->cache->fetch($page);
-        $p->setContent($cacheEntry->html);
-        $p->setProperties(new ArrayCollection($cacheEntry->properties));
+        $markdown   = file_get_contents($file->getPathname());
+        $properties = $this->readProperties($markdown);
+        $markdown   = $this->removeProperties($markdown);
+        $html       = $this->parser->transformMarkdown($markdown);
+        $html       = $this->fixLinks($html, $page);
+        $p->setContent($html);
+        $p->setProperties(new ArrayCollection($properties));
         if ($fetchSubNav) {
             $subnav = array();
-            foreach ($cacheEntry->subnav as $subpage) {
+            foreach ($this->getSubnav($file) as $subpage) {
                 $s = $this->buildPage($subpage, false);
                 $n = new Nav();
                 $n->setTitle($s->getProperties()->get('title'));

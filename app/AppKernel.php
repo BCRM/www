@@ -18,7 +18,6 @@ class AppKernel extends Kernel
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Ornicar\GravatarBundle\OrnicarGravatarBundle(),
-            new Liip\DoctrineCacheBundle\LiipDoctrineCacheBundle(),
             new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
             new BCRM\WebBundle\BCRMWebBundle()
         );

@@ -25,7 +25,6 @@
         "doctrine/migrations": "dev-master@dev",
         "doctrine/doctrine-migrations-bundle": "dev-master@dev",
         "phpoption/phpoption": "dev-master",
-        "liip/doctrine-cache-bundle": "dev-master",
         "knplabs/knp-markdown-bundle": "1.2.*@dev"
     },
     "scripts": {

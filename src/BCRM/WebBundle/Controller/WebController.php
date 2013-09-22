@@ -9,7 +9,7 @@ namespace BCRM\WebBundle\Controller;
 
 use BCRM\WebBundle\Content\ContentReader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -28,18 +28,37 @@ class WebController
     }
 
     /**
+     * Render the index page.
+     *
+     * @param Request $request
+     *
      * @Template()
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return $this->pageAction('Index');
+        return $this->pageAction($request, 'Index');
     }
 
     /**
+     * Render a content page.
+     *
+     * @param Request $request
+     * @param string  $path
+     *
      * @Template()
+     * @return Response|array
      */
-    public function pageAction($path)
+    public function pageAction(Request $request, $path)
     {
+        $pageInfo = $this->reader->getInfo($path);
+        $response = new Response();
+        $response->setETag($pageInfo->getEtag());
+        $response->setLastModified($pageInfo->getLastModified());
+        $response->setPublic();
+        if ($response->isNotModified($request)) {
+            return $response;
+        }
+
         $p = $this->reader->getPage($path);
         return array(
             'page'     => $p,
@@ -48,9 +67,27 @@ class WebController
         );
     }
 
-    public function contentAction($path)
+    /**
+     * Render a content page without the body. Used for ajax calls.
+     *
+     * @param Request $request
+     * @param         $path
+     *
+     * @return Response
+     */
+    public function contentAction(Request $request, $path)
     {
+        $pageInfo = $this->reader->getInfo($path);
+        $response = new Response();
+        $response->setETag($pageInfo->getEtag());
+        $response->setLastModified($pageInfo->getLastModified());
+        $response->setPublic();
+        if ($response->isNotModified($request)) {
+            return $response;
+        }
+
         $p = $this->reader->getPage($path);
-        return new Response($p->getContent());
+        $response->setContent($p->getContent());
+        return $response;
     }
 }

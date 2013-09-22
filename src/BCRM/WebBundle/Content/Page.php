@@ -9,7 +9,7 @@ namespace BCRM\WebBundle\Content;
 
 use Doctrine\Common\Collections\ArrayCollection;
 
-class Page
+class Page extends Info
 {
     /**
      * @var string
