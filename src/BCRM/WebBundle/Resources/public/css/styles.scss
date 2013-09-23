@@ -1,5 +1,6 @@
 @import "sizes";
 @import "clearfix";
+@import "colors";
 
 * {
   box-sizing: border-box;
@@ -16,9 +17,17 @@ body {
   font-weight: 300;
   font-size: 16px;
   line-height: 160%;
-  color: #797978;
+  color: $text;
   text-align: left;
-  background: #FFFFFF url('../images/bg.png') no-repeat center top
+  background: $bg url('../images/bg.png') no-repeat center top
+}
+
+a {
+  color: $link;
+}
+
+a:visited {
+  color: $link_visited;
 }
 
 strong, b {
@@ -54,6 +63,15 @@ div.main {
     HEADER
     ***************************************************************/
 
+/* Links */
+header {
+  nav {
+    a, a:visited {
+      color: $bg;
+    }
+  }
+}
+
 /*  Vertical Lines  */
 header {
   hr {
@@ -67,13 +85,12 @@ header {
     height: 180px;
     margin-bottom: 40px;
     hr {
-
       position: absolute;
       top: 0;
       bottom: 0;
       width: 1px;
       border-width: 0;
-      background-color: #FFFFFF;
+      background-color: $bg;
       height: auto;
       margin: 0;
       -moz-box-shadow: 2px 2px 4px #7F7F7F;
@@ -117,7 +134,7 @@ header {
     max-width: 444px;
     span {
       font-weight: 700;
-      color: #FFFFFF;
+      color: $bg;
       text-transform: uppercase
     }
     span.location-date {
@@ -196,7 +213,7 @@ header {
 /*  Navigationen    */
 header {
   nav {
-    @include hornav(rgba(#fff, 0.75), #FFFFFF);
+    @include hornav(rgba($bg, 0.75), $bg);
   }
 }
 
@@ -243,7 +260,7 @@ div.main {
     padding: 0 1em;
   }
   nav {
-    @include hornav(rgba(#fff, 0.75), rgba(#000, 0.75));
+    @include hornav(rgba($bg, 0.75), rgba(invert($bg), 0.75));
     margin-bottom: 1.5em;
   }
 }
@@ -323,24 +340,24 @@ blockquote {
 
 /*  Formulare       */
 ::-webkit-input-placeholder {
-  color: #FFFFFF;
+  color: $bg;
   font-style: italic
 }
 
 :-moz-placeholder {
-  color: #FFFFFF;
+  color: $bg;
   opacity: 1;
   font-style: italic
 }
 
 ::-moz-placeholder {
-  color: #FFFFFF;
+  color: $bg;
   opacity: 1;
   font-style: italic
 }
 
 :-ms-input-placeholder {
-  color: #FFFFFF;
+  color: $bg;
   font-style: italic
 }
 
@@ -352,8 +369,8 @@ fieldset {
 input[type=text], input[type=email] {
   width: 100%;
   border: none;
-  color: #FFFFFF;
-  background-color: #000000;
+  color: $bg;
+  background-color: invert($bg);
   font: normal 1rem 'Ubuntu', sans-serif;
   height: 50px;
   padding: .7em 1.25em .5em;
@@ -368,7 +385,7 @@ button {
   font-family: 'Ubuntu';
   font-size: 16px;
   font-size: 1rem;
-  color: #FFFFFF;
+  color: $bg;
   padding: 0 24px 0 20px;
   height: 50px;
   border: none;
@@ -434,7 +451,7 @@ label.checkbox {
     display: none;
   }
   span {
-    background-color: #000000;
+    background-color: invert($bg);
     float: left;
     width: 25px;
     height: 25px;
@@ -442,7 +459,7 @@ label.checkbox {
     margin: 0 10px 0 0;
   }
   input[type=checkbox]:checked + span {
-    background: #000 url('../images/checkbox.png') no-repeat center center;
+    background: invert($bg) url('../images/checkbox.png') no-repeat center center;
   }
 }
 
@@ -458,9 +475,9 @@ form {
 footer {
   margin-top: 10em;
   min-height: 24.875em;
-  background: #FFE100 url('../images/bg_footer.png') no-repeat center top;
+  background: $footer url('../images/bg_footer.png') no-repeat center top;
   h2 {
-    color: #FFFFFF;
+    color: $bg;
     text-shadow: 1px 1px 2px #7F7F7F;
     font-size: 1em;
   }
