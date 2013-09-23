@@ -8,6 +8,7 @@
 namespace BCRM\WebBundle\Controller;
 
 use BCRM\BackendBundle\Entity\Newsletter\SubscriptionRepository;
+use BCRM\BackendBundle\Service\Newsletter\ActivateCommand;
 use BCRM\BackendBundle\Service\Newsletter\SubscribeCommand;
 use BCRM\WebBundle\Content\ContentReader;
 use BCRM\WebBundle\Form\NewsletterSubscribeModel;
@@ -18,6 +19,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 
 /**
@@ -85,5 +87,17 @@ class NewsletterController
             'sponsors' => $this->reader->getPage('Sponsoren/Index.md'),
             'form'     => $form->createView(),
         );
+    }
+
+    public function confirmAction($id, $key)
+    {
+        $subscription = $this->repo->getSubscriptionByIdAndKey($id, $key);
+        if ($subscription->isEmpty()) {
+            throw new NotFoundHttpException('Unknown subscription.');
+        }
+        $command               = new ActivateCommand();
+        $command->subscription = $subscription->get();
+        $this->commandBus->handle($command);
+        return new RedirectResponse($this->router->generate('bcrmweb_newsletter_confirmed'));
     }
 }

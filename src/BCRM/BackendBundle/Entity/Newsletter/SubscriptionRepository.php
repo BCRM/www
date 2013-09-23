@@ -12,11 +12,19 @@ namespace BCRM\BackendBundle\Entity\Newsletter;
 interface SubscriptionRepository
 {
     /**
-     * @param $email
+     * @param string $email
      *
      * @return \PhpOption\Option
      */
     public function getSubscription($email);
+
+    /**
+     * @param string $id
+     * @param string $key
+     *
+     * @return \PhpOption\Option
+     */
+    public function getSubscriptionByIdAndKey($id, $key);
 
     /**
      * @return Subscription[]

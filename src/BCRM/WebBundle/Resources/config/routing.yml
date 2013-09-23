@@ -46,3 +46,10 @@ bcrm_newsletter_confirm:
     methods: [GET]
     defaults:
         _controller: bcrm.web.controller.newsletter:confirmAction
+
+bcrmweb_newsletter_confirmed:
+    path: /newsletter/aktiviert
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.web:pageAction
+        path: Newsletter/Aktiviert

@@ -8,6 +8,7 @@
 namespace BCRM\BackendBundle\Service;
 
 use BCRM\BackendBundle\Service\Mail\SendTemplateMailCommand;
+use BCRM\BackendBundle\Service\Newsletter\ActivateCommand;
 use BCRM\BackendBundle\Service\Newsletter\SendConfirmationMailCommand;
 use BCRM\BackendBundle\Service\Newsletter\SubscribeCommand;
 use LiteCQRS\Bus\CommandBus;
@@ -64,5 +65,14 @@ class Newsletter
             'confirmation_link' => rtrim($command->schemeAndHost, '/') . $this->router->generate('bcrm_newsletter_confirm', array('id' => $command->subscription->getId(), 'key' => $key))
         );
         $this->commandBus->handle($emailCommand);
+    }
+
+    public function activate(ActivateCommand $command)
+    {
+        $updateCommand        = new UpdateResourceCommand();
+        $updateCommand->class = '\BCRM\BackendBundle\Entity\Newsletter\Subscription';
+        $updateCommand->id    = $command->subscription->getId();
+        $updateCommand->data  = array('confirmed' => 1);
+        $this->commandBus->handle($updateCommand);
     }
 }

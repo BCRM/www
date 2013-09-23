@@ -31,4 +31,19 @@ class DoctrineSubscriptionRepository extends EntityRepository implements Subscri
         $qb->andWhere('s.confirmationKey IS NULL');
         return $qb->getQuery()->getResult();
     }
+
+    /**
+     * @param string $id
+     * @param string $key
+     *
+     * @return \PhpOption\Option
+     */
+    public function getSubscriptionByIdAndKey($id, $key)
+    {
+        $qb = $this->createQueryBuilder('s');
+        $qb->andWhere('s.id = :id')->setParameter('id', $id);
+        $qb->andWhere('s.confirmationKey = :key')->setParameter('key', $key);
+        $subscription = $qb->getQuery()->getOneOrNullResult();
+        return $subscription === null ? None::create() : new Some($subscription);
+    }
 }
