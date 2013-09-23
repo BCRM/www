@@ -62,7 +62,7 @@ class WebController
      */
     public function pageAction(Request $request, $path)
     {
-        $pageInfo = $this->reader->getInfo($path);
+        $pageInfo = $this->reader->getInfo($path . '.md');
         $response = new Response();
         $response->setETag($pageInfo->getEtag());
         $response->setLastModified($pageInfo->getLastModified());
@@ -71,11 +71,11 @@ class WebController
             return $response;
         }
 
-        $p = $this->reader->getPage($path);
+        $p = $this->reader->getPage($path . '.md');
         return array(
             'page'     => $p,
             'path'     => $path,
-            'sponsors' => $this->reader->getPage('Sponsoren/Index')
+            'sponsors' => $this->reader->getPage('Sponsoren/Index.md')
         );
     }
 
@@ -89,7 +89,7 @@ class WebController
      */
     public function contentAction(Request $request, $path)
     {
-        $pageInfo = $this->reader->getInfo($path);
+        $pageInfo = $this->reader->getInfo($path . '.md');
         $response = new Response();
         $response->setETag($pageInfo->getEtag());
         $response->setLastModified($pageInfo->getLastModified());
@@ -98,7 +98,7 @@ class WebController
             return $response;
         }
 
-        $p = $this->reader->getPage($path);
+        $p = $this->reader->getPage($path . '.md');
         $response->setContent($p->getContent());
         return $response;
     }

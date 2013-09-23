@@ -7,24 +7,15 @@
 
 namespace BCRM\WebBundle\Content;
 
+use BCRM\BackendBundle\Content\Info;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class Page extends Info
 {
     /**
-     * @var string
-     */
-    protected $content;
-
-    /**
      * @var \Doctrine\Common\Collections\ArrayCollection
      */
     protected $subnav;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection
-     */
-    protected $properties;
 
     public function __construct()
     {
@@ -32,30 +23,6 @@ class Page extends Info
         $this->properties = new ArrayCollection(
             array('subnav' => 1)
         );
-    }
-
-    /**
-     * @return string
-     */
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
-     * @param string $content
-     */
-    public function setContent($content)
-    {
-        $this->content = $content;
-    }
-
-    /**
-     * @param int $order
-     */
-    public function setOrder($order)
-    {
-        $this->order = (int)$order;
     }
 
     /**
@@ -73,22 +40,4 @@ class Page extends Info
     {
         $this->subnav = $subnav;
     }
-
-    /**
-     * @return \Doctrine\Common\Collections\ArrayCollection
-     */
-    public function getProperties()
-    {
-        return $this->properties;
-    }
-
-    /**
-     * @param \Doctrine\Common\Collections\ArrayCollection $properties
-     */
-    public function setProperties(ArrayCollection $properties)
-    {
-        $this->properties = $properties;
-    }
-
-
 }

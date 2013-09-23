@@ -75,14 +75,14 @@ class NewsletterController
             if ($subscription->isDefined()) {
                 return new RedirectResponse($this->router->generate('bcrmweb_newsletter_already_subscribed'));
             }
-            $command                 = new NewsletterSubscribeCommand();
+            $command                 = new SubscribeCommand();
             $command->email          = $formData->email;
             $command->futurebarcamps = $formData->futurebarcamps;
             $this->commandBus->handle($command);
             return new RedirectResponse($this->router->generate('bcrmweb_newsletter_ok'));
         }
         return array(
-            'sponsors' => $this->reader->getPage('Sponsoren/Index'),
+            'sponsors' => $this->reader->getPage('Sponsoren/Index.md'),
             'form'     => $form->createView(),
         );
     }

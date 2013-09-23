@@ -7,6 +7,8 @@
 
 namespace BCRM\WebBundle\Content;
 
+use BCRM\BackendBundle\Content\Info;
+
 interface ContentReader
 {
     /**
