@@ -50,7 +50,7 @@ class PageContentReader extends FileContentReader implements ContentReader
                 $s = $this->buildPage($subPage, false);
                 $n = new Nav();
                 $n->setTitle($s->getProperties()->get('title'));
-                $n->setPath($subPage);
+                $n->setPath(str_replace('.md', '', $subPage));
                 $subNav[]      = $n;
                 $subNavOrder[] = (int)$s->getProperties()->get('order');
             }
@@ -83,10 +83,27 @@ class PageContentReader extends FileContentReader implements ContentReader
         if (!preg_match_all('/src="([^"]+)"/', $html, $matches, PREG_SET_ORDER)) return $html;
         $path = $this->contentPath . '/' . dirname($page) . '/';
         foreach ($matches as $match) {
-            $srcpath = $path . $match[1];
+            $srcpath = $this->normalizePath($path . $match[1]);
             $html    = str_replace($match[1], $srcpath, $html);
         }
         return $html;
+    }
+
+    /**
+     * @param $path
+     *
+     * @return string
+     * @see http://www.php.net/manual/en/function.realpath.php#81935
+     */
+    protected function normalizePath($path)
+    {
+        $out = array();
+        foreach (explode('/', $path) as $i => $fold) {
+            if ($fold == '' || $fold == '.') continue;
+            if ($fold == '..' && $i > 0 && end($out) != '..') array_pop($out);
+            else $out[] = $fold;
+        }
+        return ($path{0} == '/' ? '/' : '') . join('/', $out);
     }
 
     protected function getSubnav(\SplFileInfo $file)
