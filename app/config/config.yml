@@ -66,7 +66,7 @@ swiftmailer:
     username:  %mailer_user%
     password:  %mailer_password%
     port:      %mailer_port%
-    spool:     { type: memory }
+    spool:     { type: file, path: %kernel.root_dir%/spool }
 
 # LiteCQRS Configuration
 lite_cqrs:
