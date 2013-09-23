@@ -95,7 +95,6 @@ class PageContentReader extends FileContentReader implements ContentReader
         $contentdir = $this->contentDir->getPathname() . DIRECTORY_SEPARATOR;
         return array_map(function ($entry) use ($contentdir) {
             $entry = str_replace($contentdir, '', $entry);
-            $entry = str_replace('.md', '', $entry);
             return $entry;
         }, glob($dir . '*.md'));
     }
