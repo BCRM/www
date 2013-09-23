@@ -13,3 +13,6 @@ app/config/parameters.yml
 /web/js
 /*.sql*
 /web/.htaccess
+/src/BCRM/WebBundle/Resources/public/css/_*.css
+/src/BCRM/WebBundle/Resources/public/css/styles.css
+
