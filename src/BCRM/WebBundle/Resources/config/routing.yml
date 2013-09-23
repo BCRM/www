@@ -40,3 +40,9 @@ bcrmweb_newsletter_already_subscribed:
     defaults:
         _controller: bcrm.web.controller.web:pageAction
         path: Newsletter/SchonDrin
+
+bcrm_newsletter_confirm:
+    path: /newsletter/confirm/{id}/{key}
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.newsletter:confirmAction

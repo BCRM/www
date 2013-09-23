@@ -7,9 +7,14 @@
 
 namespace BCRM\BackendBundle\Service;
 
+use BCRM\BackendBundle\Service\Mail\SendTemplateMailCommand;
+use BCRM\BackendBundle\Service\Newsletter\SendConfirmationMailCommand;
+use BCRM\BackendBundle\Service\Newsletter\SubscribeCommand;
 use LiteCQRS\Bus\CommandBus;
 use LiteCQRS\Plugin\CRUD\Model\Commands\CreateResourceCommand;
+use LiteCQRS\Plugin\CRUD\Model\Commands\UpdateResourceCommand;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Util\SecureRandom;
 
 class Newsletter
 {
@@ -33,11 +38,31 @@ class Newsletter
         $this->router     = $router;
     }
 
-    public function newsletterSubscribe(NewsletterSubscribeCommand $command)
+    public function subscribe(SubscribeCommand $command)
     {
         $createSubscriptionCommand        = new CreateResourceCommand();
         $createSubscriptionCommand->class = '\BCRM\BackendBundle\Entity\Newsletter\Subscription';
         $createSubscriptionCommand->data  = array('email' => $command->email, 'futureBarcamps' => $command->futurebarcamps);
         $this->commandBus->handle($createSubscriptionCommand);
+    }
+
+    public function sendConfirmationMail(SendConfirmationMailCommand $command)
+    {
+        $updateCommand        = new UpdateResourceCommand();
+        $updateCommand->class = '\BCRM\BackendBundle\Entity\Newsletter\Subscription';
+        $updateCommand->id    = $command->subscription->getId();
+        $sr                   = new SecureRandom();
+        $key                  = sha1($sr->nextBytes(256), false);
+        $updateCommand->data  = array('confirmationKey' => $key);
+        $this->commandBus->handle($updateCommand);
+
+        $emailCommand               = new SendTemplateMailCommand();
+        $emailCommand->email        = $command->subscription->getEmail();
+        $emailCommand->template     = 'NewsletterConfirmation';
+        $emailCommand->templateData = array(
+            'subscription'      => $command->subscription,
+            'confirmation_link' => rtrim($command->schemeAndHost, '/') . $this->router->generate('bcrm_newsletter_confirm', array('id' => $command->subscription->getId(), 'key' => $key))
+        );
+        $this->commandBus->handle($emailCommand);
     }
 }

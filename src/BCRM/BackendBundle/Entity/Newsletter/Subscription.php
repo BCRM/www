@@ -4,9 +4,8 @@ namespace BCRM\BackendBundle\Entity\Newsletter;
 
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Security\Core\Util\SecureRandom;
-use Symfony\Component\Validator\Constraints as Assert;
 use LiteCQRS\Plugin\CRUD\AggregateResource;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -36,6 +35,27 @@ class Subscription extends AggregateResource
     protected $email;
 
     /**
+     * @ORM\Column(type="boolean", name="future_barcamps")
+     * @Assert\Type(type="boolean")
+     * @var boolean
+     */
+    protected $futureBarcamps = false;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Assert\Type(type="boolean")
+     * @var boolean
+     */
+    protected $confirmed = false;
+
+    /**
+     * @ORM\Column(type="string", nullable=true, name="confirmation_key", length=40)
+     * @var string Confirmation Key
+     * @Assert\Length(min=40, max=40)
+     */
+    protected $confirmationKey;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      * @var \DateTime
@@ -50,33 +70,6 @@ class Subscription extends AggregateResource
     protected $updated;
 
     /**
-     * @ORM\Column(type="boolean")
-     * @Assert\Type(type="boolean")
-     * @var boolean
-     */
-    protected $confirmed = false;
-
-    /**
-     * @ORM\Column(type="boolean", name="future_barcamps")
-     * @Assert\Type(type="boolean")
-     * @var boolean
-     */
-    protected $futureBarcamps = false;
-
-    /**
-     * @ORM\Column(type="string", nullable=false, name="confirmation_key", length=40)
-     * @var string Confirmation Key
-     * @Assert\Length(min=40, max=40)
-     */
-    protected $confirmationKey;
-
-    public function __construct()
-    {
-        $sr                    = new SecureRandom();
-        $this->confirmationKey = sha1($sr->nextBytes(40), false);
-    }
-
-    /**
      * Get id
      *
      * @return integer
@@ -84,6 +77,16 @@ class Subscription extends AggregateResource
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 
     /**
@@ -98,16 +101,6 @@ class Subscription extends AggregateResource
         $this->email = $email;
 
         return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
     }
 
     /**
@@ -135,19 +128,19 @@ class Subscription extends AggregateResource
     }
 
     /**
-     * @param boolean $futureBarcamps
-     */
-    public function setFutureBarcamps($futureBarcamps)
-    {
-        $this->futureBarcamps = (boolean)$futureBarcamps;
-    }
-
-    /**
      * @return boolean
      */
     public function getFutureBarcamps()
     {
         return $this->futureBarcamps;
+    }
+
+    /**
+     * @param boolean $futureBarcamps
+     */
+    public function setFutureBarcamps($futureBarcamps)
+    {
+        $this->futureBarcamps = (boolean)$futureBarcamps;
     }
 
     /**

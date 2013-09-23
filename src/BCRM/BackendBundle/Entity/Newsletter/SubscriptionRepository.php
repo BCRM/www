@@ -9,7 +9,6 @@
 
 namespace BCRM\BackendBundle\Entity\Newsletter;
 
-
 interface SubscriptionRepository
 {
     /**
@@ -18,4 +17,9 @@ interface SubscriptionRepository
      * @return \PhpOption\Option
      */
     public function getSubscription($email);
+
+    /**
+     * @return Subscription[]
+     */
+    public function getNewSubscriptions();
 }

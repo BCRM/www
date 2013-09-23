@@ -8,7 +8,7 @@
 namespace BCRM\WebBundle\Controller;
 
 use BCRM\BackendBundle\Entity\Newsletter\SubscriptionRepository;
-use BCRM\BackendBundle\Service\NewsletterSubscribeCommand;
+use BCRM\BackendBundle\Service\Newsletter\SubscribeCommand;
 use BCRM\WebBundle\Content\ContentReader;
 use BCRM\WebBundle\Form\NewsletterSubscribeModel;
 use BCRM\WebBundle\Form\NewsletterSubscribeType;

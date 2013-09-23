@@ -5,10 +5,9 @@
  * @copyright 2013 Verein zur Förderung der Netzkultur im Rhein-Main-Gebiet e.V. | http://netzkultur-rheinmain.de/
  */
 
-namespace BCRM\BackendBundle\Service;
+namespace BCRM\BackendBundle\Service\Newsletter;
 
-
-class NewsletterSubscribeCommand
+class SubscribeCommand
 {
     public $email;
     public $futurebarcamps;
