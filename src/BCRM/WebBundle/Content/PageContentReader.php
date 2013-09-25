@@ -48,6 +48,7 @@ class PageContentReader extends FileContentReader implements ContentReader
             $subNav = array();
             foreach ($this->getSubnav($this->getFilePath($path)) as $subPage) {
                 $s = $this->buildPage($subPage, false);
+                if ($s->isHidden()) continue;
                 $n = new Nav();
                 $n->setTitle($s->getProperties()->get('title'));
                 $n->setPath(str_replace('.md', '', $subPage));

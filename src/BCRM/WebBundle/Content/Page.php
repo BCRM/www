@@ -40,4 +40,14 @@ class Page extends Info
     {
         $this->subnav = $subnav;
     }
+
+    /**
+     * Returns whether this page should not be displayed.
+     * 
+     * @return bool
+     */
+    public function isHidden()
+    {
+        return $this->getProperties()->containsKey('hidden') && $this->getProperties()->get('hidden') == 1;
+    }
 }

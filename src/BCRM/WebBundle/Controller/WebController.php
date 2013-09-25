@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Renders the page.
@@ -59,6 +60,7 @@ class WebController
      *
      * @Template()
      * @return Response|array
+     * @throws NotFoundHttpException
      */
     public function pageAction(Request $request, $path)
     {
@@ -72,6 +74,7 @@ class WebController
         }
 
         $p = $this->reader->getPage($path . '.md');
+        if ($p->isHidden()) throw new NotFoundHttpException();
         return array(
             'page'     => $p,
             'path'     => $path,
