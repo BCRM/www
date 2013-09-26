@@ -28,6 +28,7 @@ twig:
     globals:
           google_analytics_account: %google.analytics.account%
           google_analytics_domain: %google.analytics.domain%
+          scheme_and_host: %scheme_and_host%
 
 # Assetic Configuration
 assetic:
