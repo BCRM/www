@@ -14,6 +14,7 @@ Modernizr.load([
                         var visual = $('div.visual');
                         visual.html(data);
                         visual.addClass('slider');
+                        visual.find('img').each(function(n, img) { var i = $(img); i.attr('title', i.attr('alt')); });
                         $('.slider ul').bxSlider(
                             {
                                 captions: true,
