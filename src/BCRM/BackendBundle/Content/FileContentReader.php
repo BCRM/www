@@ -7,6 +7,7 @@
 
 namespace BCRM\BackendBundle\Content;
 
+use BCRM\BackendBundle\Exception\FileNotFoundException;
 use Doctrine\Common\Collections\ArrayCollection;
 
 class FileContentReader implements ContentReader
@@ -51,6 +52,7 @@ class FileContentReader implements ContentReader
     {
         $contentdir = $this->contentDir->getPathname() . DIRECTORY_SEPARATOR;
         $file       = $contentdir . $path;
+        if (!is_file($file)) throw new FileNotFoundException($path);
         return new \SplFileInfo($file);
     }
 

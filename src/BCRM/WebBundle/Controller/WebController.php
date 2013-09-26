@@ -7,6 +7,7 @@
 
 namespace BCRM\WebBundle\Controller;
 
+use BCRM\BackendBundle\Exception\FileNotFoundException;
 use BCRM\WebBundle\Content\ContentReader;
 use BCRM\WebBundle\Form\NewsletterSubscribeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -64,7 +65,11 @@ class WebController
      */
     public function pageAction(Request $request, $path)
     {
-        $pageInfo = $this->reader->getInfo($path . '.md');
+        try {
+            $pageInfo = $this->reader->getInfo($path . '.md');
+        } catch (FileNotFoundException $e) {
+            throw new NotFoundHttpException();
+        }
         $response = new Response();
         $response->setETag($pageInfo->getEtag());
         $response->setLastModified($pageInfo->getLastModified());
