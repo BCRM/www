@@ -15,11 +15,23 @@
     <meta name="viewport" content="width=device-width">
     
     {# Twitter card #}
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@bc_rm">
-    <meta name="twitter:title" content="{{ title|default(default_title) }}">
+    <meta name="twitter:card"        content="summary">
+    <meta name="twitter:site"        content="@bc_rm">
+    <meta name="twitter:title"       content="{{ title|default(default_title) }}">
     <meta name="twitter:description" content="{{ description|default(default_description) }}">
-    <meta name="twitter:image:src" content="{{ image|default(default_image) }}">
+    <meta name="twitter:image:src"   content="{{ image|default(default_image) }}">
+    
+    {# Facebook OpenGraph Data #}
+    <meta property="og:type"                  content="event">
+    <meta property="event:start_time"         content="2013-11-23T08:00:00+01:00">
+    <meta property="event:end_time"           content="2013-11-24T20:00:00+01:00">
+    <meta property="og:url"                   content="{{ scheme_and_host }}" >
+    <meta property="og:title"                 content="{{ default_title }}" >
+    <meta property="og:description"           content="{{ default_description }}" >
+    <meta property="og:image"                 content="{{ default_image }}" >
+    <meta property="event:creator"            content="233370660009977" >
+    <meta property="event:location:latitude"  content="49.901773" >
+    <meta property="event:location:longitude" content="8.8548819" >
 
     {% stylesheets filter="yui_css,cssrewrite"
     "bundles/bcrmweb/vendor/h5bp/normalize.css"
