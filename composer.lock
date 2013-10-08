@@ -44,22 +44,27 @@
         },
         {
             "name": "dflydev/markdown",
-            "version": "v1.0.2",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dflydev/dflydev-markdown.git",
-                "reference": "2a1b3516bd5af6e722b40ae9e1fccd03e1772060"
+                "reference": "6baed9b50f29c980795b6656d43722aadb126f7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dflydev/dflydev-markdown/zipball/2a1b3516bd5af6e722b40ae9e1fccd03e1772060",
-                "reference": "2a1b3516bd5af6e722b40ae9e1fccd03e1772060",
+                "url": "https://api.github.com/repos/dflydev/dflydev-markdown/zipball/6baed9b50f29c980795b6656d43722aadb126f7e",
+                "reference": "6baed9b50f29c980795b6656d43722aadb126f7e",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0-dev"
+                }
+            },
             "autoload": {
                 "psr-0": {
                     "dflydev\\markdown": "src"
@@ -67,7 +72,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "New BSD License"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -94,7 +99,7 @@
             "keywords": [
                 "markdown"
             ],
-            "time": "2012-01-16 03:36:37"
+            "time": "2013-09-23 12:00:18"
         },
         {
             "name": "doctrine/annotations",
@@ -169,16 +174,16 @@
         },
         {
             "name": "doctrine/cache",
-            "version": "v1.1",
+            "version": "v1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/cache.git",
-                "reference": "2c9761ff1d13e188d5f7378066c1ce2882d7a336"
+                "reference": "d0e4447707a064a5814b18cb0dcc2f24185f6179"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/cache/zipball/2c9761ff1d13e188d5f7378066c1ce2882d7a336",
-                "reference": "2c9761ff1d13e188d5f7378066c1ce2882d7a336",
+                "url": "https://api.github.com/repos/doctrine/cache/zipball/d0e4447707a064a5814b18cb0dcc2f24185f6179",
+                "reference": "d0e4447707a064a5814b18cb0dcc2f24185f6179",
                 "shasum": ""
             },
             "require": {
@@ -234,7 +239,7 @@
                 "cache",
                 "caching"
             ],
-            "time": "2013-08-07 16:04:25"
+            "time": "2013-09-26 19:23:25"
         },
         {
             "name": "doctrine/collections",
@@ -517,19 +522,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineMigrationsBundle.git",
-                "reference": "3db446747fa70dedb7adbd5413cd87bb5a4ad1bb"
+                "reference": "1a7f58d7639cf65b8fcae56fd9a8f4e42a41a27c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/3db446747fa70dedb7adbd5413cd87bb5a4ad1bb",
-                "reference": "3db446747fa70dedb7adbd5413cd87bb5a4ad1bb",
+                "url": "https://api.github.com/repos/doctrine/DoctrineMigrationsBundle/zipball/1a7f58d7639cf65b8fcae56fd9a8f4e42a41a27c",
+                "reference": "1a7f58d7639cf65b8fcae56fd9a8f4e42a41a27c",
                 "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-bundle": "~1.0",
                 "doctrine/migrations": "*",
                 "php": ">=5.3.2",
-                "symfony/framework-bundle": ">=2.1.0,<2.4-dev"
+                "symfony/framework-bundle": "~2.1"
             },
             "type": "symfony-bundle",
             "autoload": {
@@ -562,7 +567,7 @@
                 "migrations",
                 "schema"
             ],
-            "time": "2013-09-03 20:38:48"
+            "time": "2013-10-02 14:42:48"
         },
         {
             "name": "doctrine/inflector",
@@ -685,12 +690,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "99475d79841dc00a63fe7dd051f8fb1ba03bf1a8"
+                "reference": "e96022469595b4def59756f7b6b9ceb78c9f0e66"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/99475d79841dc00a63fe7dd051f8fb1ba03bf1a8",
-                "reference": "99475d79841dc00a63fe7dd051f8fb1ba03bf1a8",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/e96022469595b4def59756f7b6b9ceb78c9f0e66",
+                "reference": "e96022469595b4def59756f7b6b9ceb78c9f0e66",
                 "shasum": ""
             },
             "require": {
@@ -731,7 +736,7 @@
                 "database",
                 "migrations"
             ],
-            "time": "2013-09-13 02:44:30"
+            "time": "2013-10-03 12:44:16"
         },
         {
             "name": "doctrine/orm",
@@ -809,12 +814,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/l3pp4rd/DoctrineExtensions.git",
-                "reference": "03a3a9f20fff6f43ff68d91bc752da4e4308b361"
+                "reference": "52de3fd8102984610cee062a5c86629ae2c0596e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/03a3a9f20fff6f43ff68d91bc752da4e4308b361",
-                "reference": "03a3a9f20fff6f43ff68d91bc752da4e4308b361",
+                "url": "https://api.github.com/repos/l3pp4rd/DoctrineExtensions/zipball/52de3fd8102984610cee062a5c86629ae2c0596e",
+                "reference": "52de3fd8102984610cee062a5c86629ae2c0596e",
                 "shasum": ""
             },
             "require": {
@@ -881,7 +886,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2013-09-13 14:37:16"
+            "time": "2013-10-06 10:12:00"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -1119,12 +1124,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafo/scssphp.git",
-                "reference": "96329a5f259f9d28e6596de84211a0f613c3edae"
+                "reference": "bc9d6341855877b57741ebdfce7fa5a19ac593f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafo/scssphp/zipball/96329a5f259f9d28e6596de84211a0f613c3edae",
-                "reference": "96329a5f259f9d28e6596de84211a0f613c3edae",
+                "url": "https://api.github.com/repos/leafo/scssphp/zipball/bc9d6341855877b57741ebdfce7fa5a19ac593f5",
+                "reference": "bc9d6341855877b57741ebdfce7fa5a19ac593f5",
                 "shasum": ""
             },
             "require": {
@@ -1157,7 +1162,7 @@
             ],
             "description": "scssphp is a compiler for SCSS written in PHP.",
             "homepage": "http://leafo.net/scssphp/",
-            "time": "2013-09-16 23:00:25"
+            "time": "2013-10-07 18:28:57"
         },
         {
             "name": "monolog/monolog",
@@ -1780,16 +1785,16 @@
         },
         {
             "name": "symfony/symfony",
-            "version": "v2.3.4",
+            "version": "v2.3.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/symfony.git",
-                "reference": "4fb225f4e315c11aa6d8935b1c0ceaf48ba39f1f"
+                "reference": "aa5626cd2a359567c948ebdeeca68d948640302f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/symfony/zipball/4fb225f4e315c11aa6d8935b1c0ceaf48ba39f1f",
-                "reference": "4fb225f4e315c11aa6d8935b1c0ceaf48ba39f1f",
+                "url": "https://api.github.com/repos/symfony/symfony/zipball/aa5626cd2a359567c948ebdeeca68d948640302f",
+                "reference": "aa5626cd2a359567c948ebdeeca68d948640302f",
                 "shasum": ""
             },
             "require": {
@@ -1884,7 +1889,7 @@
             "keywords": [
                 "framework"
             ],
-            "time": "2013-08-27 08:58:24"
+            "time": "2013-09-27 07:31:40"
         },
         {
             "name": "twig/extensions",
@@ -1935,16 +1940,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v1.13.2",
+            "version": "v1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fabpot/Twig.git",
-                "reference": "6d6a1009427d1f398c9d40904147bf9f723d5755"
+                "reference": "224fc55635d544a2ec8edb3592be18db5a093f59"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/fabpot/Twig/zipball/6d6a1009427d1f398c9d40904147bf9f723d5755",
-                "reference": "6d6a1009427d1f398c9d40904147bf9f723d5755",
+                "url": "https://api.github.com/repos/fabpot/Twig/zipball/224fc55635d544a2ec8edb3592be18db5a093f59",
+                "reference": "224fc55635d544a2ec8edb3592be18db5a093f59",
                 "shasum": ""
             },
             "require": {
@@ -1953,7 +1958,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.13-dev"
+                    "dev-master": "1.14-dev"
                 }
             },
             "autoload": {
@@ -1980,7 +1985,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2013-08-03 15:35:31"
+            "time": "2013-10-03 06:41:20"
         }
     ],
     "packages-dev": [
