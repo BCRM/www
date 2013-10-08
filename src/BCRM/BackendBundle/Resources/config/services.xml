@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 
 <container xmlns="http://symfony.com/schema/dic/services"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <parameters>
         <parameter key="bcrm.backend.newsletterservice.class">BCRM\BackendBundle\Service\Newsletter</parameter>
         <parameter key="bcrm.backend.mailservice.class">BCRM\BackendBundle\Service\Mail</parameter>
@@ -10,27 +10,27 @@
         <parameter key="bcrm.twig.loader.content.class">BCRM\BackendBundle\Content\TwigLoader</parameter>
     </parameters>
     <services>
-    <service id="bcrm.backend.newsletterservice" class="%bcrm.backend.newsletterservice.class%">
-        <argument type="service" id="command_bus"/>
-        <argument type="service" id="router"/>
-        <tag name="lite_cqrs.command_handler"/>
-    </service>
-    <service id="bcrm.backend.mailservice" class="%bcrm.backend.mailservice.class%">
-        <argument type="service" id="mailer"/>
-        <argument type="service" id="templating"/>
-        <argument>%mail_from_email%</argument>
-        <argument>%mail_from_name%</argument>
-        <argument type="service" id="bcrm.backend.contentReader"/>
-        <tag name="lite_cqrs.command_handler"/>
-    </service>
-    <service id="bcrm.backend.contentReader" class="%bcrm.backend.contentReader.class%">
-        <argument>%bcrm_web.content_dir%</argument>
-        <argument>%bcrm_web.content_path%</argument>
-        <argument type="service" id="markdown.parser"/>
-    </service>
-    <service id="bcrm.twig.loader.content" class="%bcrm.twig.loader.content.class%" public="false">
-        <argument type="service" id="bcrm.backend.contentReader"/>
-        <tag name="twig.loader"/>
-    </service>
-</services>
+        <service id="bcrm.backend.newsletterservice" class="%bcrm.backend.newsletterservice.class%">
+            <argument type="service" id="command_bus"/>
+            <argument type="service" id="router"/>
+            <tag name="lite_cqrs.command_handler"/>
+        </service>
+        <service id="bcrm.backend.mailservice" class="%bcrm.backend.mailservice.class%">
+            <argument type="service" id="mailer"/>
+            <argument type="service" id="templating"/>
+            <argument>%mail_from_email%</argument>
+            <argument>%mail_from_name%</argument>
+            <argument type="service" id="bcrm.backend.contentReader"/>
+            <tag name="lite_cqrs.command_handler"/>
+        </service>
+        <service id="bcrm.backend.contentReader" class="%bcrm.backend.contentReader.class%">
+            <argument>%bcrm_web.content_dir%</argument>
+            <argument>%bcrm_web.content_path%</argument>
+            <argument type="service" id="bcrm.markdown.parser"/>
+        </service>
+        <service id="bcrm.twig.loader.content" class="%bcrm.twig.loader.content.class%" public="false">
+            <argument type="service" id="bcrm.backend.contentReader"/>
+            <tag name="twig.loader"/>
+        </service>
+    </services>
 </container>
