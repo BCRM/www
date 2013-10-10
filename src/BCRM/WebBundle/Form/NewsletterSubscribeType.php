@@ -20,6 +20,7 @@ class NewsletterSubscribeType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'BCRM\WebBundle\Form\NewsletterSubscribeModel',
+            'csrf_protection' => false,
         ));
     }
 
