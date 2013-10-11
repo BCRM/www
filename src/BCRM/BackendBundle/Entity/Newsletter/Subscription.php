@@ -151,5 +151,13 @@ class Subscription extends AggregateResource
         return $this->confirmationKey;
     }
 
+    /**
+     * @param string $confirmationKey
+     */
+    public function setConfirmationKey($confirmationKey)
+    {
+        $this->confirmationKey = $confirmationKey;
+    }
 
 }
+
