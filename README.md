@@ -1,5 +1,7 @@
 # BarCamp RheinMain – Website 2013
 
+[![Build Status](https://travis-ci.org/BCRM/www.png)](https://travis-ci.org/BCRM/www)
+
 This is the source code for [barcamp-rheinmain.org](http://barcamp-rheinmain.org/).
 
 Design: [Martin Kraft](http://martinkraft.com/)
