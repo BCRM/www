@@ -4,6 +4,8 @@
 {% endblock visual %}
 {% block content %}
         {{ page.content|raw }}
+        <h2>Newsletter</h2>
+        <p>Hier kannst Du dich zu unserem Newsletter anmelden.</p>
         <form method="post" action="{{ path('bcrmweb_newsletter_subscribe') }}" class="form-infomail">
             <fieldset class="input-with-button">
                 <label for="email">E-Mail</label>
