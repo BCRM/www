@@ -8,6 +8,7 @@
 namespace BCRM\BackendBundle\Service;
 
 use BCRM\BackendBundle\Entity\Event\RegistrationRepository;
+use BCRM\BackendBundle\Service\Event\CreateTicketCommand;
 use BCRM\BackendBundle\Service\Event\RegisterCommand;
 use BCRM\BackendBundle\Service\Event\SendRegistrationConfirmationMailCommand;
 use BCRM\BackendBundle\Service\Mail\SendTemplateMailCommand;
@@ -73,5 +74,13 @@ class Event
     public function confirmRegistration(ConfirmRegistrationCommand $command)
     {
         $this->registrationRepo->confirmRegistration($command->registration);
+    }
+
+    public function createTicket(CreateTicketCommand $command)
+    {
+        $createSubscriptionCommand        = new CreateResourceCommand();
+        $createSubscriptionCommand->class = '\BCRM\BackendBundle\Entity\Event\Ticket';
+        $createSubscriptionCommand->data  = array('event' => $command->event, 'email' => $command->registration->getEmail(), 'name' => $command->registration->getName(), 'day' => $command->day);
+        $this->commandBus->handle($createSubscriptionCommand);
     }
 }

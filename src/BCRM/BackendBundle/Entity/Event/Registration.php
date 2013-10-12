@@ -145,5 +145,15 @@ class Registration extends AggregateResource
     {
         return $this->confirmationKey;
     }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+
 }
 

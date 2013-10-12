@@ -15,4 +15,12 @@ interface EventRepository
      * @return Option
      */
     public function getNextEvent();
+
+    /**
+     * @param Event $event
+     * @param       $day
+     *
+     * @return integer
+     */
+    public function getCapacity(Event $event, $day);
 }

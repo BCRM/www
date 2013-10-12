@@ -8,6 +8,8 @@
 namespace BCRM\BackendBundle\Entity\Event;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Query\ResultSetMapping;
+use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use PhpOption\None;
 use PhpOption\Some;
 
@@ -73,5 +75,18 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
             ->execute();
     }
 
+    /**
+     * @param $day
+     * @param $capacity
+     *
+     * @return mixed
+     */
+    public function getNextRegistrations($day, $capacity)
+    {
+        $rsm = new ResultSetMappingBuilder($this->_em);
+        $rsm->addRootEntityFromClassMetadata('BCRM\BackendBundle\Entity\Event\Registration', 'r');
+        $query = $this->_em->createNativeQuery('SELECT * FROM (SELECT * FROM registration ORDER BY created DESC) AS ordered_registration GROUP BY email ORDER BY created ASC', $rsm);
+        return $query->getResult();
+    }
 
 }

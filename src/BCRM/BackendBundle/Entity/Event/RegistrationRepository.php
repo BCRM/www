@@ -36,4 +36,12 @@ interface RegistrationRepository
      * @return void
      */
     public function initConfirmation(Registration $registration, $key);
+
+    /**
+     * @param $day
+     * @param $capacity
+     *
+     * @return mixed
+     */
+    public function getNextRegistrations($day, $capacity);
 }

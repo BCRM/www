@@ -28,4 +28,22 @@ class DoctrineEventRepository extends EntityRepository implements EventRepositor
         return $event == null ? None::create() : new Some($event);
     }
 
+    /**
+     * @param Event $event
+     * @param       $day
+     *
+     * @return integer
+     */
+    public function getCapacity(Event $event, $day)
+    {
+        return $this->createQueryBuilder('e')
+            ->select('e.capacity - COUNT(t.id) as capacity')
+            ->leftJoin('e.tickets', 't')
+            ->andWhere('t.day = :day')->setParameter('day', $day)
+            ->andWhere('e.id = :event')->setParameter('event', $event->getId())
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+
 }
