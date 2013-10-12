@@ -5,9 +5,7 @@ php:
 
 before_script: 
   - composer install
-  - rm -rf app/test
-  - mkdir app/test
-  - app/console --env=test doctrine:database:create
-  - app/console --env=test doctrine:schema:create
+  - app/console --env=test --quiet doctrine:database:create
+  - app/console --env=test --quiet doctrine:schema:create
 
 script: phpunit -c app
