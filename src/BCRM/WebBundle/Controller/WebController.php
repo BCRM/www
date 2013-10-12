@@ -7,6 +7,7 @@
 
 namespace BCRM\WebBundle\Controller;
 
+use BCRM\BackendBundle\Entity\Event\EventRepository;
 use BCRM\BackendBundle\Exception\FileNotFoundException;
 use BCRM\WebBundle\Content\ContentReader;
 use BCRM\WebBundle\Form\EventRegisterType;
@@ -38,11 +39,17 @@ class WebController
      */
     private $router;
 
-    public function __construct(ContentReader $reader, FormFactoryInterface $formFactory, RouterInterface $router)
+    /**
+     * @var \BCRM\BackendBundle\Entity\Event\EventRepository
+     */
+    private $eventRepo;
+
+    public function __construct(ContentReader $reader, FormFactoryInterface $formFactory, RouterInterface $router, EventRepository $eventRepo)
     {
         $this->reader      = $reader;
         $this->formFactory = $formFactory;
         $this->router      = $router;
+        $this->eventRepo   = $eventRepo;
     }
 
     /**
@@ -56,12 +63,16 @@ class WebController
     {
         $response = $this->pageAction($request, 'Index');
         if ($response instanceof Response) return $response;
-        $registerForm               = $this->formFactory->create(new EventRegisterType(), null, array(
-            'action' => $this->router->generate('bcrmweb_event_register')
-        ));
+
+        $nextEvent = $this->eventRepo->getNextEvent();
+        if ($nextEvent->isDefined()) {
+            $registerForm             = $this->formFactory->create(new EventRegisterType(), null, array(
+                'action' => $this->router->generate('bcrmweb_event_register')
+            ));
+            $response['registerForm'] = $registerForm->createView();
+        }
         $newsletterForm             = $this->formFactory->create(new NewsletterSubscribeType());
         $response['newsletterForm'] = $newsletterForm->createView();
-        $response['registerForm']   = $registerForm->createView();
         return $response;
     }
 

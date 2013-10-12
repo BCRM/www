@@ -12,6 +12,7 @@
             <argument type="service" id="bcrm.web.contentReader"/>
             <argument type="service" id="form.factory"/>
             <argument type="service" id="router"/>
+            <argument type="service" id="bcrm.backend.repo.event" />
         </service>
         <service id="bcrm.web.controller.newsletter" class="%bcrm.web.controller.newsletter.class%" scope="request">
             <argument type="service" id="bcrm.web.contentReader"/>

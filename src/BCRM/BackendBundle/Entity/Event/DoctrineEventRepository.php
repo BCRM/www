@@ -20,7 +20,7 @@ class DoctrineEventRepository extends EntityRepository implements EventRepositor
     public function getNextEvent()
     {
         $qb = $this->createQueryBuilder('e');
-        $qb->andWhere('e.start >= :now');
+        $qb->andWhere('e.registrationStart <= :now');
         $qb->setParameter('now', new \DateTime());
         $qb->setMaxResults(1);
         $qb->orderBy('e.start', 'ASC');
