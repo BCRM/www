@@ -53,3 +53,29 @@ bcrmweb_newsletter_confirmed:
     defaults:
         _controller: bcrm.web.controller.web:pageAction
         path: Newsletter/Aktiviert
+        
+bcrmweb_event_register:
+    path: /register
+    methods: [POST]
+    defaults:
+        _controller: bcrm.web.controller.event:registerAction
+
+bcrmweb_registration_ok:
+    path: /registration/ok
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.web:pageAction
+        path: Registrierung/Ok
+
+bcrm_registration_confirm:
+    path: /registration/confirm/{id}/{key}
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.event:confirmRegistrationAction
+
+bcrmweb_registration_confirmed:
+    path: /registrierung/aktiviert
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.web:pageAction
+        path: Registrierung/Aktiviert

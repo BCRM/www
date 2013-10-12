@@ -9,12 +9,14 @@ namespace BCRM\WebBundle\Controller;
 
 use BCRM\BackendBundle\Exception\FileNotFoundException;
 use BCRM\WebBundle\Content\ContentReader;
+use BCRM\WebBundle\Form\EventRegisterType;
 use BCRM\WebBundle\Form\NewsletterSubscribeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\RouterInterface;
 
 /**
  * Renders the page.
@@ -31,10 +33,16 @@ class WebController
      */
     private $formFactory;
 
-    public function __construct(ContentReader $reader, FormFactoryInterface $formFactory)
+    /**
+     * @var \Symfony\Component\Routing\RouterInterface
+     */
+    private $router;
+
+    public function __construct(ContentReader $reader, FormFactoryInterface $formFactory, RouterInterface $router)
     {
         $this->reader      = $reader;
         $this->formFactory = $formFactory;
+        $this->router      = $router;
     }
 
     /**
@@ -48,8 +56,12 @@ class WebController
     {
         $response = $this->pageAction($request, 'Index');
         if ($response instanceof Response) return $response;
-        $form             = $this->formFactory->create(new NewsletterSubscribeType());
-        $response['form'] = $form->createView();
+        $registerForm               = $this->formFactory->create(new EventRegisterType(), null, array(
+            'action' => $this->router->generate('bcrmweb_event_register')
+        ));
+        $newsletterForm             = $this->formFactory->create(new NewsletterSubscribeType());
+        $response['newsletterForm'] = $newsletterForm->createView();
+        $response['registerForm']   = $registerForm->createView();
         return $response;
     }
 

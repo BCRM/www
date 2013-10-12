@@ -1,0 +1,16 @@
+{% form_theme form "BCRMWebBundle::forms.html.twig" %}
+<h2>Anmeldung</h2>
+<p>Du möchtest am nächsten BarCamp teilnehmen? Reserviere hier deinen Platz!</p>
+{{ form_start(form) }}
+<fieldset>
+    {{ form_row(form.name) }}
+    {{ form_row(form.email) }}
+</fieldset>
+<fieldset>
+    {{ form_row(form.days) }}
+    {{ form_row(form.arrival) }}
+</fieldset>
+<fieldset>
+    {{ form_rest(form) }}
+</fieldset>
+{{ form_end(form) }}

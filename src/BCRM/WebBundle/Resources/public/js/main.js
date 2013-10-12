@@ -12,3 +12,7 @@ Modernizr.load([
         }
     }
 ]);
+
+$(document).ready(function () {
+    $('button[type=submit]').append('<span class="arrow"></span>');
+});

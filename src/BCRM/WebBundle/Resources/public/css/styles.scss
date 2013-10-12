@@ -370,57 +370,51 @@ blockquote {
 }
 
 form {
+  @extend .cf;
+  margin-bottom: 1.75em;
+
   fieldset {
     margin-top: 1.75em;
-    position: relative
+    position: relative;
+    border: 0;
   }
   fieldset:first-child {
     margin-top: 0;
   }
-}
 
-input[type=text], input[type=email] {
-  width: 100%;
-  border: none;
-  color: $bg;
-  background-color: invert($bg);
-  font: normal 1rem 'Ubuntu', sans-serif;
-  height: 50px;
-  padding: .7em 1.25em .5em;
-  -webkit-appearance: none;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
+  input[type=text], input[type=email] {
+    width: 100%;
+    border: none;
+    color: $bg;
+    background-color: invert($bg);
+    font: normal 1rem 'Ubuntu', sans-serif;
+    height: 50px;
+    padding: .7em 1.25em .5em;
+    -webkit-appearance: none;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
 
-button {
-  text-align: left;
-  font-family: 'Ubuntu';
-  font-size: 16px;
-  font-size: 1rem;
-  color: $bg;
-  padding: 0 24px 0 20px;
-  height: 50px;
-  border: none;
-  position: relative;
-  background-image: -moz-radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
-  background-image: -webkit-gradient(radial, color-stop(0.01, rgb(255, 136, 0)), color-stop(0.99, rgb(255, 224, 0)));
-  background-image: -webkit-radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
-  background-image: -ms-radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
-  background-image: radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
-  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Style=2)";
-  filter: progid:DXImageTransform.Microsoft.Alpha(Style=2);
-}
-
-fieldset {
-  margin-top: 1.75em;
-}
-
-fieldset.input-with-button {
-  @extend .cf;
   button {
+    text-align: left;
+    font-family: 'Ubuntu';
+    font-size: 16px;
+    font-size: 1rem;
+    color: $bg;
+    padding: 0 24px 0 20px;
+    height: 50px;
+    border: none;
+    position: relative;
+    background-image: -moz-radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
+    background-image: -webkit-gradient(radial, color-stop(0.01, rgb(255, 136, 0)), color-stop(0.99, rgb(255, 224, 0)));
+    background-image: -webkit-radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
+    background-image: -ms-radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
+    background-image: radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Style=2)";
+    filter: progid:DXImageTransform.Microsoft.Alpha(Style=2);
+    width: 200px;
     float: right;
-    width: 150px;
     .arrow {
       position: absolute;
       right: 12px;
@@ -437,48 +431,65 @@ fieldset.input-with-button {
       background-position: -30px 0;
     }
   }
-  input {
-    width: 100%;
+
+  fieldset.input-with-button {
+    @extend .cf;
+
+    input {
+      width: 100%;
+    }
+    label {
+      display: none;
+    }
   }
-  label {
-    display: none;
+
+  label.checkbox {
+    margin-top: 1.75em;
+    input[type=checkbox] {
+      display: none;
+    }
+    span {
+      background-color: invert($bg);
+      float: left;
+      width: 25px;
+      height: 25px;
+      position: relative;
+      margin: 0 10px 0 0;
+    }
+    input[type=checkbox]:checked + span {
+      background: invert($bg) url('../images/checkbox.png') no-repeat center center;
+    }
+  }
+  label.radio {
+    display: block;
+  }
+  div {
+    margin-top: 1em;
+  }
+  div:first-child {
+    margin: 0;
+  }
+  ul.errors {
+    color: #fa0000;
+    list-style: none;
+    font-size: 0.875em;
+    font-weight: bold;
   }
 }
 
 @media screen and (min-width: 550px) {
-  fieldset.input-with-button {
-    button {
-      float: left;
-      width: 26%;
+  form {
+    fieldset.input-with-button {
+      button {
+        float: left;
+        width: 26%;
+      }
+      input {
+        float: left;
+        width: 74%;
+      }
     }
-    input {
-      float: left;
-      width: 74%;
-    }
   }
-}
-
-label.checkbox {
-  margin-top: 1.75em;
-  input[type=checkbox] {
-    display: none;
-  }
-  span {
-    background-color: invert($bg);
-    float: left;
-    width: 25px;
-    height: 25px;
-    position: relative;
-    margin: 0 10px 0 0;
-  }
-  input[type=checkbox]:checked + span {
-    background: invert($bg) url('../images/checkbox.png') no-repeat center center;
-  }
-}
-
-form {
-  @extend .cf;
-  margin-bottom: 1.75em;
 }
 
 /*  ***************************************************************

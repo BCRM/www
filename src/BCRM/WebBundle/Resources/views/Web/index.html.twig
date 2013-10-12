@@ -4,13 +4,14 @@
 {% endblock visual %}
 {% block content %}
         {{ page.content|raw }}
+        {% include "BCRMWebBundle::include/registration.html.twig" with { form: registerForm } %}
         <h2>Newsletter</h2>
         <p>Hier kannst Du dich zu unserem Newsletter anmelden.</p>
         <form method="post" action="{{ path('bcrmweb_newsletter_subscribe') }}" class="form-infomail">
             <fieldset class="input-with-button">
                 <label for="email">E-Mail</label>
                 <input type="email" required placeholder="Schickt mir ne Mail, wenn sich was tut." tabindex="1" size="20" value="" id="email" name="newsletter_subscribe[email]">
-                <button type="submit" tabindex="100" class="button" name="submit"><span>Absenden</span><span class="arrow"></span></button>
+                <button type="submit" tabindex="100" class="button" name="submit"><span>Absenden</span></button>
             </fieldset>
             <fieldset>
                 <label class="checkbox">
