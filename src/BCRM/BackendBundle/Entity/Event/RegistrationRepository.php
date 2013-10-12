@@ -38,10 +38,11 @@ interface RegistrationRepository
     public function initConfirmation(Registration $registration, $key);
 
     /**
-     * @param $day
-     * @param $capacity
+     * @param Event   $event
+     * @param integer $day
+     * @param integer $capacity
      *
      * @return mixed
      */
-    public function getNextRegistrations($day, $capacity);
+    public function getNextRegistrations(Event $event, $day, $capacity);
 }

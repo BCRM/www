@@ -76,18 +76,25 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
     }
 
     /**
-     * @param $day
-     * @param $capacity
+     * @param Event   $event
+     * @param integer $day
+     * @param integer $capacity
      *
      * @return mixed
      */
-    public function getNextRegistrations($day, $capacity)
+    public function getNextRegistrations(Event $event, $day, $capacity)
     {
         $rsm = new ResultSetMappingBuilder($this->_em);
         $rsm->addRootEntityFromClassMetadata('BCRM\BackendBundle\Entity\Event\Registration', 'r');
         $query = $this->_em->createNativeQuery(
             sprintf(
-                'SELECT * FROM (SELECT * FROM registration ORDER BY created DESC) AS ordered_registration GROUP BY email ORDER BY created ASC LIMIT %d',
+                'SELECT * FROM (SELECT * FROM registration ORDER BY created DESC) AS ordered_registration ' .
+                'WHERE email NOT IN (SELECT email FROM ticket WHERE event_id = %d AND day = %d) ' .
+                'GROUP BY email ' .
+                'ORDER BY created ASC ' .
+                'LIMIT %d',
+                $event->getId(),
+                $day,
                 $capacity
             ),
             $rsm

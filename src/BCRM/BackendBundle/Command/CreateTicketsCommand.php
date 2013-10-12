@@ -49,7 +49,7 @@ class CreateTicketsCommand extends ContainerAwareCommand
     {
         $commandBus       = $this->getContainer()->get('command_bus');
         $registrationRepo = $this->getContainer()->get('bcrm.backend.repo.registration');
-        foreach ($registrationRepo->getNextRegistrations($day, $capacity) as $registration) {
+        foreach ($registrationRepo->getNextRegistrations($event, $day, $capacity) as $registration) {
             /* @var $email Registration */
             if ($this->output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
                 $this->output->writeln($registration->getEmail() . ': ' . $day);
