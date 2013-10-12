@@ -4,6 +4,7 @@ php:
   - 5.4
 
 before_script: 
+  - cp app/config/parameters.yml.travis app/config/parameters.yml
   - composer install
   - app/console --env=test --quiet doctrine:database:create
   - app/console --env=test --quiet doctrine:schema:create

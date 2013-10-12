@@ -1,0 +1,22 @@
+parameters:
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: null
+    database_name: myapp_test
+    database_user: travis
+    database_password: null
+    mailer_transport: smtp
+    mailer_host: mailtrap.io
+    mailer_user: bcrm-0987b7aab0fa0117
+    mailer_password: 5db7a9ba0d4084bf
+    mailer_port: 2525
+    mail_from_email: no-reply@bc-rm.org
+    mail_from_name: 'BarCamp RheinMain'
+    scheme_and_host: 'http://bcrm.lan/'
+    locale: de
+    secret: rmCfM3Xc
+    sass_bin: /usr/bin/sass
+    assets_version: 1
+    java_bin: /opt/java/bin/java
+    google.analytics.account: UA-36307571-2
+    google.analytics.domain: barcamp-rheinmain.de
