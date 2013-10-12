@@ -3,8 +3,38 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "8ec1f67cad9acc592b7298900670c05a",
+    "hash": "74241a6b5e418c5eef61eaf0db38d859",
     "packages": [
+        {
+            "name": "bcrm/www-content",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/BCRM/www-content.git",
+                "reference": "d1de5f0369cdcc8b72fc63cad32070465897f289"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BCRM/www-content/zipball/d1de5f0369cdcc8b72fc63cad32070465897f289",
+                "reference": "d1de5f0369cdcc8b72fc63cad32070465897f289",
+                "shasum": ""
+            },
+            "type": "library",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Markus Tacker",
+                    "email": "m@coderbyheart.de"
+                }
+            ],
+            "description": "Content for http://dieburg2013.barcamp-rheinmain.de/ based on simple Markdown files.",
+            "support": {
+                "source": "https://github.com/BCRM/www-content/tree/master"
+            },
+            "time": "2013-10-12 09:54:53"
+        },
         {
             "name": "beberlei/lite-cqrs",
             "version": "dev-master",
@@ -2003,7 +2033,8 @@
         "doctrine/doctrine-migrations-bundle": 20,
         "phpoption/phpoption": 20,
         "knplabs/knp-markdown-bundle": 20,
-        "beberlei/lite-cqrs": 20
+        "beberlei/lite-cqrs": 20,
+        "bcrm/www-content": 20
     },
     "platform": {
         "php": ">=5.3.3"

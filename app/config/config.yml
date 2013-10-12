@@ -76,3 +76,6 @@ swiftmailer:
 lite_cqrs:
     crud:     true
     orm:      true
+
+bcrm_web:
+    content_dir: %web.content_dir%

@@ -4,7 +4,9 @@
     "type": "project",
     "description": "The \"Symfony Standard Edition\" distribution",
     "autoload": {
-        "psr-0": { "": "src/" }
+        "psr-0": {
+            "": "src/"
+        }
     },
     "require": {
         "php": ">=5.3.3",
@@ -26,7 +28,8 @@
         "doctrine/doctrine-migrations-bundle": "dev-master@dev",
         "phpoption/phpoption": "dev-master",
         "knplabs/knp-markdown-bundle": "1.2.*@dev",
-        "beberlei/lite-cqrs": "dev-master"
+        "beberlei/lite-cqrs": "dev-master",
+        "bcrm/www-content": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
@@ -58,5 +61,11 @@
         "branch-alias": {
             "dev-master": "2.3-dev"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:BCRM/www-content.git"
+        }
+    ]
 }
