@@ -85,7 +85,13 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
     {
         $rsm = new ResultSetMappingBuilder($this->_em);
         $rsm->addRootEntityFromClassMetadata('BCRM\BackendBundle\Entity\Event\Registration', 'r');
-        $query = $this->_em->createNativeQuery('SELECT * FROM (SELECT * FROM registration ORDER BY created DESC) AS ordered_registration GROUP BY email ORDER BY created ASC', $rsm);
+        $query = $this->_em->createNativeQuery(
+            sprintf(
+                'SELECT * FROM (SELECT * FROM registration ORDER BY created DESC) AS ordered_registration GROUP BY email ORDER BY created ASC LIMIT %d',
+                $capacity
+            ),
+            $rsm
+        );
         return $query->getResult();
     }
 
