@@ -8,12 +8,15 @@
 namespace BCRM\BackendBundle\Service;
 
 use BCRM\BackendBundle\Entity\Event\RegistrationRepository;
+use BCRM\BackendBundle\Event\Event\TicketMailSentEvent;
 use BCRM\BackendBundle\Service\Event\CreateTicketCommand;
 use BCRM\BackendBundle\Service\Event\RegisterCommand;
 use BCRM\BackendBundle\Service\Event\SendRegistrationConfirmationMailCommand;
+use BCRM\BackendBundle\Service\Event\SendTicketMailCommand;
 use BCRM\BackendBundle\Service\Mail\SendTemplateMailCommand;
 use BCRM\BackendBundle\Service\Event\ConfirmRegistrationCommand;
 use LiteCQRS\Bus\CommandBus;
+use LiteCQRS\Bus\EventMessageBus;
 use LiteCQRS\Plugin\CRUD\Model\Commands\CreateResourceCommand;
 use LiteCQRS\Plugin\CRUD\Model\Commands\UpdateResourceCommand;
 use Symfony\Component\Routing\RouterInterface;
@@ -37,12 +40,18 @@ class Event
     private $registrationRepo;
 
     /**
+     * @var \LiteCQRS\Bus\EventMessageBus
+     */
+    private $eventMessageBus;
+
+    /**
      * @param CommandBus      $commandBus
      * @param RouterInterface $router
      */
-    public function __construct(CommandBus $commandBus, RouterInterface $router, RegistrationRepository $registrationRepo)
+    public function __construct(CommandBus $commandBus, EventMessageBus $eventMessageBus, RouterInterface $router, RegistrationRepository $registrationRepo)
     {
         $this->commandBus       = $commandBus;
+        $this->eventMessageBus  = $eventMessageBus;
         $this->router           = $router;
         $this->registrationRepo = $registrationRepo;
     }
@@ -82,5 +91,21 @@ class Event
         $createSubscriptionCommand->class = '\BCRM\BackendBundle\Entity\Event\Ticket';
         $createSubscriptionCommand->data  = array('event' => $command->event, 'email' => $command->registration->getEmail(), 'name' => $command->registration->getName(), 'day' => $command->day);
         $this->commandBus->handle($createSubscriptionCommand);
+    }
+
+    public function sendTicketMail(SendTicketMailCommand $command)
+    {
+        $emailCommand               = new SendTemplateMailCommand();
+        $emailCommand->email        = $command->ticket->getEmail();
+        $emailCommand->template     = 'Ticket';
+        $emailCommand->templateData = array(
+            'ticket' => $command->ticket,
+            'event'  => $command->event,
+        );
+        $this->commandBus->handle($emailCommand);
+
+        $event         = new TicketMailSentEvent();
+        $event->ticket = $command->ticket;
+        $this->eventMessageBus->publish($event);
     }
 }

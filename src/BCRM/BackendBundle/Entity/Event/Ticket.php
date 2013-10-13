@@ -91,5 +91,32 @@ class Ticket extends AggregateResource
     {
         return $this->id;
     }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+    
+    public function __toString()
+    {
+        $str = $this->email;
+        if ($this->day === static::DAY_SATURDAY) {
+            $str .= ' Samstag';
+        } else {
+            $str .= ' Sonntag';
+        }
+        return  $str;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDay()
+    {
+        return $this->day;
+    }
 }
 

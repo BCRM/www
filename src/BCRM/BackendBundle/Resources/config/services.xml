@@ -7,6 +7,7 @@
         <parameter key="bcrm.backend.newsletterservice.class">BCRM\BackendBundle\Service\Newsletter</parameter>
         <parameter key="bcrm.backend.mailservice.class">BCRM\BackendBundle\Service\Mail</parameter>
         <parameter key="bcrm.backend.eventservice.class">BCRM\BackendBundle\Service\Event</parameter>
+        <parameter key="bcrm.backend.ticketservice.class">BCRM\BackendBundle\Service\Ticket</parameter>
         <parameter key="bcrm.backend.contentReader.class">BCRM\BackendBundle\Content\FileContentReader</parameter>
         <parameter key="bcrm.twig.loader.content.class">BCRM\BackendBundle\Content\TwigLoader</parameter>
     </parameters>
@@ -18,6 +19,7 @@
         </service>
         <service id="bcrm.backend.eventservice" class="%bcrm.backend.eventservice.class%">
             <argument type="service" id="command_bus"/>
+            <argument type="service" id="litecqrs.event_message_bus"/>
             <argument type="service" id="router"/>
             <argument type="service" id="bcrm.backend.repo.registration"/>
             <tag name="lite_cqrs.command_handler"/>
@@ -29,6 +31,10 @@
             <argument>%mail_from_name%</argument>
             <argument type="service" id="bcrm.backend.contentReader"/>
             <tag name="lite_cqrs.command_handler"/>
+        </service>
+        <service id="bcrm.backend.ticketservice" class="%bcrm.backend.ticketservice.class%">
+            <argument type="service" id="command_bus"/>
+            <tag name="lite_cqrs.event_handler"/>
         </service>
         <service id="bcrm.backend.contentReader" class="%bcrm.backend.contentReader.class%">
             <argument>%bcrm_web.content_dir%</argument>

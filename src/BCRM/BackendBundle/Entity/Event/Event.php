@@ -156,6 +156,11 @@ class Event extends AggregateResource
         $this->start = $start;
     }
 
+    public function __toString()
+    {
+        $str = $this->start->format('Y-m-d');
+        return $str;
+    }
 
 }
 

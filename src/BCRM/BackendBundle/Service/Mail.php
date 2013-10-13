@@ -51,16 +51,21 @@ class Mail
     {
         $tplIdentifier = 'Email/' . $command->template . '.txt';
         $template      = $this->cr->getContent($tplIdentifier);
-        $subject       = $template->getProperties()->containsKey('subject') ? $template->getProperties()->get('subject') : $this->mailFromName;
+
+        // Subject
+        $env     = new \Twig_Environment(new \Twig_Loader_String());
+        $subject = $template->getProperties()->containsKey('subject') ? $template->getProperties()->get('subject') : $this->mailFromName;
+        $subject = $env->render($subject, $command->templateData);
+
+        // Body
+        $body = $this->templating->render('bcrm_content:' . $tplIdentifier, $command->templateData);
 
         $message = \Swift_Message::newInstance();
         $message->setCharset('UTF-8');
         $message->setFrom($this->mailFromEmail, $this->mailFromName)
             ->setSubject($subject)
             ->setTo($command->email)
-            ->setBody(
-                $this->templating->render('bcrm_content:' . $tplIdentifier, $command->templateData)
-            );
+            ->setBody($body);
         $this->mailer->send($message);
     }
 }
