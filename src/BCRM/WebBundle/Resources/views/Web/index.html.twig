@@ -4,8 +4,11 @@
 {% endblock visual %}
 {% block content %}
         {{ page.content|raw }}
-        {% if registerForm is defined %}
-        {% include "BCRMWebBundle::include/registration.html.twig" with { form: registerForm } %}
+    
+        {% if nextEvent is defined %}
+        <p class="text-center">
+            <a href="{{ path('bcrmweb_event_register') }}" class="button">Jetzt Anmelden!</a>
+        </p>
         {% endif %}
         <h2>Newsletter</h2>
         <p>Hier kannst Du dich zu unserem Newsletter anmelden.</p>

@@ -63,13 +63,9 @@ class WebController
     {
         $response = $this->pageAction($request, 'Index');
         if ($response instanceof Response) return $response;
-
         $nextEvent = $this->eventRepo->getNextEvent();
         if ($nextEvent->isDefined()) {
-            $registerForm             = $this->formFactory->create(new EventRegisterType(), null, array(
-                'action' => $this->router->generate('bcrmweb_event_register')
-            ));
-            $response['registerForm'] = $registerForm->createView();
+            $response['nextEvent'] = $nextEvent;
         }
         $newsletterForm             = $this->formFactory->create(new NewsletterSubscribeType());
         $response['newsletterForm'] = $newsletterForm->createView();

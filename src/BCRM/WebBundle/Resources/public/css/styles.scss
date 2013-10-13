@@ -338,6 +338,10 @@ div.main {
   color: #000;
 }
 
+.text-center {
+  text-align: center;
+}
+
 /*  Content-Module  */
 blockquote {
   border-top: 1px solid #000;
@@ -369,6 +373,50 @@ blockquote {
   font-style: italic
 }
 
+.button {
+  text-align: left;
+  font-family: 'Ubuntu';
+  font-size: 16px;
+  font-size: 1rem;
+  color: $bg;
+  padding: 0 24px 0 20px;
+  height: 50px;
+  border: none;
+  position: relative;
+  background-image: -moz-radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
+  background-image: -webkit-gradient(radial, color-stop(0.01, rgb(255, 136, 0)), color-stop(0.99, rgb(255, 224, 0)));
+  background-image: -webkit-radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
+  background-image: -ms-radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
+  background-image: radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Style=2)";
+  filter: progid:DXImageTransform.Microsoft.Alpha(Style=2);
+  width: 200px;
+  display: inline-block;
+  .arrow {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    margin-top: -15px;
+    display: block;
+    width: 30px;
+    height: 30px;
+    background: transparent url('../images/bx_controls.png') no-repeat -30px -30px;
+  }
+}
+.button:hover {
+  .arrow {
+    background-position: -30px 0;
+  }
+}
+a.button {
+  text-decoration: none;
+  color: #fff;
+  line-height: 50px;
+}
+a.button:visited {
+  color: #fff;
+}
+
 form {
   @extend .cf;
   margin-bottom: 1.75em;
@@ -396,40 +444,9 @@ form {
     box-sizing: border-box;
   }
 
-  button {
-    text-align: left;
-    font-family: 'Ubuntu';
-    font-size: 16px;
-    font-size: 1rem;
-    color: $bg;
-    padding: 0 24px 0 20px;
-    height: 50px;
-    border: none;
-    position: relative;
-    background-image: -moz-radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
-    background-image: -webkit-gradient(radial, color-stop(0.01, rgb(255, 136, 0)), color-stop(0.99, rgb(255, 224, 0)));
-    background-image: -webkit-radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
-    background-image: -ms-radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
-    background-image: radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Style=2)";
-    filter: progid:DXImageTransform.Microsoft.Alpha(Style=2);
-    width: 200px;
+  button  {
+    @extend .button;
     float: right;
-    .arrow {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      margin-top: -15px;
-      display: block;
-      width: 30px;
-      height: 30px;
-      background: transparent url('../images/bx_controls.png') no-repeat -30px -30px;
-    }
-  }
-  button:hover {
-    .arrow {
-      background-position: -30px 0;
-    }
   }
 
   fieldset.input-with-button {
