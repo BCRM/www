@@ -36,4 +36,11 @@ interface UnregistrationRepository
      * @return \PhpOption\Option
      */
     public function getUnregistrationByIdAndKey($id, $key);
+
+    /**
+     * @param Event $event
+     *
+     * @return Unregistration[]
+     */
+    public function getUnprocessedUnregistrations(Event $event);
 }

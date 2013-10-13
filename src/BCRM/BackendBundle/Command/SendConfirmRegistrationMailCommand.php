@@ -28,7 +28,9 @@ class SendConfirmRegistrationMailCommand extends ContainerAwareCommand
         /** @var \LiteCQRS\Bus\CommandBus $commandBus */
         $commandBus = $this->getContainer()->get('command_bus');
         foreach ($repo->getNewRegistrations() as $registration) {
-            if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) $output->writeln($registration->getEmail());
+            if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
+                $output->writeln(sprintf('Sending registration confirmation mail for %s', $registration));
+            }
             $command                = new SendRegistrationConfirmationMailCommand();
             $command->registration  = $registration;
             $command->schemeAndHost = $this->getContainer()->getParameter('scheme_and_host');

@@ -99,16 +99,29 @@ class Ticket extends AggregateResource
     {
         return $this->email;
     }
-    
+
+    /**
+     * @return string
+     */
     public function __toString()
     {
-        $str = $this->email;
+        $str  = $this->email;
+        $days = array();
         if ($this->day === static::DAY_SATURDAY) {
-            $str .= ' Samstag';
+            $days[] = 'SA';
         } else {
-            $str .= ' Sonntag';
+            $days[] = 'SU';
         }
-        return  $str;
+        $str .= ' (' . join('+', $days) . ')';
+        return $str;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSaturday()
+    {
+        return $this->getDay() === static::DAY_SATURDAY;
     }
 
     /**
@@ -117,6 +130,14 @@ class Ticket extends AggregateResource
     public function getDay()
     {
         return $this->day;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSunday()
+    {
+        return $this->getDay() === static::DAY_SUNDAY;
     }
 }
 

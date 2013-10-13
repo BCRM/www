@@ -8,6 +8,7 @@
 namespace BCRM\BackendBundle\Service;
 
 use BCRM\BackendBundle\Entity\Event\RegistrationRepository;
+use BCRM\BackendBundle\Event\Event\TicketDeletedEvent;
 use BCRM\BackendBundle\Event\Event\TicketMailSentEvent;
 use BCRM\BackendBundle\Service\Event\CreateTicketCommand;
 use BCRM\BackendBundle\Service\Event\RegisterCommand;
@@ -44,5 +45,16 @@ class Ticket
         $updateCommand->id    = $event->ticket->getId();
         $updateCommand->data  = array('notified' => '1');
         $this->commandBus->handle($updateCommand);
+    }
+
+    public function onTicketDeleted(TicketDeletedEvent $event)
+    {
+        $emailCommand               = new SendTemplateMailCommand();
+        $emailCommand->email        = $event->ticket->getEmail();
+        $emailCommand->template     = 'TicketDelete';
+        $emailCommand->templateData = array(
+            'ticket' => $event->ticket,
+        );
+        $this->commandBus->handle($emailCommand);
     }
 }

@@ -28,6 +28,26 @@ class DoctrineUnregistrationRepository extends EntityRepository implements Unreg
     }
 
     /**
+     * @param Event $event
+     * 
+     * @return Unregistration[]
+     */
+    public function getUnprocessedUnregistrations(Event $event)
+    {
+        $rsm = new ResultSetMappingBuilder($this->_em);
+        $rsm->addRootEntityFromClassMetadata('BCRM\BackendBundle\Entity\Event\Unregistration', 'u');
+        $query = $this->_em->createNativeQuery(
+            sprintf(
+                'SELECT * FROM (SELECT * FROM unregistration WHERE event_id = %d AND confirmed = 1 AND processed = 0 ORDER BY created DESC) AS ordered_unregistration ' .
+                'GROUP BY email ',
+                $event->getId()
+            ),
+            $rsm
+        );
+        return $query->getResult();
+    }
+
+    /**
      * @param Unregistration $registration
      *
      * @return void

@@ -29,7 +29,9 @@ class SendConfirmUnregistrationMailCommand extends ContainerAwareCommand
         /** @var \LiteCQRS\Bus\CommandBus $commandBus */
         $commandBus = $this->getContainer()->get('command_bus');
         foreach ($repo->getNewUnregistrations() as $unregistration) {
-            if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) $output->writeln($unregistration->getEmail());
+            if ($output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
+                $output->writeln(sprintf('Sending unregistration confirmation mail for %s', $unregistration));
+            }
             $command                 = new SendUnregistrationConfirmationMailCommand();
             $command->unregistration = $unregistration;
             $command->schemeAndHost  = $this->getContainer()->getParameter('scheme_and_host');

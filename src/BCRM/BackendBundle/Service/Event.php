@@ -8,7 +8,9 @@
 namespace BCRM\BackendBundle\Service;
 
 use BCRM\BackendBundle\Entity\Event\RegistrationRepository;
+use BCRM\BackendBundle\Entity\Event\TicketRepository;
 use BCRM\BackendBundle\Entity\Event\UnregistrationRepository;
+use BCRM\BackendBundle\Event\Event\TicketDeletedEvent;
 use BCRM\BackendBundle\Event\Event\TicketMailSentEvent;
 use BCRM\BackendBundle\Service\Event\ConfirmUnregistrationCommand;
 use BCRM\BackendBundle\Service\Event\CreateTicketCommand;
@@ -17,11 +19,13 @@ use BCRM\BackendBundle\Service\Event\SendRegistrationConfirmationMailCommand;
 use BCRM\BackendBundle\Service\Event\SendTicketMailCommand;
 use BCRM\BackendBundle\Service\Event\SendUnregistrationConfirmationMailCommand;
 use BCRM\BackendBundle\Service\Event\UnregisterCommand;
+use BCRM\BackendBundle\Service\Event\UnregisterTicketCommand;
 use BCRM\BackendBundle\Service\Mail\SendTemplateMailCommand;
 use BCRM\BackendBundle\Service\Event\ConfirmRegistrationCommand;
 use LiteCQRS\Bus\CommandBus;
 use LiteCQRS\Bus\EventMessageBus;
 use LiteCQRS\Plugin\CRUD\Model\Commands\CreateResourceCommand;
+use LiteCQRS\Plugin\CRUD\Model\Commands\DeleteResourceCommand;
 use LiteCQRS\Plugin\CRUD\Model\Commands\UpdateResourceCommand;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Util\SecureRandom;
@@ -54,16 +58,22 @@ class Event
     private $unregistrationRepo;
 
     /**
+     * @var \BCRM\BackendBundle\Entity\Event\TicketRepository
+     */
+    private $ticketRepo;
+
+    /**
      * @param CommandBus      $commandBus
      * @param RouterInterface $router
      */
-    public function __construct(CommandBus $commandBus, EventMessageBus $eventMessageBus, RouterInterface $router, RegistrationRepository $registrationRepo, UnregistrationRepository $unregistrationRepo)
+    public function __construct(CommandBus $commandBus, EventMessageBus $eventMessageBus, RouterInterface $router, RegistrationRepository $registrationRepo, UnregistrationRepository $unregistrationRepo, TicketRepository $ticketRepo)
     {
         $this->commandBus         = $commandBus;
         $this->eventMessageBus    = $eventMessageBus;
         $this->router             = $router;
         $this->registrationRepo   = $registrationRepo;
         $this->unregistrationRepo = $unregistrationRepo;
+        $this->ticketRepo         = $ticketRepo;
     }
 
     public function register(RegisterCommand $command)
@@ -146,5 +156,57 @@ class Event
     public function confirmUnregistration(ConfirmUnregistrationCommand $command)
     {
         $this->unregistrationRepo->confirmUnregistration($command->unregistration);
+    }
+
+    public function unregisterTicket(UnregisterTicketCommand $command)
+    {
+        // Create a new registration matching the unregistration
+        $registration = $this->registrationRepo->getRegistrationForEmail($command->event, $command->unregistration->getEmail());
+        if ($registration->isDefined()) {
+            $r                = $registration->get();
+            $registrationData = array(
+                'event'     => $command->event,
+                'email'     => $command->unregistration->getEmail(),
+                'name'      => $r->getName(),
+                'arrival'   => $r->getArrival(),
+                'confirmed' => 1,
+                'saturday'  => $r->getSaturday(),
+                'sunday'    => $r->getSunday(),
+            );
+            if ($command->unregistration->getSaturday()) {
+                $registrationData['saturday'] = false;
+            }
+            if ($command->unregistration->getSunday()) {
+                $registrationData['sunday'] = false;
+            }
+            $createRegistrationCommand        = new CreateResourceCommand();
+            $createRegistrationCommand->class = '\BCRM\BackendBundle\Entity\Event\Registration';
+            $createRegistrationCommand->data  = $registrationData;
+            $this->commandBus->handle($createRegistrationCommand);
+        }
+
+        // Delete tickets
+        foreach ($this->ticketRepo->getTicketsForEmail($command->event, $command->unregistration->getEmail()) as $ticket) {
+            if (
+                ($ticket->isSaturday() && $command->unregistration->getSaturday())
+                || ($ticket->isSunday() && $command->unregistration->getSunday())
+            ) {
+                $deleteTicketCommand        = new DeleteResourceCommand();
+                $deleteTicketCommand->class = '\BCRM\BackendBundle\Entity\Event\Ticket';
+                $deleteTicketCommand->id    = $ticket->getId();
+                $this->commandBus->handle($deleteTicketCommand);
+
+                $event         = new TicketDeletedEvent();
+                $event->ticket = $ticket;
+                $this->eventMessageBus->publish($event);
+            }
+        }
+
+        // Mark unregistration as processed
+        $updateCommand        = new UpdateResourceCommand();
+        $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Unregistration';
+        $updateCommand->id    = $command->unregistration->getId();
+        $updateCommand->data  = array('processed' => true);
+        $this->commandBus->handle($updateCommand);
     }
 }

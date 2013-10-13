@@ -7,6 +7,8 @@
 
 namespace BCRM\BackendBundle\Entity\Event;
 
+use PhpOption\Option;
+
 interface RegistrationRepository
 {
     /**
@@ -45,4 +47,12 @@ interface RegistrationRepository
      * @return mixed
      */
     public function getNextRegistrations(Event $event, $day, $capacity);
+
+    /**
+     * @param Event $event
+     * @param string $email
+     *
+     * @return Option
+     */
+    public function getRegistrationForEmail(Event $event, $email);
 }

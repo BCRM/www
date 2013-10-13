@@ -71,6 +71,14 @@ class Unregistration extends AggregateResource
     protected $confirmed = 0;
 
     /**
+     * @var boolean
+     * @Assert\NotBlank()
+     * @Assert\Type(type="boolean")
+     * @ORM\Column(type="boolean")
+     */
+    protected $processed = 0;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      * @var \DateTime
@@ -117,5 +125,40 @@ class Unregistration extends AggregateResource
     {
         return $this->confirmationKey;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        $str  = $this->email;
+        $days = array();
+        if ($this->saturday) {
+            $days[] = 'SA';
+        }
+        if ($this->sunday) {
+            $days[] = 'SU';
+        }
+        $str .= ' (' . join('+', $days) . ')';
+        return $str;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getSaturday()
+    {
+        return $this->saturday;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getSunday()
+    {
+        return $this->sunday;
+    }
+
+
 }
 

@@ -128,17 +128,6 @@ class Registration extends AggregateResource
     }
 
     /**
-     * @param string $arrival
-     */
-    public function setArrival($arrival)
-    {
-        if (!in_array($arrival, array(self::ARRIVAL_PRIVATE, self::ARRIVAL_PUBLIC))) {
-            throw new \InvalidArgumentException("Invalid arrival");
-        }
-        $this->arrival = $arrival;
-    }
-
-    /**
      * @return string
      */
     public function getConfirmationKey()
@@ -152,6 +141,58 @@ class Registration extends AggregateResource
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        $str  = $this->email;
+        $days = array();
+        if ($this->saturday) {
+            $days[] = 'SA';
+        }
+        if ($this->sunday) {
+            $days[] = 'SU';
+        }
+        $str .= ' (' . join('+', $days) . ')';
+        return $str;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getSunday()
+    {
+        return $this->sunday;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getSaturday()
+    {
+        return $this->saturday;
+    }
+
+    /**
+     * @return string
+     */
+    public function getArrival()
+    {
+        return $this->arrival;
+    }
+
+    /**
+     * @param string $arrival
+     */
+    public function setArrival($arrival)
+    {
+        if (!in_array($arrival, array(self::ARRIVAL_PRIVATE, self::ARRIVAL_PUBLIC))) {
+            throw new \InvalidArgumentException("Invalid arrival");
+        }
+        $this->arrival = $arrival;
     }
 
 

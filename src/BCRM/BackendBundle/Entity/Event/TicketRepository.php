@@ -7,6 +7,8 @@
 
 namespace BCRM\BackendBundle\Entity\Event;
 
+use PhpOption\Option;
+
 interface TicketRepository
 {
     /**
@@ -15,4 +17,12 @@ interface TicketRepository
      * @return Ticket[]
      */
     public function getNewTickets(Event $event);
+
+    /**
+     * @param Event $event
+     * @param string $email
+     *
+     * @return Ticket[]
+     */
+    public function getTicketsForEmail(Event $event, $email);
 }

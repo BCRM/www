@@ -46,7 +46,9 @@ class SendTicketNotificationCommand extends ContainerAwareCommand
         /** @var \LiteCQRS\Bus\CommandBus $commandBus */
         $commandBus = $this->getContainer()->get('command_bus');
         foreach ($repo->getNewTickets($event) as $ticket) {
-            if ($this->output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) $this->output->writeln((string)$ticket);
+            if ($this->output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
+                $this->output->writeln(sprintf('Sending ticket notification for %s', $ticket));
+            }
             $command                = new SendTicketMailCommand();
             $command->ticket        = $ticket;
             $command->event         = $event;

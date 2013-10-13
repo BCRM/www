@@ -33,7 +33,6 @@ class CreateTicketsCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->output = $output;
-        /** @var \BCRM\BackendBundle\Entity\Event\RegistrationRepository $registrationRepo */
         /** @var \BCRM\BackendBundle\Entity\Event\EventRepository $eventRepo */
         $eventRepo = $this->getContainer()->get('bcrm.backend.repo.event');
         $event     = $eventRepo->getNextEvent()->getOrThrow(new CommandException('No event.'));
@@ -47,12 +46,13 @@ class CreateTicketsCommand extends ContainerAwareCommand
 
     protected function createTicketsFor(Event $event, $day, $capacity)
     {
+        /** @var \BCRM\BackendBundle\Entity\Event\RegistrationRepository $registrationRepo */
         $commandBus       = $this->getContainer()->get('command_bus');
         $registrationRepo = $this->getContainer()->get('bcrm.backend.repo.registration');
         foreach ($registrationRepo->getNextRegistrations($event, $day, $capacity) as $registration) {
             /* @var $email Registration */
             if ($this->output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
-                $this->output->writeln($registration->getEmail() . ': ' . $day);
+                $this->output->writeln(sprintf('Creating day %d ticket for registration %s', $day, $registration));
             }
             $command               = new CreateTicketCommand();
             $command->registration = $registration;
