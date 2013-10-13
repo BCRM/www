@@ -28,6 +28,7 @@
             <argument type="service" id="command_bus"/>
             <argument type="service" id="bcrm.backend.repo.event" />
             <argument type="service" id="bcrm.backend.repo.registration" />
+            <argument type="service" id="bcrm.backend.repo.unregistration" />
         </service>
     </services>
 </container>

@@ -77,6 +77,12 @@ class Event extends AggregateResource
     protected $registrations;
 
     /**
+     * @ORM\OneToMany(targetEntity="BCRM\BackendBundle\Entity\Event\Unregistration", mappedBy="event")
+     * @var Unregistration[]
+     */
+    protected $unregistrations;
+
+    /**
      * @ORM\OneToMany(targetEntity="BCRM\BackendBundle\Entity\Event\Ticket", mappedBy="event")
      * @var Ticket[]
      */

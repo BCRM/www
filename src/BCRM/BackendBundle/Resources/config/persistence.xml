@@ -8,6 +8,8 @@
         <parameter key="bcrm.backend.entity.subscription.class">BCRM\BackendBundle\Entity\Newsletter\Subscription</parameter>
         <parameter key="bcrm.backend.repo.registration.class">BCRM\BackendBundle\Entity\Event\DoctrineRegistrationRepository</parameter>
         <parameter key="bcrm.backend.entity.registration.class">BCRM\BackendBundle\Entity\Event\Registration</parameter>
+        <parameter key="bcrm.backend.repo.unregistration.class">BCRM\BackendBundle\Entity\Event\DoctrineUnregistrationRepository</parameter>
+        <parameter key="bcrm.backend.entity.unregistration.class">BCRM\BackendBundle\Entity\Event\Unregistration</parameter>
         <parameter key="bcrm.backend.repo.event.class">BCRM\BackendBundle\Entity\Event\DoctrineEventRepository</parameter>
         <parameter key="bcrm.backend.entity.event.class">BCRM\BackendBundle\Entity\Event\Event</parameter>
         <parameter key="bcrm.backend.repo.ticket.class">BCRM\BackendBundle\Entity\Event\DoctrineTicketRepository</parameter>
@@ -25,6 +27,12 @@
                  factory-method="getRepository"
                  class="%bcrm.backend.repo.registration.class%">
             <argument>%bcrm.backend.entity.registration.class%</argument>
+        </service>
+        <service id="bcrm.backend.repo.unregistration"
+                 factory-service="doctrine.orm.entity_manager"
+                 factory-method="getRepository"
+                 class="%bcrm.backend.repo.unregistration.class%">
+            <argument>%bcrm.backend.entity.unregistration.class%</argument>
         </service>
         <service id="bcrm.backend.repo.event"
                  factory-service="doctrine.orm.entity_manager"

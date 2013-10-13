@@ -22,6 +22,7 @@
             <argument type="service" id="litecqrs.event_message_bus"/>
             <argument type="service" id="router"/>
             <argument type="service" id="bcrm.backend.repo.registration"/>
+            <argument type="service" id="bcrm.backend.repo.unregistration"/>
             <tag name="lite_cqrs.command_handler"/>
         </service>
         <service id="bcrm.backend.mailservice" class="%bcrm.backend.mailservice.class%">

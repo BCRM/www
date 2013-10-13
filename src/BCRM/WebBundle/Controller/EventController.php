@@ -9,11 +9,15 @@ namespace BCRM\WebBundle\Controller;
 
 use BCRM\BackendBundle\Entity\Event\EventRepository;
 use BCRM\BackendBundle\Entity\Event\RegistrationRepository;
+use BCRM\BackendBundle\Entity\Event\UnregistrationRepository;
 use BCRM\BackendBundle\Service\Event\ConfirmRegistrationCommand;
+use BCRM\BackendBundle\Service\Event\ConfirmUnregistrationCommand;
 use BCRM\BackendBundle\Service\Event\RegisterCommand;
+use BCRM\BackendBundle\Service\Event\UnregisterCommand;
 use BCRM\WebBundle\Content\ContentReader;
 use BCRM\WebBundle\Form\EventRegisterModel;
 use BCRM\WebBundle\Form\EventRegisterType;
+use BCRM\WebBundle\Form\EventUnregisterType;
 use LiteCQRS\Bus\CommandBus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -59,14 +63,20 @@ class EventController
      */
     private $eventRepo;
 
-    public function __construct(ContentReader $reader, FormFactoryInterface $formFactory, RouterInterface $router, CommandBus $commandBus, EventRepository $eventRepo, RegistrationRepository $registrationRepo)
+    /**
+     * @var \BCRM\BackendBundle\Entity\Event\UnregistrationRepository
+     */
+    private $unregistrationRepo;
+
+    public function __construct(ContentReader $reader, FormFactoryInterface $formFactory, RouterInterface $router, CommandBus $commandBus, EventRepository $eventRepo, RegistrationRepository $registrationRepo, UnregistrationRepository $unregistrationRepo)
     {
-        $this->reader           = $reader;
-        $this->formFactory      = $formFactory;
-        $this->router           = $router;
-        $this->commandBus       = $commandBus;
-        $this->eventRepo        = $eventRepo;
-        $this->registrationRepo = $registrationRepo;
+        $this->reader             = $reader;
+        $this->formFactory        = $formFactory;
+        $this->router             = $router;
+        $this->commandBus         = $commandBus;
+        $this->eventRepo          = $eventRepo;
+        $this->registrationRepo   = $registrationRepo;
+        $this->unregistrationRepo = $unregistrationRepo;
     }
 
     /**
@@ -107,5 +117,43 @@ class EventController
         $command->registration = $registration->get();
         $this->commandBus->handle($command);
         return new RedirectResponse($this->router->generate('bcrmweb_registration_confirmed'));
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @Template()
+     */
+    public function unregisterAction(Request $request)
+    {
+        $form = $this->formFactory->create(new EventUnregisterType());
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            /* @var EventRegisterModel $formData */
+            $formData          = $form->getData();
+            $command           = new UnregisterCommand();
+            $command->event    = $this->eventRepo->getNextEvent()->getOrThrow(new AccessDeniedHttpException('No event.'));
+            $command->email    = $formData->email;
+            $command->saturday = $formData->wantsSaturday();
+            $command->sunday   = $formData->wantsSunday();
+            $this->commandBus->handle($command);
+            return new RedirectResponse($this->router->generate('bcrmweb_unregistration_ok'));
+        }
+        return array(
+            'sponsors' => $this->reader->getPage('Sponsoren/Index.md'),
+            'form'     => $form->createView(),
+        );
+    }
+
+    public function confirmUnregistrationAction($id, $key)
+    {
+        $unregistration = $this->unregistrationRepo->getUnregistrationByIdAndKey($id, $key);
+        if ($unregistration->isEmpty()) {
+            throw new NotFoundHttpException('Unknown unregistration.');
+        }
+        $command                 = new ConfirmUnregistrationCommand();
+        $command->unregistration = $unregistration->get();
+        $this->commandBus->handle($command);
+        return new RedirectResponse($this->router->generate('bcrmweb_unregistration_confirmed'));
     }
 }

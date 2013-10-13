@@ -7,7 +7,10 @@
     
         {% if nextEvent is defined %}
         <p class="text-center">
-            <a href="{{ path('bcrmweb_event_register') }}" class="button">Jetzt Anmelden!</a>
+            <a href="{{ path('bcrmweb_event_register') }}" class="button">Jetzt Anmelden!</a><br>
+        </p>
+        <p class="text-center small">
+            Wenn Du doch nicht kannst,<br><a href="{{ path('bcrmweb_event_unregister') }}">klicke hier um deine Anmeldung zu stornieren</a>.
         </p>
         {% endif %}
         <h2>Newsletter</h2>

@@ -1,0 +1,7 @@
+{% extends "BCRMWebBundle::page.html.twig" %}
+{% form_theme form "BCRMWebBundle::forms.html.twig" %}
+{% block content %}
+    <h2>Stornierung</h2>
+    <p>Du möchtest dein Ticket für das BarCamp stornieren?</p>
+    {{ form(form) }}
+{% endblock content %}
