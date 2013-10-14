@@ -6,8 +6,8 @@ php:
 before_script: 
   - cp app/config/parameters.yml.travis app/config/parameters.yml
   - composer install
-  - app/console --env=test --quiet doctrine:database:create
-  - app/console --env=test --quiet doctrine:schema:create
-  - app/console --env=test --quiet doctrine:fixtures:load
+  - app/console --env=test doctrine:database:create
+  - app/console --env=test doctrine:schema:create
+  - app/console --env=test doctrine:fixtures:load --append
 
 script: phpunit -c app
