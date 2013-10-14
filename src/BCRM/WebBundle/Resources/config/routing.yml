@@ -72,3 +72,9 @@ bcrmweb_unregistration_confirmed:
     defaults:
         _controller: bcrm.web.controller.web:pageAction
         path: Stornierung/Aktiviert
+
+bcrmweb_event_cancel_ticket:
+    path: /stornierung/{id}/{code}
+    methods: [GET,POST]
+    defaults:
+        _controller: bcrm.web.controller.event:cancelTicketAction

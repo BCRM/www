@@ -16,4 +16,6 @@ class UnregisterCommand
     public $saturday;
 
     public $sunday;
+    
+    public $confirmed = false;
 }

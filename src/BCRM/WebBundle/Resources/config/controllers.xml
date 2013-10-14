@@ -21,6 +21,7 @@
             <argument type="service" id="bcrm.backend.repo.event" />
             <argument type="service" id="bcrm.backend.repo.registration" />
             <argument type="service" id="bcrm.backend.repo.unregistration" />
+            <argument type="service" id="bcrm.backend.repo.ticket" />
         </service>
     </services>
 </container>

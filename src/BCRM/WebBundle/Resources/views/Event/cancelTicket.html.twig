@@ -1,0 +1,10 @@
+{% extends "BCRMWebBundle::page.html.twig" %}
+{% block content %}
+    <h2>Stornierung</h2>
+    <p>Bist Du sicher?</p>
+    <form method="post" action="{{ path(app.request.attributes.get('_route'),
+    app.request.attributes.get('_route_params')) }}">
+        <p>Bitte bestätige, dass Du dein Ticket für {% if ticket.saturday %}Samstag{% else %}Sonntag{% endif %} stornieren möchtest.</p>
+        <button type="submit" name="cancel_confirm">Ja!</button>
+    </form>
+{% endblock content %}

@@ -61,6 +61,12 @@ class Ticket extends AggregateResource
     protected $day;
 
     /**
+     * @ORM\Column(type="string", nullable=false, name="code")
+     * @var string Ticket code
+     */
+    protected $code;
+
+    /**
      * @var boolean
      * @Assert\NotBlank()
      * @Assert\Type(type="boolean")
@@ -147,6 +153,31 @@ class Ticket extends AggregateResource
     {
         return $this->event;
     }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param string $code
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+    
 }
 
 

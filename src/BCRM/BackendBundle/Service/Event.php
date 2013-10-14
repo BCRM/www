@@ -86,8 +86,8 @@ class Event
 
     public function sendRegistrationConfirmationMail(SendRegistrationConfirmationMailCommand $command)
     {
-        $sr  = new SecureRandom();
-        $key = sha1($sr->nextBytes(256), false);
+        $sr                   = new SecureRandom();
+        $key                  = sha1($sr->nextBytes(256), false);
         $updateCommand        = new UpdateResourceCommand();
         $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Registration';
         $updateCommand->id    = $command->registration->getId();
@@ -115,9 +115,17 @@ class Event
 
     public function createTicket(CreateTicketCommand $command)
     {
+        $sr                               = new SecureRandom();
+        $code                             = sha1($sr->nextBytes(256), false);
         $createSubscriptionCommand        = new CreateResourceCommand();
         $createSubscriptionCommand->class = '\BCRM\BackendBundle\Entity\Event\Ticket';
-        $createSubscriptionCommand->data  = array('event' => $command->event, 'email' => $command->registration->getEmail(), 'name' => $command->registration->getName(), 'day' => $command->day);
+        $createSubscriptionCommand->data  = array(
+            'event' => $command->event,
+            'email' => $command->registration->getEmail(),
+            'name'  => $command->registration->getName(),
+            'day'   => $command->day,
+            'code'  => $code
+        );
         $this->commandBus->handle($createSubscriptionCommand);
     }
 
@@ -127,8 +135,9 @@ class Event
         $emailCommand->email        = $command->ticket->getEmail();
         $emailCommand->template     = 'Ticket';
         $emailCommand->templateData = array(
-            'ticket' => $command->ticket,
-            'event'  => $command->event,
+            'ticket'      => $command->ticket,
+            'event'       => $command->event,
+            'cancel_link' => rtrim($command->schemeAndHost, '/') . $this->router->generate('bcrmweb_event_cancel_ticket', array('id' => $command->ticket->getId(), 'code' => $command->ticket->getCode()))
         );
         $this->commandBus->handle($emailCommand);
 
@@ -141,14 +150,20 @@ class Event
     {
         $createUnregistrationCommand        = new CreateResourceCommand();
         $createUnregistrationCommand->class = '\BCRM\BackendBundle\Entity\Event\Unregistration';
-        $createUnregistrationCommand->data  = array('event' => $command->event, 'email' => $command->email, 'saturday' => $command->saturday, 'sunday' => $command->sunday);
+        $createUnregistrationCommand->data  = array(
+            'event' => $command->event, 
+            'email' => $command->email, 
+            'saturday' => $command->saturday, 
+            'sunday' => $command->sunday,
+            'confirmed' => $command->confirmed,
+        );
         $this->commandBus->handle($createUnregistrationCommand);
     }
 
     public function sendUnregistrationConfirmationMail(SendUnregistrationConfirmationMailCommand $command)
     {
-        $sr  = new SecureRandom();
-        $key = sha1($sr->nextBytes(256), false);
+        $sr                   = new SecureRandom();
+        $key                  = sha1($sr->nextBytes(256), false);
         $updateCommand        = new UpdateResourceCommand();
         $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Unregistration';
         $updateCommand->id    = $command->unregistration->getId();

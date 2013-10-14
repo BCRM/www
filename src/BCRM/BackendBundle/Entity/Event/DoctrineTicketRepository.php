@@ -9,6 +9,7 @@ namespace BCRM\BackendBundle\Entity\Event;
 
 use Doctrine\ORM\EntityRepository;
 use PhpOption\None;
+use PhpOption\Option;
 use PhpOption\Some;
 
 class DoctrineTicketRepository extends EntityRepository implements TicketRepository
@@ -41,5 +42,21 @@ class DoctrineTicketRepository extends EntityRepository implements TicketReposit
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param integer $id
+     * @param string  $code
+     *
+     * @return Option
+     */
+    public function getTicketByIdAndCode($id, $code)
+    {
+        return Option::fromValue($this->createQueryBuilder('t')
+            ->andWhere('t.id = :id')->setParameter('id', $id)
+            ->andWhere('t.code = :code')->setParameter('code', $code)
+            ->getQuery()
+            ->getOneOrNullResult());
+    }
+
 
 }

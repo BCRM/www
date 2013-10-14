@@ -9,6 +9,8 @@ namespace BCRM\WebBundle\Controller;
 
 use BCRM\BackendBundle\Entity\Event\EventRepository;
 use BCRM\BackendBundle\Entity\Event\RegistrationRepository;
+use BCRM\BackendBundle\Entity\Event\Ticket;
+use BCRM\BackendBundle\Entity\Event\TicketRepository;
 use BCRM\BackendBundle\Entity\Event\UnregistrationRepository;
 use BCRM\BackendBundle\Service\Event\ConfirmRegistrationCommand;
 use BCRM\BackendBundle\Service\Event\ConfirmUnregistrationCommand;
@@ -68,7 +70,12 @@ class EventController
      */
     private $unregistrationRepo;
 
-    public function __construct(ContentReader $reader, FormFactoryInterface $formFactory, RouterInterface $router, CommandBus $commandBus, EventRepository $eventRepo, RegistrationRepository $registrationRepo, UnregistrationRepository $unregistrationRepo)
+    /**
+     * @var \BCRM\BackendBundle\Entity\Event\TicketRepository
+     */
+    private $ticketRepo;
+
+    public function __construct(ContentReader $reader, FormFactoryInterface $formFactory, RouterInterface $router, CommandBus $commandBus, EventRepository $eventRepo, RegistrationRepository $registrationRepo, UnregistrationRepository $unregistrationRepo, TicketRepository $ticketRepo)
     {
         $this->reader             = $reader;
         $this->formFactory        = $formFactory;
@@ -77,6 +84,7 @@ class EventController
         $this->eventRepo          = $eventRepo;
         $this->registrationRepo   = $registrationRepo;
         $this->unregistrationRepo = $unregistrationRepo;
+        $this->ticketRepo         = $ticketRepo;
     }
 
     /**
@@ -156,5 +164,35 @@ class EventController
         $command->unregistration = $unregistration->get();
         $this->commandBus->handle($command);
         return new RedirectResponse($this->router->generate('bcrmweb_unregistration_confirmed'));
+    }
+
+    /**
+     * @param Request $request
+     * @param         $id
+     * @param         $code
+     *
+     * @return array|RedirectResponse
+     * @Template()
+     */
+    public function cancelTicketAction(Request $request, $id, $code)
+    {
+        /* @var $ticket Ticket */
+        $ticket             = $this->ticketRepo->getTicketByIdAndCode($id, $code)->getOrThrow(new NotFoundHttpException('Unknown ticket.'));
+        
+        if ($request->isMethod('POST')) {
+            $command            = new UnregisterCommand();
+            $command->event     = $this->eventRepo->getNextEvent()->getOrThrow(new AccessDeniedHttpException('No event.'));
+            $command->email     = $ticket->getEmail();
+            $command->saturday  = $ticket->isSaturday();
+            $command->sunday    = $ticket->isSunday();
+            $command->confirmed = true;
+            $this->commandBus->handle($command);
+            return new RedirectResponse($this->router->generate('bcrmweb_unregistration_confirmed'));            
+        }
+        
+        return array(
+            'ticket' => $ticket,
+            'sponsors' => $this->reader->getPage('Sponsoren/Index.md'),
+        );
     }
 }

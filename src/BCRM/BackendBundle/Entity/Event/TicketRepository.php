@@ -25,4 +25,12 @@ interface TicketRepository
      * @return Ticket[]
      */
     public function getTicketsForEmail(Event $event, $email);
+
+    /**
+     * @param integer $id
+     * @param string $code
+     *
+     * @return Option
+     */
+    public function getTicketByIdAndCode($id, $code);
 }
