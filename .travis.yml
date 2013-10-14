@@ -8,5 +8,6 @@ before_script:
   - composer install
   - app/console --env=test --quiet doctrine:database:create
   - app/console --env=test --quiet doctrine:schema:create
+  - app/console --env=test --quiet doctrine:fixtures:load
 
 script: phpunit -c app
