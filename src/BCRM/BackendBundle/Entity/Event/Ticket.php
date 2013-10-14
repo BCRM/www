@@ -30,7 +30,7 @@ class Ticket extends AggregateResource
 
     /**
      * @Assert\NotBlank()
-     * @ORM\ManyToOne(targetEntity="BCRM\BackendBundle\Entity\Event\Event", inversedBy="registrations")
+     * @ORM\ManyToOne(targetEntity="BCRM\BackendBundle\Entity\Event\Event", inversedBy="tickets")
      * @ORM\JoinColumn(name="event_id", referencedColumnName="id", nullable=false)
      * @var Event
      */

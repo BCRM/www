@@ -75,7 +75,7 @@ class Registration extends AggregateResource
 
     /**
      * @var string Arrival
-     * @ORM\Column(type="text", nullable=true, columnDefinition="ENUM('private', 'public')")
+     * @ORM\Column(type="text", nullable=true)
      */
     protected $arrival;
 
