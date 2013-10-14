@@ -25,21 +25,6 @@ interface RegistrationRepository
     public function getRegistrationByIdAndKey($id, $key);
 
     /**
-     * @param Registration $registration
-     *
-     * @return void
-     */
-    public function confirmRegistration(Registration $registration);
-
-    /**
-     * @param Registration $registration
-     * @param string       $key
-     *
-     * @return void
-     */
-    public function initConfirmation(Registration $registration, $key);
-
-    /**
      * @param Event   $event
      * @param integer $day
      * @param integer $capacity

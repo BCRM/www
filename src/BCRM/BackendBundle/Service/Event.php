@@ -88,7 +88,11 @@ class Event
     {
         $sr  = new SecureRandom();
         $key = sha1($sr->nextBytes(256), false);
-        $this->registrationRepo->initConfirmation($command->registration, $key);
+        $updateCommand        = new UpdateResourceCommand();
+        $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Registration';
+        $updateCommand->id    = $command->registration->getId();
+        $updateCommand->data  = array('confirmationKey' => $key);
+        $this->commandBus->handle($updateCommand);
 
         $emailCommand               = new SendTemplateMailCommand();
         $emailCommand->email        = $command->registration->getEmail();
@@ -102,7 +106,11 @@ class Event
 
     public function confirmRegistration(ConfirmRegistrationCommand $command)
     {
-        $this->registrationRepo->confirmRegistration($command->registration);
+        $updateCommand        = new UpdateResourceCommand();
+        $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Registration';
+        $updateCommand->id    = $command->registration->getId();
+        $updateCommand->data  = array('confirmed' => 1);
+        $this->commandBus->handle($updateCommand);
     }
 
     public function createTicket(CreateTicketCommand $command)
@@ -141,7 +149,11 @@ class Event
     {
         $sr  = new SecureRandom();
         $key = sha1($sr->nextBytes(256), false);
-        $this->unregistrationRepo->initConfirmation($command->unregistration, $key);
+        $updateCommand        = new UpdateResourceCommand();
+        $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Unregistration';
+        $updateCommand->id    = $command->unregistration->getId();
+        $updateCommand->data  = array('confirmationKey' => $key);
+        $this->commandBus->handle($updateCommand);
 
         $emailCommand               = new SendTemplateMailCommand();
         $emailCommand->email        = $command->unregistration->getEmail();
@@ -155,7 +167,11 @@ class Event
 
     public function confirmUnregistration(ConfirmUnregistrationCommand $command)
     {
-        $this->unregistrationRepo->confirmUnregistration($command->unregistration);
+        $updateCommand        = new UpdateResourceCommand();
+        $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Unregistration';
+        $updateCommand->id    = $command->unregistration->getId();
+        $updateCommand->data  = array('confirmed' => 1);
+        $this->commandBus->handle($updateCommand);
     }
 
     public function unregisterTicket(UnregisterTicketCommand $command)

@@ -48,39 +48,6 @@ class DoctrineUnregistrationRepository extends EntityRepository implements Unreg
     }
 
     /**
-     * @param Unregistration $registration
-     *
-     * @return void
-     */
-    public function confirmUnregistration(Unregistration $unregistration)
-    {
-        $this->createQueryBuilder('u')
-            ->update()
-            ->set('u.confirmed', '1')
-            ->where('u.email = :email')->setParameter('email', $unregistration->getEmail())
-            ->andWhere('u.confirmed = 0')
-            ->getQuery()
-            ->execute();
-    }
-
-    /**
-     * @param Unregistration $registration
-     * @param string         $key
-     *
-     * @return void
-     */
-    public function initConfirmation(Unregistration $unregistration, $key)
-    {
-        $this->createQueryBuilder('u')
-            ->update()
-            ->set('u.confirmationKey', ':key')->setParameter('key', $key)
-            ->where('u.email = :email')->setParameter('email', $unregistration->getEmail())
-            ->andWhere('u.confirmed = 0')
-            ->getQuery()
-            ->execute();
-    }
-
-    /**
      * @param string $id
      * @param string $key
      *

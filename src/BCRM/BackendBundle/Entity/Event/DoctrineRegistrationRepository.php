@@ -44,39 +44,6 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
     }
 
     /**
-     * @param Registration $registration
-     *
-     * @return void
-     */
-    public function confirmRegistration(Registration $registration)
-    {
-        $this->createQueryBuilder('r')
-            ->update()
-            ->set('r.confirmed', '1')
-            ->where('r.email = :email')->setParameter('email', $registration->getEmail())
-            ->andWhere('r.confirmed = 0')
-            ->getQuery()
-            ->execute();
-    }
-
-    /**
-     * @param Registration $registration
-     * @param string       $key
-     *
-     * @return void
-     */
-    public function initConfirmation(Registration $registration, $key)
-    {
-        $this->createQueryBuilder('r')
-            ->update()
-            ->set('r.confirmationKey', ':key')->setParameter('key', $key)
-            ->where('r.email = :email')->setParameter('email', $registration->getEmail())
-            ->andWhere('r.confirmed = 0')
-            ->getQuery()
-            ->execute();
-    }
-
-    /**
      * @param Event   $event
      * @param integer $day
      * @param integer $capacity

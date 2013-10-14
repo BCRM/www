@@ -15,21 +15,6 @@ interface UnregistrationRepository
     public function getNewUnregistrations();
 
     /**
-     * @param Unregistration $registration
-     *
-     * @return void
-     */
-    public function confirmUnregistration(Unregistration $unregistration);
-
-    /**
-     * @param Unregistration $registration
-     * @param string         $key
-     *
-     * @return void
-     */
-    public function initConfirmation(Unregistration $unregistration, $key);
-
-    /**
      * @param string $id
      * @param string $key
      *
