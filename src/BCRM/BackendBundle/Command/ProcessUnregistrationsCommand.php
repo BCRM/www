@@ -42,7 +42,7 @@ class ProcessUnregistrationsCommand extends ContainerAwareCommand
         $event      = $eventRepo->getNextEvent()->getOrThrow(new CommandException('No event.'));
         $commandBus = $this->getContainer()->get('command_bus');
         foreach ($unRepo->getUnprocessedUnregistrations($event) as $unregistration) {
-            if ($this->output->getVerbosity() === OutputInterface::VERBOSITY_VERBOSE) {
+            if ($this->output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
                 $this->output->writeln(sprintf('Processing unregistration %s', $unregistration));
             }
             $command                 = new UnregisterTicketCommand();
