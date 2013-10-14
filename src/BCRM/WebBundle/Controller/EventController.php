@@ -86,13 +86,14 @@ class EventController
      */
     public function registerAction(Request $request)
     {
-        $form = $this->formFactory->create(new EventRegisterType());
+        $event = $this->eventRepo->getNextEvent()->getOrThrow(new AccessDeniedHttpException('No event.'));
+        $form  = $this->formFactory->create(new EventRegisterType());
         $form->handleRequest($request);
         if ($form->isValid()) {
             /* @var EventRegisterModel $formData */
             $formData          = $form->getData();
             $command           = new RegisterCommand();
-            $command->event    = $this->eventRepo->getNextEvent()->getOrThrow(new AccessDeniedHttpException('No event.'));
+            $command->event    = $event;
             $command->email    = $formData->email;
             $command->name     = $formData->name;
             $command->saturday = $formData->wantsSaturday();
