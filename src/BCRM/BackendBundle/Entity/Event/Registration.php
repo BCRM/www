@@ -57,7 +57,7 @@ class Registration extends AggregateResource
      * @Assert\Type(type="boolean")
      * @ORM\Column(type="boolean")
      */
-    protected $saturday;
+    protected $saturday = false;
 
     /**
      * @var boolean
@@ -65,7 +65,7 @@ class Registration extends AggregateResource
      * @Assert\Type(type="boolean")
      * @ORM\Column(type="boolean")
      */
-    protected $sunday;
+    protected $sunday = false;
 
     /**
      * @ORM\Column(type="string", nullable=true, name="confirmation_key")
@@ -85,7 +85,7 @@ class Registration extends AggregateResource
      * @Assert\Type(type="boolean")
      * @ORM\Column(type="boolean")
      */
-    protected $confirmed = 0;
+    protected $confirmed = false;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -136,11 +136,27 @@ class Registration extends AggregateResource
     }
 
     /**
+     * @param string $confirmationKey
+     */
+    public function setConfirmationKey($confirmationKey)
+    {
+        $this->confirmationKey = $confirmationKey;
+    }
+
+    /**
      * @return string
      */
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 
     /**
@@ -169,11 +185,27 @@ class Registration extends AggregateResource
     }
 
     /**
+     * @param boolean $sunday
+     */
+    public function setSunday($sunday)
+    {
+        $this->sunday = (bool)$sunday;
+    }
+
+    /**
      * @return boolean
      */
     public function getSaturday()
     {
         return $this->saturday;
+    }
+
+    /**
+     * @param boolean $saturday
+     */
+    public function setSaturday($saturday)
+    {
+        $this->saturday = (bool)$saturday;
     }
 
     /**
@@ -195,6 +227,21 @@ class Registration extends AggregateResource
         $this->arrival = $arrival;
     }
 
+    /**
+     * @param \BCRM\BackendBundle\Entity\Event\Event $event
+     */
+    public function setEvent(Event $event)
+    {
+        $this->event = $event;
+    }
+
+    /**
+     * @param boolean $confirmed
+     */
+    public function setConfirmed($confirmed)
+    {
+        $this->confirmed = (bool)$confirmed;
+    }
+
 
 }
-

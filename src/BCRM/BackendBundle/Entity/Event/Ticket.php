@@ -139,5 +139,14 @@ class Ticket extends AggregateResource
     {
         return $this->getDay() === static::DAY_SUNDAY;
     }
+
+    /**
+     * @return \BCRM\BackendBundle\Entity\Event\Event
+     */
+    public function getEvent()
+    {
+        return $this->event;
+    }
 }
+
 

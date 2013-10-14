@@ -87,7 +87,7 @@ class EventController
     public function registerAction(Request $request)
     {
         $event = $this->eventRepo->getNextEvent()->getOrThrow(new AccessDeniedHttpException('No event.'));
-        $form  = $this->formFactory->create(new EventRegisterType());
+        $form  = $this->formFactory->create(new EventRegisterType(), null, array('action' => $request->getPathInfo()));
         $form->handleRequest($request);
         if ($form->isValid()) {
             /* @var EventRegisterModel $formData */

@@ -46,7 +46,7 @@ class Unregistration extends AggregateResource
      * @Assert\Type(type="boolean")
      * @ORM\Column(type="boolean")
      */
-    protected $saturday;
+    protected $saturday = false;
 
     /**
      * @var boolean
@@ -54,7 +54,7 @@ class Unregistration extends AggregateResource
      * @Assert\Type(type="boolean")
      * @ORM\Column(type="boolean")
      */
-    protected $sunday;
+    protected $sunday = false;
 
     /**
      * @ORM\Column(type="string", nullable=true, name="confirmation_key")
@@ -68,7 +68,7 @@ class Unregistration extends AggregateResource
      * @Assert\Type(type="boolean")
      * @ORM\Column(type="boolean")
      */
-    protected $confirmed = 0;
+    protected $confirmed = false;
 
     /**
      * @var boolean
@@ -76,7 +76,7 @@ class Unregistration extends AggregateResource
      * @Assert\Type(type="boolean")
      * @ORM\Column(type="boolean")
      */
-    protected $processed = 0;
+    protected $processed = false;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -152,11 +152,43 @@ class Unregistration extends AggregateResource
     }
 
     /**
+     * @param boolean $saturday
+     */
+    public function setSaturday($saturday)
+    {
+        $this->saturday = (bool)$saturday;
+    }
+
+    /**
      * @return boolean
      */
     public function getSunday()
     {
         return $this->sunday;
+    }
+
+    /**
+     * @param boolean $sunday
+     */
+    public function setSunday($sunday)
+    {
+        $this->sunday = (bool)$sunday;
+    }
+
+    /**
+     * @param boolean $confirmed
+     */
+    public function setConfirmed($confirmed)
+    {
+        $this->confirmed = (bool)$confirmed;
+    }
+
+    /**
+     * @param \BCRM\BackendBundle\Entity\Event\Event $event
+     */
+    public function setEvent(Event $event)
+    {
+        $this->event = $event;
     }
 
 

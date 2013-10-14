@@ -55,11 +55,11 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
         $rsm = new ResultSetMappingBuilder($this->_em);
         $rsm->addRootEntityFromClassMetadata('BCRM\BackendBundle\Entity\Event\Registration', 'r');
         $sql = sprintf(
-            'SELECT * FROM (SELECT * FROM registration WHERE confirmed = 1 ORDER BY created DESC) AS ordered_registration ' .
+            'SELECT * FROM (SELECT * FROM registration WHERE confirmed = 1 ORDER BY created DESC, id DESC) AS ordered_registration ' .
             'WHERE email NOT IN (SELECT email FROM ticket WHERE event_id = %d AND day = %d) ' .
             'GROUP BY email ' .
             'HAVING %s = 1 ' . 
-            'ORDER BY created ASC ' .
+            'ORDER BY created ASC, id ASC ' .
             'LIMIT %d',
             $event->getId(),
             $day,
