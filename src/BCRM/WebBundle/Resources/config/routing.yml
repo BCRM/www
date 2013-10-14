@@ -21,39 +21,6 @@ bcrmweb_content:
     requirements:
         path: ".+"
 
-bcrmweb_newsletter_subscribe:
-    path: /newsletter/subscribe
-    methods: [POST]
-    defaults:
-        _controller: bcrm.web.controller.newsletter:subscribeAction
-
-bcrmweb_newsletter_ok:
-    path: /newsletter/ok
-    methods: [GET]
-    defaults:
-        _controller: bcrm.web.controller.web:pageAction
-        path: Newsletter/Ok
-
-bcrmweb_newsletter_already_subscribed:
-    path: /newsletter/schon-drin
-    methods: [GET]
-    defaults:
-        _controller: bcrm.web.controller.web:pageAction
-        path: Newsletter/SchonDrin
-
-bcrm_newsletter_confirm:
-    path: /newsletter/confirm/{id}/{key}
-    methods: [GET]
-    defaults:
-        _controller: bcrm.web.controller.newsletter:confirmAction
-
-bcrmweb_newsletter_confirmed:
-    path: /newsletter/aktiviert
-    methods: [GET]
-    defaults:
-        _controller: bcrm.web.controller.web:pageAction
-        path: Newsletter/Aktiviert
-        
 bcrmweb_event_register:
     path: /anmeldung
     methods: [GET,POST]

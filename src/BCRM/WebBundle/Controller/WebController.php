@@ -10,8 +10,6 @@ namespace BCRM\WebBundle\Controller;
 use BCRM\BackendBundle\Entity\Event\EventRepository;
 use BCRM\BackendBundle\Exception\FileNotFoundException;
 use BCRM\WebBundle\Content\ContentReader;
-use BCRM\WebBundle\Form\EventRegisterType;
-use BCRM\WebBundle\Form\NewsletterSubscribeType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -67,8 +65,6 @@ class WebController
         if ($nextEvent->isDefined()) {
             $response['nextEvent'] = $nextEvent;
         }
-        $newsletterForm             = $this->formFactory->create(new NewsletterSubscribeType());
-        $response['newsletterForm'] = $newsletterForm->createView();
         return $response;
     }
 
