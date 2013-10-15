@@ -69,6 +69,9 @@ header {
     a, a:visited {
       color: $bg;
     }
+    a:hover {
+      color: $anti_bg;
+    }
   }
 }
 
@@ -93,9 +96,9 @@ header {
       background-color: $bg;
       height: auto;
       margin: 0;
-      -moz-box-shadow: 2px 2px 4px #7F7F7F;
-      -webkit-box-shadow: 2px 2px 4px #7F7F7F;
-      box-shadow: 2px 2px 4px #7F7F7F;
+      -moz-box-shadow: 2px 2px 4px $light_shadow;
+      -webkit-box-shadow: 2px 2px 4px $light_shadow;
+      box-shadow: 2px 2px 4px $light_shadow;
     }
     // Positions
     hr:first-child {
@@ -103,7 +106,7 @@ header {
       display: none;
     }
     hr {
-      right: 14.25em;
+      right: 25%;
       display: block;
     }
     hr:last-child {
@@ -133,6 +136,9 @@ header {
     width: 90%;
     max-width: 444px;
     span {
+      -moz-box-shadow: 1px 1px 3px $dark_shadow;
+      -webkit-box-shadow: 1px 1px 3px $dark_shadow;
+      text-transform: 1px 1px 3px $dark_shadow;
       font-weight: 700;
       color: $bg;
       text-transform: uppercase
@@ -233,7 +239,8 @@ header {
       }
     }
     nav.event {
-      right: 16.75em;
+      //right: 16.75em;
+      right: 32%;
       width: 7em;
     }
 
