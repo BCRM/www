@@ -4,8 +4,8 @@
 
 This is the source code for [barcamp-rheinmain.org](http://barcamp-rheinmain.org/).
 
-Design: [Martin Kraft](http://martinkraft.com/)
-Webdesign: [Alex Wenz](http://alexwenz.de/)
+Design: [Martin Kraft](http://martinkraft.com/)  
+Webdesign: [Alex Wenz](http://alexwenz.de/)  
 Development: [Markus Tacker](http://coderbyheart.de)
 
 ## Setup
@@ -16,6 +16,9 @@ Development: [Markus Tacker](http://coderbyheart.de)
     APACHEUSER=`ps aux | grep -E '[a]pache|[h]ttpd' | grep -v root | head -1 | cut -d\  -f1`
     sudo setfacl -R -m u:$APACHEUSER:rwX -m u:`whoami`:rwX app/cache app/logs
     sudo setfacl -dR -m u:$APACHEUSER:rwX -m u:`whoami`:rwX app/cache app/logs
+    # Init database
+    app/console doctrine:schema:create
+    app/console doctrine:fixtures:load --append
 
 
 ## LICENSE
