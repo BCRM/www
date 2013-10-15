@@ -49,23 +49,27 @@ class Mail
 
     public function sendTemplateMail(SendTemplateMailCommand $command)
     {
-        $tplIdentifier = 'Email/' . $command->template . '.txt';
+        $message       = \Swift_Message::newInstance();
+        $ext           = $command->format === 'text/html' ? 'html' : 'txt';
+        $tplIdentifier = 'Email/' . $command->template . '.' . $ext;
         $template      = $this->cr->getContent($tplIdentifier);
+        $templateData  = $command->templateData;
+        if ($command->image !== null) {
+            $templateData['image'] = $message->embed(\Swift_Image::fromPath($command->image));;
+        }
 
         // Subject
         $env     = new \Twig_Environment(new \Twig_Loader_String());
         $subject = $template->getProperties()->containsKey('subject') ? $template->getProperties()->get('subject') : $this->mailFromName;
-        $subject = $env->render($subject, $command->templateData);
+        $subject = $env->render($subject, $templateData);
 
         // Body
-        $body = $this->templating->render('bcrm_content:' . $tplIdentifier, $command->templateData);
-
-        $message = \Swift_Message::newInstance();
+        $body = $this->templating->render('bcrm_content:' . $tplIdentifier, $templateData);
         $message->setCharset('UTF-8');
         $message->setFrom($this->mailFromEmail, $this->mailFromName)
             ->setSubject($subject)
             ->setTo($command->email)
-            ->setBody($body);
+            ->setBody($body, $command->format);
         $this->mailer->send($message);
     }
 }

@@ -29,6 +29,7 @@ use LiteCQRS\Plugin\CRUD\Model\Commands\DeleteResourceCommand;
 use LiteCQRS\Plugin\CRUD\Model\Commands\UpdateResourceCommand;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Util\SecureRandom;
+use Endroid\QrCode\QrCode;
 
 class Event
 {
@@ -138,14 +139,32 @@ class Event
 
     public function sendTicketMail(SendTicketMailCommand $command)
     {
+        $qrCode = new QrCode();
+        $qrCode->setText(
+            rtrim($command->schemeAndHost, '/') . $this->router->generate(
+                'bcrmweb_event_checkin',
+                array('id' => $command->ticket->getId(), 'code' => $command->ticket->getCode())
+            )
+        );
+
+        $qrCode->setSize(300);
+        $qrCode->setPadding(10);
+        $qrfile = tempnam(sys_get_temp_dir(), 'qrcode-') . '.png';
+        $qrCode->render($qrfile);
+
         $emailCommand               = new SendTemplateMailCommand();
         $emailCommand->email        = $command->ticket->getEmail();
         $emailCommand->template     = 'Ticket';
         $emailCommand->templateData = array(
             'ticket'      => $command->ticket,
             'event'       => $command->event,
-            'cancel_link' => rtrim($command->schemeAndHost, '/') . $this->router->generate('bcrmweb_event_cancel_ticket', array('id' => $command->ticket->getId(), 'code' => $command->ticket->getCode()))
+            'cancel_link' => rtrim($command->schemeAndHost, '/') . $this->router->generate(
+                'bcrmweb_event_cancel_ticket', 
+                array('id' => $command->ticket->getId(), 'code' => $command->ticket->getCode())
+            )
         );
+        $emailCommand->image        = $qrfile;
+        $emailCommand->format       = 'text/html';
         $this->commandBus->handle($emailCommand);
 
         $event         = new TicketMailSentEvent();
