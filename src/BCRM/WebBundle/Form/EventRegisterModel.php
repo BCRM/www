@@ -35,6 +35,12 @@ class EventRegisterModel
     public $days;
 
     /**
+     * @var string
+     * @Assert\Regex(pattern="/^#[a-zA-Z0-9_]{1,15}( #[a-zA-Z0-9_]{1,15}){0,2}$/")
+     */
+    public $tags;
+
+    /**
      * @return bool
      */
     public function wantsSaturday()

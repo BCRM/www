@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Ornicar\GravatarBundle\OrnicarGravatarBundle(),
             new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
             new LiteCQRS\Plugin\SymfonyBundle\LiteCQRSBundle(),
+            new Endroid\Bundle\QrCodeBundle\EndroidQrCodeBundle(),
             new BCRM\WebBundle\BCRMWebBundle(),
             new BCRM\BackendBundle\BCRMBackendBundle(),
         );

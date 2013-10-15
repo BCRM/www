@@ -107,6 +107,7 @@ class EventController
             $command->saturday = $formData->wantsSaturday();
             $command->sunday   = $formData->wantsSunday();
             $command->arrival  = $formData->arrival;
+            $command->tags     = $formData->tags;
             $this->commandBus->handle($command);
             return new RedirectResponse($this->router->generate('bcrmweb_registration_ok'));
         }
@@ -177,8 +178,8 @@ class EventController
     public function cancelTicketAction(Request $request, $id, $code)
     {
         /* @var $ticket Ticket */
-        $ticket             = $this->ticketRepo->getTicketByIdAndCode($id, $code)->getOrThrow(new NotFoundHttpException('Unknown ticket.'));
-        
+        $ticket = $this->ticketRepo->getTicketByIdAndCode($id, $code)->getOrThrow(new NotFoundHttpException('Unknown ticket.'));
+
         if ($request->isMethod('POST')) {
             $command            = new UnregisterCommand();
             $command->event     = $this->eventRepo->getNextEvent()->getOrThrow(new AccessDeniedHttpException('No event.'));
@@ -187,11 +188,11 @@ class EventController
             $command->sunday    = $ticket->isSunday();
             $command->confirmed = true;
             $this->commandBus->handle($command);
-            return new RedirectResponse($this->router->generate('bcrmweb_unregistration_confirmed'));            
+            return new RedirectResponse($this->router->generate('bcrmweb_unregistration_confirmed'));
         }
-        
+
         return array(
-            'ticket' => $ticket,
+            'ticket'   => $ticket,
             'sponsors' => $this->reader->getPage('Sponsoren/Index.md'),
         );
     }

@@ -74,17 +74,22 @@
     </header>
     <div class="main">
         {% block visual %}{% endblock visual %}
-        {% if page is defined and page.properties.subnav %}
-        {% if page.subnav|length > 1 %}
-        {% for item in page.subnav %}
-        {% if loop.first %}<nav>{% endif %}
-            <a href="{{ path('bcrmweb_page', {'path': item.path}) }}"
-                {% if path == item.path %}class="active"{% endif %}
-            >{{ item.title }}</a>
-        {% if loop.last %}</nav>{% endif %}
-        {% endfor %}
-        {% endif %}
-        {% endif %}
+        <aside>
+            {% if page is defined and page.properties.subnav %}
+            {% if page.subnav|length > 1 %}
+            {% for item in page.subnav %}
+            {% if loop.first %}<nav>{% endif %}
+                <a href="{{ path('bcrmweb_page', {'path': item.path}) }}"
+                    {% if path == item.path %}class="active"{% endif %}
+                >{{ item.title }}</a>
+            {% if loop.last %}</nav>{% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endif %}
+            
+            <a class="twitter-timeline" href="https://twitter.com/search?q=%23bcrm+OR+%23bcrm13+OR+%40bc_rm" data-widget-id="390135869656420353">Tweets zum BarCamp RheinMain</a>
+        </aside>
+
         <article>
         {% block content %}{{ page.content|raw }}{% endblock content %}
         </article>
@@ -103,6 +108,7 @@
 {% javascripts filter="yui_js"
 "bundles/bcrmweb/vendor/h5bp/console.js"
 "bundles/bcrmweb/js/main.js"
+"bundles/bcrmweb/js/twitter.js"
 %}
 <script type="text/javascript" src="{{ asset_url }}"></script>
 {% endjavascripts %}

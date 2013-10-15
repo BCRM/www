@@ -78,3 +78,9 @@ bcrmweb_event_cancel_ticket:
     methods: [GET,POST]
     defaults:
         _controller: bcrm.web.controller.event:cancelTicketAction
+
+bcrmweb_event_checkin:
+    path: /checkin/{id}/{code}
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.checkin:checkinAction

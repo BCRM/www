@@ -18,4 +18,14 @@ class SendTemplateMailCommand
      * @var array
      */
     public $templateData;
+
+    /**
+     * @var string
+     */
+    public $image;
+
+    /**
+     * @var string
+     */
+    public $format = 'text/plain';
 }
