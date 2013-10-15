@@ -115,8 +115,15 @@ class Event
 
     public function createTicket(CreateTicketCommand $command)
     {
-        $sr                               = new SecureRandom();
-        $code                             = sha1($sr->nextBytes(256), false);
+        $sr   = new SecureRandom();
+        $code = '';
+        $max  = 6;
+        while (strlen($code) < $max) {
+            $seq = preg_replace('/[^A-Z0-9]/', '', $sr->nextBytes(256));
+            for ($i = 0; $i < strlen($seq) && strlen($code) < $max; $i++) {
+                $code .= $seq[$i];
+            }
+        }
         $createSubscriptionCommand        = new CreateResourceCommand();
         $createSubscriptionCommand->class = '\BCRM\BackendBundle\Entity\Event\Ticket';
         $createSubscriptionCommand->data  = array(
@@ -151,10 +158,10 @@ class Event
         $createUnregistrationCommand        = new CreateResourceCommand();
         $createUnregistrationCommand->class = '\BCRM\BackendBundle\Entity\Event\Unregistration';
         $createUnregistrationCommand->data  = array(
-            'event' => $command->event, 
-            'email' => $command->email, 
-            'saturday' => $command->saturday, 
-            'sunday' => $command->sunday,
+            'event'     => $command->event,
+            'email'     => $command->email,
+            'saturday'  => $command->saturday,
+            'sunday'    => $command->sunday,
             'confirmed' => $command->confirmed,
         );
         $this->commandBus->handle($createUnregistrationCommand);
