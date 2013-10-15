@@ -45,6 +45,13 @@ class Registration extends AggregateResource
 
     /**
      * @var string
+     * @Assert\Regex(pattern="/^#[a-zA-Z0-9_]{1,15}( #[a-zA-Z0-9_]{1,15}){0,2}$/")
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $tags;
+
+    /**
+     * @var string
      * @Assert\NotBlank()
      * @Assert\Email()
      * @ORM\Column(type="text")
@@ -243,5 +250,20 @@ class Registration extends AggregateResource
         $this->confirmed = (bool)$confirmed;
     }
 
+    /**
+     * @param string $tags
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
 
 }

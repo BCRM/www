@@ -35,6 +35,7 @@ class EventControllerTest extends WebTestCase
         $form['event_register[email]']   = $email;
         $form['event_register[days]']    = 3;
         $form['event_register[arrival]'] = 'public';
+        $form['event_register[tags]']    = '#foo #bar #bcrm13';
         $client->submit($form);
         $response = $client->getResponse();
         $this->assertEquals(302, $response->getStatusCode());
@@ -311,7 +312,7 @@ class EventControllerTest extends WebTestCase
 
     /**
      * @test
-     * @group functional
+     * @group   functional
      * @depends thereShouldBeNoMoreTicketsThanCapacity
      */
     public function cancelTicketLink()
@@ -323,17 +324,17 @@ class EventControllerTest extends WebTestCase
             ->get('doctrine')
             ->getManager();
         $ticket = $em->getRepository('BCRMBackendBundle:Event\Ticket')->findOneBy(array('day' => 1));
-        
+
         // Confirm
         $crawler = $client->request('GET', sprintf('/stornierung/%d/%s', $ticket->getId(), $ticket->getCode()));
-        $form                            = $crawler->selectButton('cancel_confirm')->form();
+        $form    = $crawler->selectButton('cancel_confirm')->form();
         $client->submit($form);
         $response = $client->getResponse();
         $this->assertEquals(302, $response->getStatusCode());
         $this->assertTrue($response->isRedirect('/stornierung/aktiviert'), sprintf('Unexpected redirect to %s', $response->headers->get('Location')));
-        
+
         $this->processUnregistrationsCommand($container);
-        
+
         $this->assertEquals(2, count($em->getRepository('BCRMBackendBundle:Event\Ticket')->findAll()));
     }
 }

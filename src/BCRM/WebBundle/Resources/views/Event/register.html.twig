@@ -5,8 +5,9 @@
     <p>Du möchtest am nächsten BarCamp teilnehmen? Reserviere hier deinen Platz!</p>
     {{ form_start(form) }}
     <fieldset>
-        {{ form_row(form.name) }}
         {{ form_row(form.email) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.tags) }}
     </fieldset>
     <fieldset>
         {{ form_row(form.days) }}

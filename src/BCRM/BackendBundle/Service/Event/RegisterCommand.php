@@ -20,4 +20,6 @@ class RegisterCommand
     public $sunday;
     
     public $arrival;
+    
+    public $tags;
 }
