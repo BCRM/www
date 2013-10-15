@@ -1,6 +1,8 @@
 <?php
+
 /**
- * @author Markus Tacker <m@coderbyheart.de>
+ * @author    Markus Tacker <m@coderbyheart.de>
+ * @copyright 2013 Verein zur Förderung der Netzkultur im Rhein-Main-Gebiet e.V. | http://netzkultur-rheinmain.de/
  */
 
 class EventRegisterModelTest extends \PHPUnit_Framework_TestCase
