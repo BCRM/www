@@ -337,4 +337,30 @@ class EventControllerTest extends WebTestCase
 
         $this->assertEquals(2, count($em->getRepository('BCRMBackendBundle:Event\Ticket')->findAll()));
     }
+
+    /**
+     * Test for https://github.com/BCRM/www/issues/1
+     *
+     * @test
+     * @group functional
+     * @group current
+     */
+    public function tagsShouldAllowUmlauts()
+    {
+        $email   = 'name@domain.com';
+        $client  = static::createClient();
+        $crawler = $client->request('GET', '/anmeldung');
+
+        $form                            = $crawler->selectButton('event_register[save]')->form();
+        $form['event_register[name]']    = 'John Doe';
+        $form['event_register[email]']   = $email;
+        $form['event_register[days]']    = 3;
+        $form['event_register[arrival]'] = 'public';
+        $form['event_register[tags]']    = '#zauberwürfel #bar #bcrm13';
+        $client->submit($form);
+        $response = $client->getResponse();
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertTrue($response->isRedirect('/anmeldung/ok'), sprintf('Unexpected redirect to %s', $response->headers->get('Location')));
+        return $email;
+    }
 }

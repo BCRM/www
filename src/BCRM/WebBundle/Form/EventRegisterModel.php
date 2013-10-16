@@ -36,7 +36,7 @@ class EventRegisterModel
 
     /**
      * @var string
-     * @Assert\Regex(pattern="/^#[a-zA-Z0-9_]{1,15}( #[a-zA-Z0-9_]{1,15}){0,2}$/")
+     * @Assert\Regex(pattern="/^#[^\s]{1,15}( #[^\s]{1,15}){0,2}$/")
      */
     public $tags;
 
