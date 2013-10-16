@@ -11,6 +11,7 @@ use BCRM\BackendBundle\Entity\Event\EventRepository;
 use BCRM\BackendBundle\Exception\FileNotFoundException;
 use BCRM\WebBundle\Content\ContentReader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -42,30 +43,42 @@ class WebController
      */
     private $eventRepo;
 
-    public function __construct(ContentReader $reader, FormFactoryInterface $formFactory, RouterInterface $router, EventRepository $eventRepo)
+    /**
+     * @var \Symfony\Bundle\FrameworkBundle\Templating\EngineInterface
+     */
+    private $renderer;
+
+    public function __construct(ContentReader $reader, FormFactoryInterface $formFactory, RouterInterface $router, EventRepository $eventRepo, EngineInterface $renderer)
     {
         $this->reader      = $reader;
         $this->formFactory = $formFactory;
         $this->router      = $router;
         $this->eventRepo   = $eventRepo;
+        $this->renderer    = $renderer;
     }
 
     /**
      * Render the index page.
      *
      * @param Request $request
-     *
-     * @Template()
      */
     public function indexAction(Request $request)
     {
         $response = $this->pageAction($request, 'Index');
-        if ($response instanceof Response) return $response;
-        $nextEvent = $this->eventRepo->getNextEvent();
-        if ($nextEvent->isDefined()) {
-            $response['nextEvent'] = $nextEvent;
+        if ($response->isNotModified($request)) {
+            return $response;
         }
-        return $response;
+        $nextEvent = $this->eventRepo->getNextEvent();
+
+        $data = array(
+            'page'     => $this->reader->getPage('Index.md'),
+            'path'     => 'Index',
+            'sponsors' => $this->reader->getPage('Sponsoren/Index.md')
+        );
+        if ($nextEvent->isDefined()) {
+            $data ['nextEvent'] = $nextEvent;
+        }
+        return $this->renderer->renderResponse('BCRMWebBundle:Web:index.html.twig', $data, $response);
     }
 
     /**
@@ -74,7 +87,6 @@ class WebController
      * @param Request $request
      * @param string  $path
      *
-     * @Template()
      * @return Response|array
      * @throws NotFoundHttpException
      */
@@ -95,11 +107,12 @@ class WebController
 
         $p = $this->reader->getPage($path . '.md');
         if ($p->isHidden()) throw new NotFoundHttpException();
-        return array(
+
+        return $this->renderer->renderResponse('BCRMWebBundle:Web:page.html.twig', array(
             'page'     => $p,
             'path'     => $path,
             'sponsors' => $this->reader->getPage('Sponsoren/Index.md')
-        );
+        ), $response);
     }
 
     /**

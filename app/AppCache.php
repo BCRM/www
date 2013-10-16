@@ -11,7 +11,7 @@ class AppCache extends HttpCache
             'default_ttl'            => 86400,
             'private_headers'        => array('Authorization', 'Cookie'),
             'allow_reload'           => false,
-            'allow_revalidate'       => false,
+            'allow_revalidate'       => true,
             'stale_while_revalidate' => 2,
             'stale_if_error'         => 60,
         );

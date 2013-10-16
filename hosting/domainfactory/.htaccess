@@ -91,11 +91,6 @@ ExpiresByType text/css                  "access plus 1 year"
 ExpiresByType application/javascript    "access plus 1 year"
 ExpiresByType text/javascript           "access plus 1 year"
 
-Header append Cache-Control "public"
-
-# FileETag None is not enough for every server.
-Header unset ETag
-
 # Since we're sending far-future expires, we don't need ETags for
 # static content.
 #   developer.yahoo.com/performance/rules.html#etags
