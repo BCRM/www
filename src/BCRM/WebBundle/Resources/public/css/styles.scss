@@ -136,9 +136,7 @@ header {
     width: 90%;
     max-width: 444px;
     span {
-      -moz-box-shadow: 1px 1px 3px $dark_shadow;
-      -webkit-box-shadow: 1px 1px 3px $dark_shadow;
-      text-transform: 1px 1px 3px $dark_shadow;
+      text-shadow: 1px 1px 3px $dark_shadow;
       font-weight: 700;
       color: $bg;
       text-transform: uppercase
