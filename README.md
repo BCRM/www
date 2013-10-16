@@ -10,6 +10,10 @@ Development: [Markus Tacker](http://coderbyheart.de)
 
 ## Setup
 
+This is a Symfony2-Project. See [their extensive documentation](http://symfony.com/doc/2.3/book/installation.html) on how to get this running.
+
+In a nutshell:
+
     curl -sS https://getcomposer.org/installer | php
     php composer.phar install
     # Fix permissions
