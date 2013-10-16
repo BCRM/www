@@ -29,6 +29,7 @@ twig:
           google_analytics_account: %google.analytics.account%
           google_analytics_domain: %google.analytics.domain%
           scheme_and_host: %scheme_and_host%
+          assets_version: %assets_version%
 
 # Assetic Configuration
 assetic:
