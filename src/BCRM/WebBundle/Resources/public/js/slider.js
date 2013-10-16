@@ -18,7 +18,8 @@ Modernizr.load([
                         $('.slider ul').bxSlider(
                             {
                                 captions: true,
-                                pager: false
+                                pager: false,
+                                auto: true
                             }
                         );
                     }
