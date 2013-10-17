@@ -16,6 +16,11 @@ RewriteCond %{REQUEST_FILENAME} !-l
 RewriteRule ^(.*)$ app.php [QSA,L]
 
 ############################################
+# Encoding - we don't want bÃ¶ses encoding!
+
+AddDefaultCharset "utf-8"
+
+############################################
 # Caching
 
 # Force the latest IE version, in various cases when it may fall back to IE7 mode
