@@ -1,14 +1,14 @@
 # TEAM
 
-    Markus Tacker -- coder::by(♥); // Freelance Señor Web Backend Dev -- m@coderbyheart.de
-    Martin Kraft -- Interaction Designer -- mail@martinKraft.com
-    Alex Wenz -- Frontend Developer -- mail@alexwenz.de
+    Markus Tacker -- coder::by(♥); // Freelance Señor Web Backend Dev -- m@coderbyheart.de 
+    Martin Kraft  -- Interaction Designer                             -- mail@martinKraft.com  
+    Alex Wenz     -- Frontend Developer                               -- mail@alexwenz.de                                 
 
 # TECHNOLOGY USED
 
-    Symfony2
-    HTML5, CSS3
-    Normalize.css, jQuery, Modernizr (H5BP)
+    Symfony2                                -- http://symfony.com/
+    H5BP (Normalize.css, jQuery, Modernizr) -- http://html5boilerplate.com/
+    BxSlider                                -- http://bxslider.com/
 
 # THIS PROJECT IS OPEN SOURCE
 
