@@ -4,13 +4,12 @@
     Martin Kraft -- Interaction Designer -- mail@martinKraft.com
     Alex Wenz -- Frontend Developer -- mail@alexwenz.de
 
-# THANKS
-
-    http://symfony.com/
-    http://html5boilerplate.com/
-
 # TECHNOLOGY USED
 
     Symfony2
     HTML5, CSS3
-    Normalize.css, jQuery, Modernizr
+    Normalize.css, jQuery, Modernizr (H5BP)
+
+# THIS PROJECT IS OPEN SOURCE
+
+    See https://github.com/BCRM/www for more.
