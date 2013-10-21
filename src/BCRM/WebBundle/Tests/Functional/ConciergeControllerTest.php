@@ -53,5 +53,7 @@ class ConciergeControllerTest extends WebTestCase
         $ticket = $em->getRepository('BCRMBackendBundle:Event\Ticket')->findOneBy(array('code' => 'WOOT', 'checkedIn' => 1));
         // $this->assertEquals(true, $ticket->isCheckedIn()); // FIXME: actually it is 1, possible bug in Doctrine 
         $this->assertEquals('WOOT', $ticket->getCode());
+        $em->remove($ticket);
+        $em->flush();
     }
 }
