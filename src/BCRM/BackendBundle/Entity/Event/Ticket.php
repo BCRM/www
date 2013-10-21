@@ -2,6 +2,7 @@
 
 namespace BCRM\BackendBundle\Entity\Event;
 
+use BCRM\BackendBundle\Exception\InvalidArgumentException;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use LiteCQRS\Plugin\CRUD\AggregateResource;
@@ -75,6 +76,14 @@ class Ticket extends AggregateResource
     protected $notified = 0;
 
     /**
+     * @var boolean
+     * @Assert\NotBlank()
+     * @Assert\Type(type="boolean")
+     * @ORM\Column(type="boolean", name="checked_in")
+     */
+    protected $checkedIn = 0;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      * @var \DateTime
@@ -104,6 +113,14 @@ class Ticket extends AggregateResource
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
     }
 
     /**
@@ -139,6 +156,17 @@ class Ticket extends AggregateResource
     }
 
     /**
+     * @param int $day
+     */
+    public function setDay($day)
+    {
+        if (!in_array($day, array(static::DAY_SATURDAY, static::DAY_SUNDAY))) {
+            throw new InvalidArgumentException(sprintf('Invalid day: %d', $day));
+        }
+        $this->day = $day;
+    }
+
+    /**
      * @return bool
      */
     public function isSunday()
@@ -152,6 +180,14 @@ class Ticket extends AggregateResource
     public function getEvent()
     {
         return $this->event;
+    }
+
+    /**
+     * @param \BCRM\BackendBundle\Entity\Event\Event $event
+     */
+    public function setEvent(Event $event)
+    {
+        $this->event = $event;
     }
 
     /**
@@ -177,7 +213,28 @@ class Ticket extends AggregateResource
     {
         return $this->name;
     }
-    
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    public function isCheckedIn()
+    {
+        return (boolean)$this->checkedIn;
+    }
+
+    /**
+     * @param boolean $checkedIn
+     */
+    public function setCheckedIn($checkedIn)
+    {
+        $this->checkedIn = (boolean)$checkedIn;
+    }
+
 }
 
 

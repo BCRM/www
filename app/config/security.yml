@@ -11,8 +11,10 @@ security:
         in_memory:
             memory:
                 users:
-                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+                    concierge:  { password: %password.concierge%, roles: [ 'ROLE_CONCIERGE' ] }
+
+    encoders:
+            Symfony\Component\Security\Core\User\User: plaintext
 
     firewalls:
         dev:

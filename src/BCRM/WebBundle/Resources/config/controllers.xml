@@ -28,6 +28,7 @@
         <service id="bcrm.web.controller.checkin" class="%bcrm.web.controller.checkin.class%" scope="request">
             <argument type="service" id="bcrm.web.contentReader"/>
             <argument type="service" id="bcrm.backend.repo.ticket" />
+            <argument type="service" id="command_bus"/>
         </service>
     </services>
 </container>

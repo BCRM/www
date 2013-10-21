@@ -6,6 +6,7 @@
     <parameters>
         <parameter key="bcrm.backend.mailservice.class">BCRM\BackendBundle\Service\Mail</parameter>
         <parameter key="bcrm.backend.eventservice.class">BCRM\BackendBundle\Service\Event</parameter>
+        <parameter key="bcrm.backend.conciergeservice.class">BCRM\BackendBundle\Service\Concierge</parameter>
         <parameter key="bcrm.backend.ticketservice.class">BCRM\BackendBundle\Service\Ticket</parameter>
         <parameter key="bcrm.backend.contentReader.class">BCRM\BackendBundle\Content\FileContentReader</parameter>
         <parameter key="bcrm.twig.loader.content.class">BCRM\BackendBundle\Content\TwigLoader</parameter>
@@ -18,6 +19,11 @@
             <argument type="service" id="bcrm.backend.repo.registration"/>
             <argument type="service" id="bcrm.backend.repo.unregistration"/>
             <argument type="service" id="bcrm.backend.repo.ticket"/>
+            <tag name="lite_cqrs.command_handler"/>
+        </service>
+        <service id="bcrm.backend.conciergeservice" class="%bcrm.backend.conciergeservice.class%">
+            <argument type="service" id="command_bus"/>
+            <argument type="service" id="litecqrs.event_message_bus"/>
             <tag name="lite_cqrs.command_handler"/>
         </service>
         <service id="bcrm.backend.mailservice" class="%bcrm.backend.mailservice.class%">

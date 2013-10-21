@@ -9,7 +9,9 @@ namespace BCRM\WebBundle\Controller;
 
 use BCRM\BackendBundle\Entity\Event\Ticket;
 use BCRM\BackendBundle\Entity\Event\TicketRepository;
+use BCRM\BackendBundle\Service\Concierge\CheckinCommand;
 use BCRM\WebBundle\Content\ContentReader;
+use LiteCQRS\Bus\CommandBus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,10 +34,11 @@ class CheckinController
      */
     private $ticketRepo;
 
-    public function __construct(ContentReader $reader, TicketRepository $ticketRepo)
+    public function __construct(ContentReader $reader, TicketRepository $ticketRepo, CommandBus $commandBus)
     {
         $this->reader     = $reader;
         $this->ticketRepo = $ticketRepo;
+        $this->commandBus = $commandBus;
     }
 
     /**
@@ -51,9 +54,9 @@ class CheckinController
         /* @var $ticket Ticket */
         $ticket = $this->ticketRepo->getTicketByIdAndCode($id, $code)->getOrThrow(new NotFoundHttpException('Unknown ticket.'));
 
-        if ($request->isMethod('POST')) {
-            // TODO: implement
-        }
+        $command = new CheckinCommand();
+        $command->ticket = $ticket;
+        $this->commandBus->handle($command);
 
         return array(
             'ticket'   => $ticket,

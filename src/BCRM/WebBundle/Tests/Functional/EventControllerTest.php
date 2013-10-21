@@ -343,7 +343,6 @@ class EventControllerTest extends WebTestCase
      *
      * @test
      * @group functional
-     * @group current
      */
     public function tagsShouldAllowUmlauts()
     {

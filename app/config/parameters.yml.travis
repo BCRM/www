@@ -21,3 +21,4 @@ parameters:
     google.analytics.account: UA-36307571-2
     google.analytics.domain: barcamp-rheinmain.de
     web.content_dir: %kernel.root_dir%/../vendor/bcrm/www-content
+    password.concierge: letmein
