@@ -84,4 +84,22 @@ class ConciergeControllerTest extends Base
         $em->remove($ticket);
         $em->flush();
     }
+
+    /**
+     * @test
+     * @depends eventCheckin
+     */
+    public function doubleCheckinShouldNotWork()
+    {
+        $this->markTestIncomplete();
+    }
+
+    /**
+     * @test
+     * @depends eventCheckin
+     */
+    public function checkinsOnTheWrongDayShouldNotWork()
+    {
+        $this->markTestIncomplete();
+    }
 }
