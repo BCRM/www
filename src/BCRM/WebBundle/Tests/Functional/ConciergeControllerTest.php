@@ -1,17 +1,28 @@
 <?php
-use BCRM\BackendBundle\Entity\Event\Registration;
-use BCRM\BackendBundle\Entity\Event\Ticket;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author    Markus Tacker <m@coderbyheart.de>
  * @copyright 2013 Verein zur Förderung der Netzkultur im Rhein-Main-Gebiet e.V. | http://netzkultur-rheinmain.de/
  */
 
-class ConciergeControllerTest extends WebTestCase
+namespace BCRM\WebBundle\Tests\Functional;
+
+use BCRM\BackendBundle\Entity\Event\Registration;
+use BCRM\BackendBundle\Entity\Event\Ticket;
+use Symfony\Component\BrowserKit\Cookie;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+class ConciergeControllerTest extends Base
 {
+    /**
+     * The setUpBeforeClass() and tearDownAfterClass() template methods are called before the first test of the test
+     * case class is run and after the last test of the test case class is run, respectively.
+     */
+    public static function setUpBeforeClass()
+    {
+        static::resetDatabase();
+    }
+    
     /**
      * @test
      * @group functional

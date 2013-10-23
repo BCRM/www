@@ -5,7 +5,7 @@
  * @copyright 2013 Verein zur Förderung der Netzkultur im Rhein-Main-Gebiet e.V. | http://netzkultur-rheinmain.de/
  */
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+namespace BCRM\WebBundle\Tests\Functional;
 
 use BCRM\BackendBundle\Entity\Event\Ticket;
 use BCRM\BackendBundle\Entity\Event\Registration;
@@ -14,12 +14,19 @@ use BCRM\BackendBundle\Command\SendConfirmRegistrationMailCommand;
 use BCRM\BackendBundle\Command\SendConfirmUnregistrationMailCommand;
 use BCRM\BackendBundle\Command\CreateTicketsCommand;
 use BCRM\BackendBundle\Command\ProcessUnregistrationsCommand;
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class EventControllerTest extends WebTestCase
+class EventControllerTest extends Base
 {
+    /**
+     * The setUpBeforeClass() and tearDownAfterClass() template methods are called before the first test of the test
+     * case class is run and after the last test of the test case class is run, respectively.
+     */
+    public static function setUpBeforeClass()
+    {
+        static::resetDatabase();
+    }
+
     /**
      * @test
      * @group functional
@@ -77,18 +84,6 @@ class EventControllerTest extends WebTestCase
     protected function confirmRegistrationCommand(ContainerInterface $container)
     {
         $this->runCommand($container, new SendConfirmRegistrationMailCommand(), 'bcrm:registration:confirm');
-    }
-
-    protected function runCommand(ContainerInterface $container, $command, $alias)
-    {
-        $application = new Application();
-        $application->setAutoExit(false);
-        $application->add($command);
-
-        $command = $application->find($alias);
-        $command->setContainer($container);
-        $commandTester = new CommandTester($command);
-        $commandTester->execute(array('command' => $command->getName()));
     }
 
     /**
@@ -286,28 +281,6 @@ class EventControllerTest extends WebTestCase
         $this->assertNotInArray('john.doe.1981@domain.com', array_map(function (Ticket $t) {
             return $t->getEmail();
         }, $tickets));
-    }
-
-    /**
-     * Asserts that $needle is in $haystack.
-     *
-     * @param $needle
-     * @param $haystack
-     */
-    protected function assertInArray($needle, $haystack)
-    {
-        $this->assertTrue(in_array($needle, $haystack), sprintf('Failed asserting that %s is not in array.', $needle));
-    }
-
-    /**
-     * Asserts that $needle is not in $haystack.
-     *
-     * @param $needle
-     * @param $haystack
-     */
-    protected function assertNotInArray($needle, $haystack)
-    {
-        $this->assertFalse(in_array($needle, $haystack), sprintf('Failed asserting that %s is not in array.', $needle));
     }
 
     /**
