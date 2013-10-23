@@ -11,12 +11,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BCRM/www-content.git",
-                "reference": "9d16a1cf29b01d479bb0cadbf04db0b7d7e0b242"
+                "reference": "44281b834fdeda2f19546b0faa56717819f50305"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BCRM/www-content/zipball/9d16a1cf29b01d479bb0cadbf04db0b7d7e0b242",
-                "reference": "9d16a1cf29b01d479bb0cadbf04db0b7d7e0b242",
+                "url": "https://api.github.com/repos/BCRM/www-content/zipball/44281b834fdeda2f19546b0faa56717819f50305",
+                "reference": "44281b834fdeda2f19546b0faa56717819f50305",
                 "shasum": ""
             },
             "type": "library",
@@ -33,7 +33,7 @@
             "support": {
                 "source": "https://github.com/BCRM/www-content/tree/master"
             },
-            "time": "2013-10-23 10:41:01"
+            "time": "2013-10-23 10:43:21"
         },
         {
             "name": "beberlei/lite-cqrs",
