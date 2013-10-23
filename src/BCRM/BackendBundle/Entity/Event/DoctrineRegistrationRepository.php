@@ -77,7 +77,7 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
         $rsm = new ResultSetMappingBuilder($this->_em);
         $rsm->addRootEntityFromClassMetadata('BCRM\BackendBundle\Entity\Event\Registration', 'r');
         $sql = sprintf(
-            'SELECT * FROM (SELECT * FROM registration WHERE confirmed = 1 AND type IN (%s)) AS vip_registrations ' .
+            'SELECT * FROM (SELECT * FROM registration WHERE confirmed = 1 AND type IN (%s) ORDER BY created DESC, id DESC) AS vip_registrations ' .
             'WHERE email NOT IN (SELECT email FROM ticket WHERE event_id = %d AND day = %d) ' .
             'GROUP BY email ' .
             'HAVING %s = 1 ',

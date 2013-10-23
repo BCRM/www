@@ -139,4 +139,44 @@ class VipTicketsTest extends Base
             'day'   => Ticket::DAY_SATURDAY,
         ))));
     }
+    
+    /**
+     * @test
+     * @group functional
+     * @group regression
+     * @depends vipTicketsShouldNotCountForEventCapacity
+     */
+    public function vipTicketsShouldBeCreatedIfEventIsOverCapacity()
+    {
+        /* @var $em \Doctrine\Common\Persistence\ObjectManager */
+        $client    = static::createClient();
+        $container = $client->getContainer();
+        $em        = $container
+            ->get('doctrine')
+            ->getManager();
+
+        $event = $em->getRepository('BCRMBackendBundle:Event\Event')->findAll()[0];
+        $event->setCapacity(1);
+        $em->persist($event);
+        $em->flush();
+
+        // Create Sponsor registration
+        $sponsor2 = new Registration();
+        $sponsor2->setName('Sponsor 2');
+        $sponsor2->setEvent($event);
+        $sponsor2->setEmail('sponsor2@domain.com');
+        $sponsor2->setSaturday(true);
+        $sponsor2->setConfirmed(true);
+        $sponsor2->setType(Registration::TYPE_SPONSOR);
+        $em->persist($sponsor2);
+
+        $em->flush();
+
+        $this->createTicketsCommand($container);
+
+        $this->assertEquals(6, count($em->getRepository('BCRMBackendBundle:Event\Ticket')->findBy(array(
+            'event' => $event,
+            'day'   => Ticket::DAY_SATURDAY,
+        ))));
+    }
 }

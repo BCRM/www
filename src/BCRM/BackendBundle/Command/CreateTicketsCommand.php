@@ -33,29 +33,23 @@ class CreateTicketsCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->output = $output;
-        /** @var \BCRM\BackendBundle\Entity\Event\EventRepository $eventRepo */
+        /* @var \BCRM\BackendBundle\Entity\Event\EventRepository $eventRepo */
+        /* @var \BCRM\BackendBundle\Entity\Event\RegistrationRepository $registrationRepo */
         $eventRepo = $this->getContainer()->get('bcrm.backend.repo.event');
+        $registrationRepo = $this->getContainer()->get('bcrm.backend.repo.registration');
         $event     = $eventRepo->getNextEvent()->getOrThrow(new CommandException('No event.'));
         foreach (array(Ticket::DAY_SATURDAY, Ticket::DAY_SUNDAY) as $day) {
+            // Regular tickets
             $capacity = $eventRepo->getCapacity($event, $day);
             if ($capacity > 0) {
-                $this->createTicketsFor($event, $day, $capacity);
+                foreach ($registrationRepo->getNextRegistrations($event, $day, $capacity) as $registration) {
+                    $this->createTicketForRegistration($event, $registration, $day);
+                }
             }
-        }
-    }
-
-    protected function createTicketsFor(Event $event, $day, $capacity)
-    {
-        /** @var \BCRM\BackendBundle\Entity\Event\RegistrationRepository $registrationRepo */
-
-        $registrationRepo = $this->getContainer()->get('bcrm.backend.repo.registration');
-        // Regular tickets
-        foreach ($registrationRepo->getNextRegistrations($event, $day, $capacity) as $registration) {
-            $this->createTicketForRegistration($event, $registration, $day);
-        }
-        // VIP-Tickets
-        foreach ($registrationRepo->getNextVipRegistrations($event, $day) as $registration) {
-            $this->createTicketForRegistration($event, $registration, $day);
+            // VIP-Tickets
+            foreach ($registrationRepo->getNextVipRegistrations($event, $day) as $registration) {
+                $this->createTicketForRegistration($event, $registration, $day);
+            }
         }
     }
 
