@@ -65,6 +65,7 @@
             <a href="{{ path('bcrmweb_index') }}"
                 {% if app.request.get('_route') == 'bcrmweb_index' %}class="active"{% endif %}
                     rel="index">Das BarCamp</a>
+            {{ pagemacro.pagelink('Agenda', 'Agenda', app.request.get('path')) }}
             {{ pagemacro.pagelink('Location', 'Location', app.request.get('path')) }}
             {{ pagemacro.pagelink('Sponsoren', 'Sponsoren', app.request.get('path')) }}
         </nav>
