@@ -17,8 +17,11 @@ RewriteRule ^(.*)$ app.php [QSA,L]
 
 ############################################
 # Encoding - we don't want bÃ¶ses encoding!
-
 AddDefaultCharset "utf-8"
+
+############################################
+# Fix FCGI auth 
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
 
 ############################################
 # Caching
