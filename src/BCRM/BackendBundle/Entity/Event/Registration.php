@@ -20,6 +20,12 @@ class Registration extends AggregateResource
 
     const ARRIVAL_PRIVATE = 'private';
 
+    const TYPE_NORMAL = 1;
+
+    const TYPE_VIP = 2;
+
+    const TYPE_SPONSOR = 3;
+
     /**
      * @var integer
      * @ORM\Column(name="id", type="integer")
@@ -93,6 +99,14 @@ class Registration extends AggregateResource
      * @ORM\Column(type="boolean")
      */
     protected $confirmed = false;
+
+    /**
+     * @var integer
+     * @Assert\NotBlank()
+     * @Assert\Type(type="integer")
+     * @ORM\Column(type="integer")
+     */
+    protected $type = self::TYPE_NORMAL;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -251,6 +265,14 @@ class Registration extends AggregateResource
     }
 
     /**
+     * @return string
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
      * @param string $tags
      */
     public function setTags($tags)
@@ -259,11 +281,21 @@ class Registration extends AggregateResource
     }
 
     /**
-     * @return string
+     * @param int $type
      */
-    public function getTags()
+    public function setType($type)
     {
-        return $this->tags;
+        if (!in_array($type, array(self::TYPE_NORMAL, self::TYPE_VIP, self::TYPE_SPONSOR))) {
+            throw new \InvalidArgumentException("Invalid type");
+        }
+        $this->type = $type;
     }
 
+    /**
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
 }

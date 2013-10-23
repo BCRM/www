@@ -47,18 +47,28 @@ class CreateTicketsCommand extends ContainerAwareCommand
     protected function createTicketsFor(Event $event, $day, $capacity)
     {
         /** @var \BCRM\BackendBundle\Entity\Event\RegistrationRepository $registrationRepo */
-        $commandBus       = $this->getContainer()->get('command_bus');
+
         $registrationRepo = $this->getContainer()->get('bcrm.backend.repo.registration');
+        // Regular tickets
         foreach ($registrationRepo->getNextRegistrations($event, $day, $capacity) as $registration) {
-            /* @var $email Registration */
-            if ($this->output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
-                $this->output->writeln(sprintf('Creating day %d ticket for registration %s', $day, $registration));
-            }
-            $command               = new CreateTicketCommand();
-            $command->registration = $registration;
-            $command->day          = $day;
-            $command->event        = $event;
-            $commandBus->handle($command);
+            $this->createTicketForRegistration($event, $registration, $day);
         }
+        // VIP-Tickets
+        foreach ($registrationRepo->getNextVipRegistrations($event, $day) as $registration) {
+            $this->createTicketForRegistration($event, $registration, $day);
+        }
+    }
+
+    protected function createTicketForRegistration(Event $event, Registration $registration, $day)
+    {
+        $commandBus = $this->getContainer()->get('command_bus');
+        if ($this->output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
+            $this->output->writeln(sprintf('Creating day %d ticket for registration %s', $day, $registration));
+        }
+        $command               = new CreateTicketCommand();
+        $command->registration = $registration;
+        $command->day          = $day;
+        $command->event        = $event;
+        $commandBus->handle($command);
     }
 }

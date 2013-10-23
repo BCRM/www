@@ -25,13 +25,25 @@ interface RegistrationRepository
     public function getRegistrationByIdAndKey($id, $key);
 
     /**
+     * Returns up to $capacity registrations for the event $event without tickets for the given day $day.
+     * 
      * @param Event   $event
      * @param integer $day
      * @param integer $capacity
      *
-     * @return mixed
+     * @return Registration[]
      */
     public function getNextRegistrations(Event $event, $day, $capacity);
+
+    /**
+     * Returns VIP registrations for the event $event without tickets for the given day $day.
+     * 
+     * @param Event   $event
+     * @param integer $day
+     *
+     * @return Registration[]
+     */
+    public function getNextVipRegistrations(Event $event, $day);
 
     /**
      * @param Event $event

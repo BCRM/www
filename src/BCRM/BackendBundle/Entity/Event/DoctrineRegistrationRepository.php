@@ -8,7 +8,6 @@
 namespace BCRM\BackendBundle\Entity\Event;
 
 use Doctrine\ORM\EntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use PhpOption\None;
 use PhpOption\Option;
@@ -44,23 +43,20 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
     }
 
     /**
-     * @param Event   $event
-     * @param integer $day
-     * @param integer $capacity
-     *
-     * @return mixed
+     * {@inheritDocs}
      */
     public function getNextRegistrations(Event $event, $day, $capacity)
     {
         $rsm = new ResultSetMappingBuilder($this->_em);
         $rsm->addRootEntityFromClassMetadata('BCRM\BackendBundle\Entity\Event\Registration', 'r');
         $sql = sprintf(
-            'SELECT * FROM (SELECT * FROM registration WHERE confirmed = 1 ORDER BY created DESC, id DESC) AS ordered_registration ' .
+            'SELECT * FROM (SELECT * FROM registration WHERE confirmed = 1 AND type = %d ORDER BY created DESC, id DESC) AS ordered_registrations ' .
             'WHERE email NOT IN (SELECT email FROM ticket WHERE event_id = %d AND day = %d) ' .
             'GROUP BY email ' .
             'HAVING %s = 1 ' . 
             'ORDER BY created ASC, id ASC ' .
             'LIMIT %d',
+            Registration::TYPE_NORMAL,
             $event->getId(),
             $day,
             $day == Ticket::DAY_SATURDAY ? 'saturday' : 'sunday',
@@ -72,6 +68,31 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
         );
         return $query->getResult();
     }
+
+    /**
+     * {@inheritDocs}
+     */
+    public function getNextVipRegistrations(Event $event, $day)
+    {
+        $rsm = new ResultSetMappingBuilder($this->_em);
+        $rsm->addRootEntityFromClassMetadata('BCRM\BackendBundle\Entity\Event\Registration', 'r');
+        $sql = sprintf(
+            'SELECT * FROM (SELECT * FROM registration WHERE confirmed = 1 AND type IN (%s)) AS vip_registrations ' .
+            'WHERE email NOT IN (SELECT email FROM ticket WHERE event_id = %d AND day = %d) ' .
+            'GROUP BY email ' .
+            'HAVING %s = 1 ',
+            join(', ', array(Registration::TYPE_SPONSOR, Registration::TYPE_VIP)),
+            $event->getId(),
+            $day,
+            $day == Ticket::DAY_SATURDAY ? 'saturday' : 'sunday'
+        );
+        $query = $this->_em->createNativeQuery(
+            $sql,
+            $rsm
+        );
+        return $query->getResult();
+    }
+
 
     /**
      * @param Event  $event

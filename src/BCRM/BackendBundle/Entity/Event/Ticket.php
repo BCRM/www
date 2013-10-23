@@ -84,6 +84,14 @@ class Ticket extends AggregateResource
     protected $checkedIn = 0;
 
     /**
+     * @var integer
+     * @Assert\NotBlank()
+     * @Assert\Type(type="integer")
+     * @ORM\Column(type="integer")
+     */
+    protected $type = Registration::TYPE_NORMAL;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      * @var \DateTime
@@ -235,6 +243,38 @@ class Ticket extends AggregateResource
         $this->checkedIn = (boolean)$checkedIn;
     }
 
+    /**
+     * @param int $type
+     */
+    public function setType($type)
+    {
+        if (!in_array($type, array(Registration::TYPE_NORMAL, Registration::TYPE_VIP, Registration::TYPE_SPONSOR))) {
+            throw new \InvalidArgumentException("Invalid type");
+        }
+        $this->type = $type;
+    }
+
+    /**
+     * @return int
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getLabel()
+    {
+        switch($this->getType()) {
+        case Registration::TYPE_VIP:
+            return 'VIP';
+        case Registration::TYPE_SPONSOR:
+            return 'Sponsor';
+        }
+        return '';
+    }
 }
 
 

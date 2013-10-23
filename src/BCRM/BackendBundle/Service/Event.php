@@ -82,13 +82,13 @@ class Event
         $createRegistrationCommand        = new CreateResourceCommand();
         $createRegistrationCommand->class = '\BCRM\BackendBundle\Entity\Event\Registration';
         $createRegistrationCommand->data  = array(
-            'event' => $command->event, 
-            'email' => $command->email, 
-            'name' => $command->name, 
-            'saturday' => $command->saturday, 
-            'sunday' => $command->sunday, 
-            'arrival' => $command->arrival, 
-            'tags' => $command->tags
+            'event'    => $command->event,
+            'email'    => $command->email,
+            'name'     => $command->name,
+            'saturday' => $command->saturday,
+            'sunday'   => $command->sunday,
+            'arrival'  => $command->arrival,
+            'tags'     => $command->tags
         );
         $this->commandBus->handle($createRegistrationCommand);
     }
@@ -133,16 +133,17 @@ class Event
                 $code .= $seq[$i];
             }
         }
-        $createSubscriptionCommand        = new CreateResourceCommand();
-        $createSubscriptionCommand->class = '\BCRM\BackendBundle\Entity\Event\Ticket';
-        $createSubscriptionCommand->data  = array(
+        $createCommand        = new CreateResourceCommand();
+        $createCommand->class = '\BCRM\BackendBundle\Entity\Event\Ticket';
+        $createCommand->data  = array(
             'event' => $command->event,
             'email' => $command->registration->getEmail(),
             'name'  => $command->registration->getName(),
             'day'   => $command->day,
+            'type'  => $command->registration->getType(),
             'code'  => $code
         );
-        $this->commandBus->handle($createSubscriptionCommand);
+        $this->commandBus->handle($createCommand);
     }
 
     public function sendTicketMail(SendTicketMailCommand $command)
@@ -167,9 +168,9 @@ class Event
             'ticket'      => $command->ticket,
             'event'       => $command->event,
             'cancel_link' => rtrim($command->schemeAndHost, '/') . $this->router->generate(
-                'bcrmweb_event_cancel_ticket', 
-                array('id' => $command->ticket->getId(), 'code' => $command->ticket->getCode())
-            )
+                    'bcrmweb_event_cancel_ticket',
+                    array('id' => $command->ticket->getId(), 'code' => $command->ticket->getCode())
+                )
         );
         $emailCommand->image        = $qrfile;
         $emailCommand->format       = 'text/html';

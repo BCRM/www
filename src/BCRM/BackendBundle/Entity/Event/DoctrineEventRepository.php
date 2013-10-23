@@ -40,6 +40,7 @@ class DoctrineEventRepository extends EntityRepository implements EventRepositor
             ->select('e.capacity - COUNT(t.id) as capacity')
             ->leftJoin('e.tickets', 't')
             ->andWhere('t.day = :day')->setParameter('day', $day)
+            ->andWhere('t.type = :type')->setParameter('type', Registration::TYPE_NORMAL)
             ->andWhere('e.id = :event')->setParameter('event', $event->getId())
             ->getQuery()
             ->getSingleScalarResult();

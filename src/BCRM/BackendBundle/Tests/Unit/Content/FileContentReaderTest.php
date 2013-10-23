@@ -1,8 +1,11 @@
 <?php
+
 /**
  * @author    Markus Tacker <m@coderbyheart.de>
  * @copyright 2013 Verein zur Förderung der Netzkultur im Rhein-Main-Gebiet e.V. | http://netzkultur-rheinmain.de/
  */
+
+namespace BCRM\BackendBundle\Tests\Unit\Content;
 
 class FileContentReaderTest extends \PHPUnit_Framework_TestCase
 {
