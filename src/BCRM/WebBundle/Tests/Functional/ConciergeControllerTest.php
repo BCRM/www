@@ -56,9 +56,26 @@ class ConciergeControllerTest extends Base
             'PHP_AUTH_USER' => 'concierge',
             'PHP_AUTH_PW'   => 'letmein',
         ));
-        $client->request('GET', sprintf('/checkin/%d/%s', $ticket->getId(), $ticket->getCode()));
+        $crawler = $client->request('GET', sprintf('/checkin/%d/%s', $ticket->getId(), $ticket->getCode()));
         $response = $client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
+        
+        // Page must contain correct ticket details
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('html:contains("John Doe")')->count(),
+            'Visitor name is not shown'
+        );
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('html:contains("WOOT")')->count(),
+            'Ticket code is not shown'
+        );
+        $this->assertGreaterThan(
+            0,
+            $crawler->filter('html:contains("Samstag")')->count(),
+            'Ticket day is not shown'
+        );
         
         /* @var $ticket Ticket */
         $ticket = $em->getRepository('BCRMBackendBundle:Event\Ticket')->findOneBy(array('code' => 'WOOT', 'checkedIn' => 1));
