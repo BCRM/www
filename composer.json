@@ -32,7 +32,8 @@
         "bcrm/www-content": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "endroid/qrcode-bundle": "dev-master",
-        "coderbyheart/mailchimp-bundle": "dev-master"
+        "kriswallsmith/buzz": "dev-master@dev",
+        "coderbyheart/mailchimp-bundle": "dev-master@dev"
     },
     "scripts": {
         "post-install-cmd": [
