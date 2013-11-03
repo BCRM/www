@@ -13,14 +13,14 @@
     <title>{{ title|default(default_title) }}</title>
     <meta name="description" content="{{ description|default(default_description) }}">
     <meta name="viewport" content="width=device-width">
-    
+
     {# Twitter card #}
     <meta name="twitter:card"        content="summary">
     <meta name="twitter:site"        content="@bc_rm">
     <meta name="twitter:title"       content="{{ title|default(default_title) }}">
     <meta name="twitter:description" content="{{ description|default(default_description) }}">
     <meta name="twitter:image:src"   content="{{ image|default(default_image) }}">
-    
+
     {# Facebook OpenGraph Data #}
     <meta property="og:type"                  content="event">
     <meta property="event:start_time"         content="2013-11-23T08:00:00+01:00">
@@ -66,6 +66,9 @@
                 {% if app.request.get('_route') == 'bcrmweb_index' %}class="active"{% endif %}
                     rel="index">Das BarCamp</a>
             {{ pagemacro.pagelink('Agenda', 'Agenda', app.request.get('path')) }}
+            <a href="{{ path('bcrmweb_sessions') }}"
+               {% if app.request.get('_route') == 'bcrmweb_sessions' %}class="active"{% endif %}
+                    >Sessions</a>
             {{ pagemacro.pagelink('Location', 'Location', app.request.get('path')) }}
             {{ pagemacro.pagelink('Sponsoren', 'Sponsoren', app.request.get('path')) }}
         </nav>
@@ -90,7 +93,7 @@
             {% endfor %}
             {% endif %}
             {% endif %}
-            
+
             <a class="twitter-timeline" href="https://twitter.com/search?q=%23bcrm+OR+%23bcrm13+OR+%40bc_rm+-RT" data-widget-id="390135869656420353">Tweets zum BarCamp RheinMain</a>
         </aside>
 

@@ -5,6 +5,13 @@ bcrmweb_index:
     defaults:
         _controller: bcrm.web.controller.web:indexAction
 
+bcrmweb_sessions:
+    path: /sessions
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.web:pageAction
+        path: Sessions
+
 bcrmweb_page:
     path: /p/{path}
     methods: [GET]
