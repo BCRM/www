@@ -13,11 +13,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ListsCommand extends ContainerAwareCommand
 {
-    /**
-     * @var OutputInterface
-     */
-    private $output;
-
     protected function configure()
     {
         $this
@@ -30,9 +25,8 @@ class ListsCommand extends ContainerAwareCommand
         /* @var \BCRM\MailChimpBundle\MailChimp\Api $mailchimp */
         $mailchimp = $this->getContainer()->get('bcrm.mailchimp');
         $output->writeln('Available lists in our mailchimp account:');
-        foreach($mailchimp->listsList() as $list) {
+        foreach ($mailchimp->listsList() as $list) {
             $output->writeln(sprintf('%s (%s)', $list->name, $list->id));
         }
-
     }
 }

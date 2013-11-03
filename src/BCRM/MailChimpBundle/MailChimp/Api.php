@@ -38,14 +38,14 @@ class Api
         $this->apiKey = $apiKey;
     }
 
-    protected function get($endpoint)
+    protected function get($endpoint, $args)
     {
-        $request      = array(
+        $request = array_merge($args, array(
             'apikey' => $this->apiKey,
-        );
-        $requestData  = json_encode($request);
-        $browser      = new Browser(new Curl());
-        $response     = $browser->post(
+        ));
+        $requestData     = json_encode($request);
+        $browser         = new Browser(new Curl());
+        $response        = $browser->post(
             sprintf('https://%s.api.mailchimp.com/2.0/%s.%s', $this->dataCenter, $endpoint, $this->format),
             array(
                 //'Content-Type: application/x-www-form-urlencoded',
@@ -56,7 +56,13 @@ class Api
             ),
             $requestData
         );
-        $responseData = json_decode($response->getContent());
+        $responseContent = $response->getContent();
+        $responseData    = json_decode($responseContent);
+        if (property_exists($responseData, 'status') && $responseData->status == 'error') {
+            throw new BadMethodCallException(
+                sprintf('Request to "%s" failed: %s', $endpoint, $responseData->error)
+            );
+        }
         return $responseData;
     }
 
@@ -65,7 +71,7 @@ class Api
         if (!preg_match('/([a-z]+)([A-Z][a-z]+)$/', $method, $matches)) {
             $this->$method($args);
         }
-        $result = $this->get(strtolower($matches[1] . '/' . $matches[2]), $args);
+        $result = $this->get(strtolower($matches[1] . '/' . $matches[2]), empty($args) ? array() : $args[0]);
         return $result->data;
     }
 } 
