@@ -20,6 +20,13 @@ interface TicketRepository
 
     /**
      * @param Event $event
+     *
+     * @return Ticket[]
+     */
+    public function getTicketsForEvent(Event $event);
+
+    /**
+     * @param Event $event
      * @param string $email
      *
      * @return Ticket[]

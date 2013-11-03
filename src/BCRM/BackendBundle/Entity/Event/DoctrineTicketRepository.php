@@ -58,5 +58,16 @@ class DoctrineTicketRepository extends EntityRepository implements TicketReposit
             ->getOneOrNullResult());
     }
 
-
+    /**
+     * @param Event $event
+     *
+     * @return Ticket[]
+     */
+    public function getTicketsForEvent(Event $event)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.event = :event')->setParameter('event', $event)
+            ->getQuery()
+            ->getResult();
+    }
 }
