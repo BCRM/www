@@ -80,3 +80,6 @@ lite_cqrs:
 
 bcrm_web:
     content_dir: %web.content_dir%
+
+bcrm_mail_chimp:
+  api_key: %mailchimp.api_key%

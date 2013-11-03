@@ -30,3 +30,5 @@ parameters:
     web.content_dir:   %kernel.root_dir%/../web/content
 
     password.concierge: changeme
+
+    mailchimp.api_key: somekey

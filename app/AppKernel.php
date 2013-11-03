@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             new Endroid\Bundle\QrCodeBundle\EndroidQrCodeBundle(),
             new BCRM\WebBundle\BCRMWebBundle(),
             new BCRM\BackendBundle\BCRMBackendBundle(),
+            new BCRM\MailChimpBundle\BCRMMailChimpBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

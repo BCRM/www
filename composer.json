@@ -31,7 +31,8 @@
         "beberlei/lite-cqrs": "dev-master",
         "bcrm/www-content": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
-        "endroid/qrcode-bundle": "dev-master"
+        "endroid/qrcode-bundle": "dev-master",
+        "kriswallsmith/buzz": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
