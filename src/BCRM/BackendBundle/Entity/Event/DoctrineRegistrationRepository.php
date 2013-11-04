@@ -49,20 +49,13 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
     {
         $rsm = new ResultSetMappingBuilder($this->_em);
         $rsm->addRootEntityFromClassMetadata('BCRM\BackendBundle\Entity\Event\Registration', 'r');
-        $sql = sprintf(
-            'SELECT * FROM (SELECT * FROM registration WHERE confirmed = 1 AND type = %d ORDER BY created DESC, id DESC) AS ordered_registrations ' .
-            'WHERE email NOT IN (SELECT email FROM ticket WHERE event_id = %d AND day = %d) ' .
-            'GROUP BY email ' .
-            'HAVING %s = 1 ' . 
-            'ORDER BY created ASC, id ASC ' .
-            'LIMIT %d',
-            Registration::TYPE_NORMAL,
-            $event->getId(),
-            $day,
-            $day == Ticket::DAY_SATURDAY ? 'saturday' : 'sunday',
-            $capacity
-        );
-        $query = $this->_em->createNativeQuery(
+
+        $type          = Registration::TYPE_NORMAL;
+        $eventId       = $event->getId();
+        $dayName       = $day == Ticket::DAY_SATURDAY ? 'saturday' : 'sunday';
+        $registrations = "SELECT MAX(id) FROM registration WHERE confirmed = 1 AND type = $type AND event_id = $eventId GROUP BY event_id, email ORDER BY created ASC, id ASC";
+        $sql           = "SELECT * FROM registration WHERE id IN ($registrations) AND email NOT IN (SELECT email FROM ticket WHERE day = $day AND event_id = $eventId) AND $dayName = 1 LIMIT $capacity";
+        $query         = $this->_em->createNativeQuery(
             $sql,
             $rsm
         );
@@ -76,17 +69,12 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
     {
         $rsm = new ResultSetMappingBuilder($this->_em);
         $rsm->addRootEntityFromClassMetadata('BCRM\BackendBundle\Entity\Event\Registration', 'r');
-        $sql = sprintf(
-            'SELECT * FROM (SELECT * FROM registration WHERE confirmed = 1 AND type IN (%s) ORDER BY created DESC, id DESC) AS vip_registrations ' .
-            'WHERE email NOT IN (SELECT email FROM ticket WHERE event_id = %d AND day = %d) ' .
-            'GROUP BY email ' .
-            'HAVING %s = 1 ',
-            join(', ', array(Registration::TYPE_SPONSOR, Registration::TYPE_VIP)),
-            $event->getId(),
-            $day,
-            $day == Ticket::DAY_SATURDAY ? 'saturday' : 'sunday'
-        );
-        $query = $this->_em->createNativeQuery(
+        $types         = join(',', array(Registration::TYPE_SPONSOR, Registration::TYPE_VIP));
+        $eventId       = $event->getId();
+        $dayName       = $day == Ticket::DAY_SATURDAY ? 'saturday' : 'sunday';
+        $registrations = "SELECT MAX(id) FROM registration WHERE confirmed = 1 AND type IN ($types) AND event_id = $eventId GROUP BY event_id, email ORDER BY created ASC, id ASC";
+        $sql           = "SELECT * FROM registration WHERE id IN ($registrations) AND email NOT IN (SELECT email FROM ticket WHERE day = $day AND event_id = $eventId) AND $dayName = 1";
+        $query         = $this->_em->createNativeQuery(
             $sql,
             $rsm
         );

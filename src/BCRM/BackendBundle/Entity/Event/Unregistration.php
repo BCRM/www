@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Unregistration
  *
- * @ORM\Table(name="unregistration")
+ * @ORM\Table(name="unregistration",indexes={@ORM\Index(name="email_idx", columns={"email"})})
  * @ORM\Entity(repositoryClass="BCRM\BackendBundle\Entity\Event\DoctrineUnregistrationRepository")
  */
 class Unregistration extends AggregateResource
@@ -36,7 +36,7 @@ class Unregistration extends AggregateResource
      * @var string
      * @Assert\NotBlank()
      * @Assert\Email()
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="string")
      */
     protected $email;
 
