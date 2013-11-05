@@ -3,15 +3,21 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "00c5d1906b9d549a2bc859c6d762b144",
+    "hash": "38216dbc4ddc9d1398102fb2cc9ce523",
     "packages": [
         {
             "name": "bcrm/www-content",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "git@github.com:BCRM/www-content.git",
-                "reference": "e59244590aa815f68ba67bf11f7e9500f277b4c3"
+                "url": "https://github.com/BCRM/www-content.git",
+                "reference": "5cef0236ea2541610296568b54defd02289f5199"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/BCRM/www-content/zipball/5cef0236ea2541610296568b54defd02289f5199",
+                "reference": "5cef0236ea2541610296568b54defd02289f5199",
+                "shasum": ""
             },
             "type": "library",
             "license": [
@@ -24,7 +30,10 @@
                 }
             ],
             "description": "Content for http://dieburg2013.barcamp-rheinmain.de/ based on simple Markdown files.",
-            "time": "2013-10-29 19:52:51"
+            "support": {
+                "source": "https://github.com/BCRM/www-content/tree/master"
+            },
+            "time": "2013-11-04 09:42:01"
         },
         {
             "name": "beberlei/lite-cqrs",
@@ -32,12 +41,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/beberlei/litecqrs-php.git",
-                "reference": "0a6f54d2ac01f3c1383c141b9fa92162b0562285"
+                "reference": "33ce3bd748d1519d085dea1b8e09146337861b7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/litecqrs-php/zipball/0a6f54d2ac01f3c1383c141b9fa92162b0562285",
-                "reference": "0a6f54d2ac01f3c1383c141b9fa92162b0562285",
+                "url": "https://api.github.com/repos/beberlei/litecqrs-php/zipball/33ce3bd748d1519d085dea1b8e09146337861b7e",
+                "reference": "33ce3bd748d1519d085dea1b8e09146337861b7e",
                 "shasum": ""
             },
             "require-dev": {
@@ -61,7 +70,7 @@
                 "MIT"
             ],
             "description": "Simple Command-Query-Responsibility-Segregation library.",
-            "time": "2013-07-17 08:39:13"
+            "time": "2013-11-04 22:42:30"
         },
         {
             "name": "coderbyheart/mailchimp-bundle",
@@ -874,16 +883,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "90f5c393b907ca9b46e507def43735de959b77fc"
+                "reference": "0f5a110a1e6ae413e425912e6601643f91b069c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/90f5c393b907ca9b46e507def43735de959b77fc",
-                "reference": "90f5c393b907ca9b46e507def43735de959b77fc",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/0f5a110a1e6ae413e425912e6601643f91b069c1",
+                "reference": "0f5a110a1e6ae413e425912e6601643f91b069c1",
                 "shasum": ""
             },
             "require": {
-                "doctrine/dbal": ">=2.0,<2.5.x-dev",
+                "doctrine/dbal": "~2.0",
                 "php": ">=5.3.2"
             },
             "require-dev": {
@@ -926,7 +935,7 @@
                 "database",
                 "migrations"
             ],
-            "time": "2013-10-23 14:44:19"
+            "time": "2013-11-03 20:54:43"
         },
         {
             "name": "doctrine/orm",
