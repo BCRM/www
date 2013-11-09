@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "38216dbc4ddc9d1398102fb2cc9ce523",
+    "hash": "f656a692292d6458237b575b71ed01c4",
     "packages": [
         {
             "name": "bcrm/www-content",
@@ -1581,6 +1581,49 @@
             "time": "2013-07-28 22:38:30"
         },
         {
+            "name": "nesbot/carbon",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/briannesbitt/Carbon.git",
+                "reference": "ec522dbbad9ede3d0410d939d934007e30f191b0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/briannesbitt/Carbon/zipball/ec522dbbad9ede3d0410d939d934007e30f191b0",
+                "reference": "ec522dbbad9ede3d0410d939d934007e30f191b0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Carbon": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brian Nesbitt",
+                    "email": "brian@nesbot.com",
+                    "homepage": "http://nesbot.com"
+                }
+            ],
+            "description": "A simple API extension for DateTime.",
+            "homepage": "https://github.com/briannesbitt/Carbon",
+            "keywords": [
+                "date",
+                "datetime",
+                "time"
+            ],
+            "time": "2013-10-31 03:33:19"
+        },
+        {
             "name": "ornicar/gravatar-bundle",
             "version": "dev-master",
             "target-dir": "Ornicar/GravatarBundle",
@@ -2362,7 +2405,8 @@
         "doctrine/doctrine-fixtures-bundle": 20,
         "endroid/qrcode-bundle": 20,
         "kriswallsmith/buzz": 20,
-        "coderbyheart/mailchimp-bundle": 20
+        "coderbyheart/mailchimp-bundle": 20,
+        "nesbot/carbon": 20
     },
     "platform": {
         "php": ">=5.3.3"

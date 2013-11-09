@@ -33,7 +33,8 @@
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "endroid/qrcode-bundle": "dev-master",
         "kriswallsmith/buzz": "dev-master@dev",
-        "coderbyheart/mailchimp-bundle": "dev-master@dev"
+        "coderbyheart/mailchimp-bundle": "dev-master@dev",
+        "nesbot/carbon": "dev-master"
     },
     "scripts": {
         "post-install-cmd": [
