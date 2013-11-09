@@ -60,4 +60,14 @@ interface TicketRepository
      * @return integer
      */
     public function getCheckinCountForEvent(Event $event, $day);
+
+    /**
+     * Returns the list of unprinted tickets for the given day.
+     *
+     * @param Event $event
+     * @param       $day
+     *
+     * @return Ticket[]
+     */
+    public function getUnprintedTickets(Event $event, $day);
 }

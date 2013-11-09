@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="bcrm.print.controller.printing.class">BCRM\PrintBundle\Controller\PrintingController</parameter>
+    </parameters>
+    <services>
+        <service id="bcrm.print.controller.printing" class="%bcrm.print.controller.printing.class%" scope="request">
+            <argument type="service" id="bcrm.backend.repo.event" />
+            <argument type="service" id="bcrm.backend.repo.registration" />
+            <argument type="service" id="bcrm.backend.repo.ticket" />
+            <argument type="service" id="command_bus"/>
+            <argument type="service" id="router"/>
+            <argument>%scheme_and_host%</argument>
+        </service>
+    </services>
+</container>

@@ -23,6 +23,7 @@ class AppKernel extends Kernel
             new LiteCQRS\Plugin\SymfonyBundle\LiteCQRSBundle(),
             new Endroid\Bundle\QrCodeBundle\EndroidQrCodeBundle(),
             new BCRM\WebBundle\BCRMWebBundle(),
+            new BCRM\PrintBundle\BCRMPrintBundle(),
             new BCRM\BackendBundle\BCRMBackendBundle(),
             new Coderbyheart\MailChimpBundle\CoderbyheartMailChimpBundle(),
         );

@@ -108,5 +108,23 @@ class DoctrineTicketRepository extends EntityRepository implements TicketReposit
             ->getSingleScalarResult();
     }
 
+    /**
+     * Returns the list of unprinted tickets for the given day.
+     *
+     * @param Event $event
+     * @param       $day
+     *
+     * @return Ticket[]
+     */
+    public function getUnprintedTickets(Event $event, $day)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.event = :event')->setParameter('event', $event)
+            ->andWhere('t.day = :day')->setParameter('day', $day)
+            ->andWhere('t.checkedIn = 1')
+            ->andWhere('t.printed = 0')
+            ->getQuery()
+            ->getResult();
+    }
 
 }

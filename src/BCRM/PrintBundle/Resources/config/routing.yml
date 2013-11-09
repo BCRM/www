@@ -1,0 +1,11 @@
+bcrmprint_printing_queue:
+    path: /queue
+    methods: [GET]
+    defaults:
+        _controller: bcrm.print.controller.printing:queueAction
+
+bcrmprint_ticket:
+    path: /ticket/{id}/{code}
+    methods: [PATCH]
+    defaults:
+        _controller: bcrm.print.controller.printing:printAction

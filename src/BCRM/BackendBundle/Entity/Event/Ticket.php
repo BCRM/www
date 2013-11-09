@@ -84,6 +84,13 @@ class Ticket extends AggregateResource
     protected $checkedIn = 0;
 
     /**
+     * @var boolean
+     * @Assert\Type(type="boolean")
+     * @ORM\Column(type="boolean")
+     */
+    protected $printed = 0;
+
+    /**
      * @var integer
      * @Assert\NotBlank()
      * @Assert\Type(type="integer")
@@ -261,20 +268,29 @@ class Ticket extends AggregateResource
     {
         return $this->type;
     }
-    
+
     /**
      * @return string
      */
     public function getLabel()
     {
-        switch($this->getType()) {
-        case Registration::TYPE_VIP:
-            return 'VIP';
-        case Registration::TYPE_SPONSOR:
-            return 'Sponsor';
+        switch ($this->getType()) {
+            case Registration::TYPE_VIP:
+                return 'VIP';
+            case Registration::TYPE_SPONSOR:
+                return 'Sponsor';
         }
         return '';
     }
+
+    /**
+     * @param boolean $notified
+     */
+    public function setNotified($notified)
+    {
+        $this->notified = (bool)$notified;
+    }
+
 }
 
 

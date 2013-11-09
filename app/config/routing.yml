@@ -1,3 +1,7 @@
 bcrm_web:
     resource: "@BCRMWebBundle/Resources/config/routing.yml"
     prefix:   /
+
+bcrm_printing:
+    resource: "@BCRMPrintBundle/Resources/config/routing.yml"
+    prefix:   /api/printing
