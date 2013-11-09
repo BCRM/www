@@ -1,0 +1,18 @@
+{% extends "BCRMWebBundle:Concierge:page.html.twig" %}
+
+{% form_theme form "BCRMWebBundle:Form:bootstrap.html.twig" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                {{ form(form) }}
+            </div>
+            <div class="col-lg-4">
+                <p>Mit diesem Formular kannst Du Tickets direkt anlegen.</p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+

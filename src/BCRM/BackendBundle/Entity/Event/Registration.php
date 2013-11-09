@@ -66,7 +66,6 @@ class Registration extends AggregateResource
 
     /**
      * @var boolean
-     * @Assert\NotBlank()
      * @Assert\Type(type="boolean")
      * @ORM\Column(type="boolean")
      */
@@ -74,7 +73,6 @@ class Registration extends AggregateResource
 
     /**
      * @var boolean
-     * @Assert\NotBlank()
      * @Assert\Type(type="boolean")
      * @ORM\Column(type="boolean")
      */
@@ -94,7 +92,6 @@ class Registration extends AggregateResource
 
     /**
      * @var boolean
-     * @Assert\NotBlank()
      * @Assert\Type(type="boolean")
      * @ORM\Column(type="boolean")
      */
@@ -297,5 +294,13 @@ class Registration extends AggregateResource
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isConfirmed()
+    {
+        return $this->confirmed;
     }
 }

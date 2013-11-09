@@ -98,6 +98,12 @@ bcrmweb_concierge_index:
     defaults:
         _controller: bcrm.web.controller.concierge:indexAction
 
+bcrmweb_concierge_create_ticket:
+    path: /concierge/ticket/new
+    methods: [GET,POST]
+    defaults:
+        _controller: bcrm.web.controller.concierge:createTicketAction
+
 bcrmweb_event_manual_checkin:
     path: /concierge/checkin
     methods: [GET]

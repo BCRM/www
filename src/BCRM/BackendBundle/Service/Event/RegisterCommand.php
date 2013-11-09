@@ -7,6 +7,8 @@
 
 namespace BCRM\BackendBundle\Service\Event;
 
+use BCRM\BackendBundle\Entity\Event\Registration;
+
 class RegisterCommand
 {
     public $event;
@@ -18,8 +20,12 @@ class RegisterCommand
     public $saturday;
 
     public $sunday;
-    
+
     public $arrival;
-    
+
     public $tags;
+
+    public $type = Registration::TYPE_NORMAL;
+
+    public $confirmed = false;
 }

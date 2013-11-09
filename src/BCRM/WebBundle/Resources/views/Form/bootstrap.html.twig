@@ -1,0 +1,59 @@
+{% extends 'form_div_layout.html.twig' %}
+
+{% block form_start %}
+    {% set attr = attr|merge({'role': 'form' }) %}
+    {{ parent() }}
+{% endblock form_start %}
+
+{% block button_widget %}
+    {% set attr = attr|merge({'class': attr.class|default('') ~ ' btn' }) %}
+    {{ parent() }}
+{% endblock button_widget %}
+
+{% block form_row %}
+    {% if choices is defined and choices|length > 1 %}
+        {% if expanded %}
+            {% if multiple %}
+                {% set class = "checkbox-group" %}
+            {% else %}
+                {% set class = "radio-group" %}
+            {% endif %}
+        {% endif %}
+    {% endif %}
+    <div class="{{ class|default('form-group') }}">
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+    </div>
+{% endblock form_row %}
+
+{% block form_widget_simple %}
+    {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control' }) %}
+    {{ parent() }}
+{% endblock form_widget_simple %}
+
+{% block radio_widget %}
+    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' radio')|trim}) %}
+    {% spaceless %}
+        <div class="radio">
+            <label>
+                <input type="radio" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+                {{ label|trans({}, translation_domain) }}
+            </label>
+        </div>
+    {% endspaceless %}
+{% endblock radio_widget %}
+{% block radio_label %}{% endblock %}
+
+{% block checkbox_widget %}
+    {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' radio')|trim}) %}
+    {% spaceless %}
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+                {{ label|trans({}, translation_domain) }}
+            </label>
+        </div>
+    {% endspaceless %}
+{% endblock checkbox_widget %}
+{% block checkbox_label %}{% endblock %}
