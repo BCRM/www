@@ -11,6 +11,7 @@ use BCRM\BackendBundle\Entity\Event\Ticket;
 use BCRM\BackendBundle\Entity\Event\TicketRepository;
 use BCRM\BackendBundle\Service\Concierge\CheckinCommand;
 use BCRM\WebBundle\Content\ContentReader;
+use BCRM\WebBundle\Exception\BadRequestException;
 use LiteCQRS\Bus\CommandBus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -54,7 +55,9 @@ class CheckinController
         /* @var $ticket Ticket */
         $ticket = $this->ticketRepo->getTicketByIdAndCode($id, $code)->getOrThrow(new NotFoundHttpException('Unknown ticket.'));
 
-        $command = new CheckinCommand();
+        if ($ticket->isCheckedIn()) throw new BadRequestException('Already checked in!');
+
+        $command         = new CheckinCommand();
         $command->ticket = $ticket;
         $this->commandBus->handle($command);
 

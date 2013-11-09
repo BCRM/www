@@ -91,7 +91,42 @@ class ConciergeControllerTest extends Base
      */
     public function doubleCheckinShouldNotWork()
     {
-        $this->markTestIncomplete();
+        $client    = static::createClient();
+        $container = $client->getContainer();
+
+        // Confirm registration key
+        /* @var $em \Doctrine\Common\Persistence\ObjectManager */
+        $em = $container
+            ->get('doctrine')
+            ->getManager();
+
+        // Create a ticket
+        $event  = $em->getRepository('BCRMBackendBundle:Event\Event')->findAll()[0];
+        $ticket = new Ticket();
+        $ticket->setEmail('doublecheckin@domain.com');
+        $ticket->setName('John Doe');
+        $ticket->setEvent($event);
+        $ticket->setDay(Ticket::DAY_SATURDAY);
+        $ticket->setCode('DBLCHKN');
+        $em->persist($ticket);
+        $em->flush();
+
+        /* @var $ticket Ticket */
+        $ticket = $em->getRepository('BCRMBackendBundle:Event\Ticket')->findOneBy(array('code' => 'DBLCHKN'));
+
+        $client   = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'concierge',
+            'PHP_AUTH_PW'   => 'letmein',
+        ));
+        $client->request('GET', sprintf('/checkin/%d/%s', $ticket->getId(), $ticket->getCode()));
+        $response = $client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+
+        // Second checkin attempt should not work
+        $client->request('GET', sprintf('/checkin/%d/%s', $ticket->getId(), $ticket->getCode()));
+        $response = $client->getResponse();
+        $this->assertEquals(400, $response->getStatusCode());
+
     }
 
     /**
