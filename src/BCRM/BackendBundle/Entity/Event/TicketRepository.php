@@ -47,7 +47,7 @@ interface TicketRepository
      * @param Event $event
      * @param       $day
      *
-     * @return mixed
+     * @return integer
      */
     public function getTicketCountForEvent(Event $event, $day);
 
@@ -57,7 +57,7 @@ interface TicketRepository
      * @param Event $event
      * @param       $day
      *
-     * @return mixed
+     * @return integer
      */
     public function getCheckinCountForEvent(Event $event, $day);
 }
