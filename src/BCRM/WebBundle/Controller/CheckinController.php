@@ -7,10 +7,13 @@
 
 namespace BCRM\WebBundle\Controller;
 
+use BCRM\BackendBundle\Entity\Event\Event;
+use BCRM\BackendBundle\Entity\Event\EventRepository;
 use BCRM\BackendBundle\Entity\Event\Ticket;
 use BCRM\BackendBundle\Entity\Event\TicketRepository;
 use BCRM\BackendBundle\Service\Concierge\CheckinCommand;
 use BCRM\WebBundle\Content\ContentReader;
+use BCRM\WebBundle\Exception\AccesDeniedHttpException;
 use BCRM\WebBundle\Exception\BadRequestException;
 use Carbon\Carbon;
 use LiteCQRS\Bus\CommandBus;
@@ -23,24 +26,14 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
- * Manages event registrations.
+ * Manages event checkins.
  */
 class CheckinController
 {
-    /**
-     * @var ContentReader
-     */
-    private $reader;
-
-    /**
-     * @var \BCRM\BackendBundle\Entity\Event\TicketRepository
-     */
-    private $ticketRepo;
-
-    public function __construct(ContentReader $reader, TicketRepository $ticketRepo, CommandBus $commandBus)
+    public function __construct(EventRepository $eventRepo, TicketRepository $ticketRepo, CommandBus $commandBus)
     {
-        $this->reader     = $reader;
         $this->ticketRepo = $ticketRepo;
+        $this->eventRepo  = $eventRepo;
         $this->commandBus = $commandBus;
     }
 
@@ -63,7 +56,8 @@ class CheckinController
         }
 
         // Do not allow checkins on the wrong day
-        $event = $ticket->getEvent();
+        /* @var $event Event */
+        $event = $this->eventRepo->getNextEvent()->getOrThrow(new AccesDeniedHttpException('No event.'));
         $now   = new Carbon();
         $start = Carbon::createFromTimestamp($event->getStart()->getTimestamp());
         $start->setTime(0, 0, 0);
@@ -82,8 +76,17 @@ class CheckinController
         $this->commandBus->handle($command);
 
         return array(
-            'ticket'   => $ticket,
-            'sponsors' => $this->reader->getPage('Sponsoren/Index.md'),
+            'ticket' => $ticket
         );
+    }
+
+    /**
+     * Allows the concierge to checkin attendees which did not bring their ticket,
+     *
+     * @Template()
+     */
+    public function manualCheckinAction()
+    {
+        return array();
     }
 }

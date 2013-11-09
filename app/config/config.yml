@@ -30,6 +30,8 @@ twig:
           google_analytics_domain: %google.analytics.domain%
           scheme_and_host: %scheme_and_host%
           assets_version: %assets_version%
+          bootstrap_version: 3.0.2
+          jquery_version: 1.10.2
 
 # Assetic Configuration
 assetic:

@@ -26,7 +26,7 @@ interface TicketRepository
     public function getTicketsForEvent(Event $event);
 
     /**
-     * @param Event $event
+     * @param Event  $event
      * @param string $email
      *
      * @return Ticket[]
@@ -35,9 +35,29 @@ interface TicketRepository
 
     /**
      * @param integer $id
-     * @param string $code
+     * @param string  $code
      *
      * @return Option
      */
     public function getTicketByIdAndCode($id, $code);
+
+    /**
+     * Returns the number of tickets for the given day.
+     *
+     * @param Event $event
+     * @param       $day
+     *
+     * @return mixed
+     */
+    public function getTicketCountForEvent(Event $event, $day);
+
+    /**
+     * Returns the number of checkins for the given day.
+     *
+     * @param Event $event
+     * @param       $day
+     *
+     * @return mixed
+     */
+    public function getCheckinCountForEvent(Event $event, $day);
 }

@@ -70,4 +70,43 @@ class DoctrineTicketRepository extends EntityRepository implements TicketReposit
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Returns the number of tickets for the given day.
+     *
+     * @param Event $event
+     * @param       $day
+     *
+     * @return mixed
+     */
+    public function getTicketCountForEvent(Event $event, $day)
+    {
+        return $this->createQueryBuilder('t')
+            ->select('COUNT(t.id)')
+            ->andWhere('t.event = :event')->setParameter('event', $event)
+            ->andWhere('t.day = :day')->setParameter('day', $day)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    /**
+     * Returns the number of checkins for the given day.
+     *
+     * @param Event $event
+     * @param       $day
+     *
+     * @return mixed
+     */
+    public function getCheckinCountForEvent(Event $event, $day)
+    {
+        return $this->createQueryBuilder('t')
+            ->select('COUNT(t.id)')
+            ->andWhere('t.event = :event')->setParameter('event', $event)
+            ->andWhere('t.day = :day')->setParameter('day', $day)
+            ->andWhere('t.checkedIn = 1')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+
 }

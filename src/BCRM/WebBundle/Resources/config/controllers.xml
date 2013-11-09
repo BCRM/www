@@ -6,6 +6,7 @@
         <parameter key="bcrm.web.controller.web.class">BCRM\WebBundle\Controller\WebController</parameter>
         <parameter key="bcrm.web.controller.event.class">BCRM\WebBundle\Controller\EventController</parameter>
         <parameter key="bcrm.web.controller.checkin.class">BCRM\WebBundle\Controller\CheckinController</parameter>
+        <parameter key="bcrm.web.controller.concierge.class">BCRM\WebBundle\Controller\ConciergeController</parameter>
     </parameters>
     <services>
         <service id="bcrm.web.controller.web" class="%bcrm.web.controller.web.class%" scope="request">
@@ -26,7 +27,12 @@
             <argument type="service" id="bcrm.backend.repo.ticket" />
         </service>
         <service id="bcrm.web.controller.checkin" class="%bcrm.web.controller.checkin.class%" scope="request">
-            <argument type="service" id="bcrm.web.contentReader"/>
+            <argument type="service" id="bcrm.backend.repo.event" />
+            <argument type="service" id="bcrm.backend.repo.ticket" />
+            <argument type="service" id="command_bus"/>
+        </service>
+        <service id="bcrm.web.controller.concierge" class="%bcrm.web.controller.concierge.class%" scope="request">
+            <argument type="service" id="bcrm.backend.repo.event" />
             <argument type="service" id="bcrm.backend.repo.ticket" />
             <argument type="service" id="command_bus"/>
         </service>

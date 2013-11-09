@@ -1,0 +1,14 @@
+{% extends "BCRMWebBundle:Concierge:page.html.twig" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 well well-lg">
+            <h2>Checkins</h2>
+            <h3>Samstag</h3>
+            <p>{{ stats.1.checkins }}/{{ stats.1.tickets }}</p>
+            <h3>Sonntag</h3>
+            <p>{{ stats.2.checkins }}/{{ stats.2.tickets }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

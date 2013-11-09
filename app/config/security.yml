@@ -22,9 +22,9 @@ security:
             security: false
 
         checkin:
-            pattern:    ^/checkin/
+            pattern:    ^/(checkin|concierge)
             http_basic:
                 realm: "BarCamp RheinMain Checkin-Area"
 
     access_control:
-        - { path: ^/checkin/, roles: ROLE_CONCIERGE }
+        - { path: ^/(checkin|concierge), roles: ROLE_CONCIERGE }

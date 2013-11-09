@@ -91,3 +91,15 @@ bcrmweb_event_checkin:
     methods: [GET]
     defaults:
         _controller: bcrm.web.controller.checkin:checkinAction
+
+bcrmweb_concierge_index:
+    path: /concierge
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.concierge:indexAction
+
+bcrmweb_event_manual_checkin:
+    path: /concierge/checkin
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.checkin:manualCheckinAction

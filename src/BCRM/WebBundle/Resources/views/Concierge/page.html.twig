@@ -1,0 +1,52 @@
+{% import _self as pagemacro %}
+{% macro menuitem(route, label, icon) %}{% spaceless %}
+<li {% if app.request.get('_route') == route %}class="active"{% endif %}><a href="{{ path(route) }}">
+        {% if icon %}<i class="glyphicon glyphicon-{{ icon }}"></i>{% endif %}
+
+        {{ label }}
+    </a></li>
+{% endspaceless %}{% endmacro %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BarCamp RheinMain — Concierge</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/{{ bootstrap_version }}/css/bootstrap.min.css">
+    {% block css %}
+        {% stylesheets filter="yui_css,cssrewrite"
+        "bundles/bcrmweb/css/concierge.scss"
+        %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet"/>
+        {% endstylesheets %}
+    {% endblock css %}
+</head>
+<body>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('bcrmweb_concierge_index') }}"><abbr title="BarCamp RheinMain — Concierge">BCRM Concierge</abbr></a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                {{ pagemacro.menuitem('bcrmweb_concierge_index', 'Übersicht') }}
+                {{ pagemacro.menuitem('bcrmweb_event_manual_checkin', 'Checkin') }}
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% block content %}
+{% endblock %}
+
+{% block javascript %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/{{ jquery_version }}/jquery.min.js"></script>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/{{ bootstrap_version }}/js/bootstrap.min.js"></script>
+{% endblock %}
+</body>
+</html>
