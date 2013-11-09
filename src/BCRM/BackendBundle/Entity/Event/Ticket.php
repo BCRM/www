@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Ticket
  *
- * @ORM\Table(name="ticket",indexes={@ORM\Index(name="email_idx", columns={"email"})})
+ * @ORM\Table(name="ticket",indexes={@ORM\Index(name="email_idx", columns={"email"})}, uniqueConstraints={@ORM\UniqueConstraint(name="event_email_day",columns={"event_id", "email", "day"})})
  * @ORM\Entity(repositoryClass="BCRM\BackendBundle\Entity\Event\DoctrineTicketRepository")
  */
 class Ticket extends AggregateResource
