@@ -18,8 +18,10 @@ class LoadEventData implements FixtureInterface
         $bcrm13->setCapacity(3);
         $bcrm13->setName('BarCamp RheinMain 2013 Dieburg 23./24.11.2013');
         $bcrm13->setRegistrationStart(new \DateTime('2013-10-14T08:00:00+02:00'));
+        // During our tests we will simulate the sunday
         $start = new \DateTime();
-        $start->setTime(18, 0, 0);
+        $start->setTime(8, 0, 0);
+        $start->modify('-1day');
         $bcrm13->setStart($start);
 
         $manager->persist($bcrm13);

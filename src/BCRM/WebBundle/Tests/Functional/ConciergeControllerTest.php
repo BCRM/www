@@ -44,7 +44,7 @@ class ConciergeControllerTest extends Base
         $ticket->setEmail('john.doe.1981@domain.com');
         $ticket->setName('John Doe');
         $ticket->setEvent($event);
-        $ticket->setDay(Ticket::DAY_SATURDAY);
+        $ticket->setDay(Ticket::DAY_SUNDAY);
         $ticket->setCode('WOOT');
         $em->persist($ticket);
         $em->flush();
@@ -73,7 +73,7 @@ class ConciergeControllerTest extends Base
         );
         $this->assertGreaterThan(
             0,
-            $crawler->filter('html:contains("Samstag")')->count(),
+            $crawler->filter('html:contains("Sonntag")')->count(),
             'Ticket day is not shown'
         );
         
@@ -106,7 +106,7 @@ class ConciergeControllerTest extends Base
         $ticket->setEmail('doublecheckin@domain.com');
         $ticket->setName('John Doe');
         $ticket->setEvent($event);
-        $ticket->setDay(Ticket::DAY_SATURDAY);
+        $ticket->setDay(Ticket::DAY_SUNDAY);
         $ticket->setCode('DBLCHKN');
         $em->persist($ticket);
         $em->flush();
@@ -150,13 +150,13 @@ class ConciergeControllerTest extends Base
         $ticket->setEmail('sundaycheckin@domain.com');
         $ticket->setName('John Doe');
         $ticket->setEvent($event);
-        $ticket->setDay(Ticket::DAY_SUNDAY);
-        $ticket->setCode('SNDYCHKN');
+        $ticket->setDay(Ticket::DAY_SATURDAY);
+        $ticket->setCode('STRDYCHKN');
         $em->persist($ticket);
         $em->flush();
 
         /* @var $ticket Ticket */
-        $ticket = $em->getRepository('BCRMBackendBundle:Event\Ticket')->findOneBy(array('code' => 'SNDYCHKN'));
+        $ticket = $em->getRepository('BCRMBackendBundle:Event\Ticket')->findOneBy(array('code' => 'STRDYCHKN'));
 
         $client   = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'concierge',
