@@ -79,14 +79,4 @@ class CheckinController
             'ticket' => $ticket
         );
     }
-
-    /**
-     * Allows the concierge to checkin attendees which did not bring their ticket,
-     *
-     * @Template()
-     */
-    public function manualCheckinAction()
-    {
-        return array();
-    }
 }

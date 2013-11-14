@@ -108,4 +108,10 @@ bcrmweb_event_manual_checkin:
     path: /concierge/checkin
     methods: [GET]
     defaults:
-        _controller: bcrm.web.controller.checkin:manualCheckinAction
+        _controller: bcrm.web.controller.concierge:manualCheckinAction
+
+bcrmweb_concierge_ticketsearch_api:
+    path: /api/concierge/ticketsearch
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.concierge:searchTicketAction

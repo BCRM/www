@@ -121,4 +121,49 @@ class ConciergeController
             'form' => $form->createView(),
         );
     }
+
+    /**
+     * Allows the concierge to checkin attendees which did not bring their ticket,
+     *
+     * @Template()
+     */
+    public function manualCheckinAction()
+    {
+        $event = $this->eventRepo->getNextEvent()->getOrThrow(new AccessDeniedHttpException('No event.'));
+        return array();
+    }
+
+    /**
+     * Search for tickets
+     *
+     * @param Request $request
+     */
+    public function searchTicketAction(Request $request)
+    {
+        $event = $this->eventRepo->getNextEvent()->getOrThrow(new AccessDeniedHttpException('No event.'));
+        // Do not allow checkins on the wrong day
+        /* @var $event Event */
+        $now   = new Carbon();
+        $start = Carbon::createFromTimestamp($event->getStart()->getTimestamp());
+        $start->setTime(0, 0, 0);
+        $end = clone $start;
+        $end->setTime(23, 59, 59);
+        $day = $now->between($start, $end) ? Ticket::DAY_SATURDAY : Ticket::DAY_SUNDAY;
+
+        $tickets  = array_map(function (Ticket $ticket) {
+            return array(
+                'code'      => $ticket->getCode(),
+                'email'     => $ticket->getEmail(),
+                'name'      => $ticket->getName(),
+                'checkedIn' => $ticket->isCheckedIn(),
+                'day'       => $ticket->getDay(),
+                'id'        => $ticket->getId(),
+            );
+        }, $this->ticketRepo->searchTickets($event, $day, $request->get('q')));
+        $data     = array('items' => $tickets);
+        $response = new Response(json_encode($data));
+        $response->setCharset('utf-8');
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;
+    }
 }

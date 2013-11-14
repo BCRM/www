@@ -22,7 +22,7 @@ class ConciergeControllerTest extends Base
     {
         static::resetDatabase();
     }
-    
+
     /**
      * @test
      * @group functional
@@ -56,10 +56,10 @@ class ConciergeControllerTest extends Base
             'PHP_AUTH_USER' => 'concierge',
             'PHP_AUTH_PW'   => 'letmein',
         ));
-        $crawler = $client->request('GET', sprintf('/checkin/%d/%s', $ticket->getId(), $ticket->getCode()));
+        $crawler  = $client->request('GET', sprintf('/checkin/%d/%s', $ticket->getId(), $ticket->getCode()));
         $response = $client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
-        
+
         // Page must contain correct ticket details
         $this->assertGreaterThan(
             0,
@@ -76,7 +76,7 @@ class ConciergeControllerTest extends Base
             $crawler->filter('html:contains("Sonntag")')->count(),
             'Ticket day is not shown'
         );
-        
+
         /* @var $ticket Ticket */
         $ticket = $em->getRepository('BCRMBackendBundle:Event\Ticket')->findOneBy(array('code' => 'WOOT', 'checkedIn' => 1));
         // $this->assertEquals(true, $ticket->isCheckedIn()); // FIXME: actually it is 1, possible bug in Doctrine 
@@ -114,7 +114,7 @@ class ConciergeControllerTest extends Base
         /* @var $ticket Ticket */
         $ticket = $em->getRepository('BCRMBackendBundle:Event\Ticket')->findOneBy(array('code' => 'DBLCHKN'));
 
-        $client   = static::createClient(array(), array(
+        $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'concierge',
             'PHP_AUTH_PW'   => 'letmein',
         ));
@@ -158,12 +158,58 @@ class ConciergeControllerTest extends Base
         /* @var $ticket Ticket */
         $ticket = $em->getRepository('BCRMBackendBundle:Event\Ticket')->findOneBy(array('code' => 'STRDYCHKN'));
 
-        $client   = static::createClient(array(), array(
+        $client = static::createClient(array(), array(
             'PHP_AUTH_USER' => 'concierge',
             'PHP_AUTH_PW'   => 'letmein',
         ));
         $client->request('GET', sprintf('/checkin/%d/%s', $ticket->getId(), $ticket->getCode()));
         $response = $client->getResponse();
         $this->assertEquals(400, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     * @group   functional
+     * @depends checkinsOnTheWrongDayShouldNotWork
+     */
+    public function theTicketSearchApiShouldWork()
+    {
+        $client    = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'concierge',
+            'PHP_AUTH_PW'   => 'letmein',
+        ));
+        $container = $client->getContainer();
+
+        // Confirm registration key
+        /* @var $em \Doctrine\Common\Persistence\ObjectManager */
+        $em = $container
+            ->get('doctrine')
+            ->getManager();
+
+        // Create a ticket
+        $event  = $em->getRepository('BCRMBackendBundle:Event\Event')->findAll()[0];
+        $ticket = new Ticket();
+        $ticket->setEmail('searchticket@domain.com');
+        $ticket->setName('John Doe');
+        $ticket->setEvent($event);
+        $ticket->setDay(Ticket::DAY_SUNDAY);
+        $ticket->setCode('SRCHTCKT');
+        $em->persist($ticket);
+        $em->flush();
+
+        $client->request('GET', '/api/concierge/ticketsearch?q=SRCHTCKT');
+        $response = $client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals("application/json", $response->headers->get('Content-Type'));
+        $this->assertEquals("utf-8", $response->getCharset());
+        $result = json_decode($response->getContent());
+        $this->assertEquals(1, count($result->items));
+
+        $ticket = $result->items[0];
+        $this->assertEquals('searchticket@domain.com', $ticket->email);
+        $this->assertEquals(false, $ticket->checkedIn);
+        $this->assertEquals(2, $ticket->day);
+        $this->assertEquals('SRCHTCKT', $ticket->code);
+        $this->assertTrue($ticket->id > 1);
     }
 }

@@ -1,0 +1,63 @@
+{% extends "BCRMWebBundle:Concierge:page.html.twig" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <form role="form" method="get" action="{{ path('bcrmweb_concierge_ticketsearch_api') }}"
+                      id="ticketsearchform" data-result-template="#ticketsearchresult">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="q"
+                               placeholder="Suchtext (Ticket-Code, E-Mail, Name)">
+                    </div>
+                </form>
+                {% verbatim %}
+                <script type="text/mustache" id="ticketsearchresult">
+                <table class="table" id="ticketsearchresult">
+                    <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>E-Mail</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#items}}
+                    <tr>
+                        <td>{{code}}</td>
+                        <td>{{name}}</td>
+                        <td>{{email}}</td>
+                        <td>
+                        {{^checkedIn}}
+                            <a href="/checkin/{{id}}/{{code}}" class="btn btn-primary btn-sm pull-right">checkin</a>
+                        {{/checkedIn}}
+                        {{#checkedIn}}<i class="glyphicon glyphicon-ok"></i>{{/checkedIn}}
+                        </td>
+                    </tr>
+                    {{/items}}
+                    </tbody>
+                </table>
+                </script>
+                {% endverbatim %}
+            </div>
+            <div class="col-lg-4">
+                <p>Mit diesem Formular kannst Du Teilnehmer, die ihr Ticket vergessen haben direkt einchecken.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    {% javascripts filter="yui_js"
+    "bundles/bcrmweb/vendor/mustache/mustache.js"
+    "bundles/bcrmweb/js/concierge/ticketsearch.js" %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script type="text/javascript">
+        $(function () {
+            TicketSearch($('#ticketsearchform'));
+        });
+    </script>
+{% endblock javascript %}

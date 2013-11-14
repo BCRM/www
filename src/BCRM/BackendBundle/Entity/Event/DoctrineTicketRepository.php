@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityRepository;
 use PhpOption\None;
 use PhpOption\Option;
 use PhpOption\Some;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 class DoctrineTicketRepository extends EntityRepository implements TicketRepository
 {
@@ -126,5 +127,30 @@ class DoctrineTicketRepository extends EntityRepository implements TicketReposit
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * Search tickets matching the given term
+     *
+     * @param Event $event
+     * @param       $day
+     * @param       $term
+     *
+     * @return mixed
+     */
+    public function searchTickets(Event $event, $day, $term)
+    {
+        $qb = $this->createQueryBuilder('t');
+        return $qb
+            ->andWhere('t.event = :event')->setParameter('event', $event)
+            ->andWhere('t.day = :day')->setParameter('day', $day)
+            ->andWhere($qb->expr()->orX(
+                $qb->expr()->like('t.name', ':term'),
+                $qb->expr()->like('t.code', ':term'),
+                $qb->expr()->like('t.email', ':term')
+            ))->setParameter('term', '%' . $term . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
 
 }

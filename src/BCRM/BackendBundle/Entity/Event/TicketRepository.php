@@ -70,4 +70,16 @@ interface TicketRepository
      * @return Ticket[]
      */
     public function getUnprintedTickets(Event $event, $day);
+
+    /**
+     * Search tickets matching the given term
+     *
+     * @param Event $event
+     * @param       $day
+     * @param       $term
+     *
+     * @return mixed
+     */
+    public function searchTickets(Event $event, $day, $term);
 }
+
