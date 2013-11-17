@@ -59,6 +59,7 @@ class PrintingController
                 '@subject' => $this->schemeAndHost . $this->router->generate('bcrmprint_ticket', array('id' => $ticket->getId(), 'code' => $ticket->getCode())),
                 'name'     => $ticket->getName(),
                 'code'     => $ticket->getCode(),
+                'day'      => $ticket->getDay(),
                 'tags'     => $this->registrationRepo->getRegistrationForEmail($event, $ticket->getEmail())->getOrElse('')->getTags(),
             );
         }

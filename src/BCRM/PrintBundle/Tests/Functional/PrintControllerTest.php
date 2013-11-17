@@ -93,8 +93,10 @@ class ConciergeControllerTest extends Base
         $this->assertObjectHasAttribute('name', $ticket);
         $this->assertObjectHasAttribute('tags', $ticket);
         $this->assertObjectHasAttribute('code', $ticket);
+        $this->assertObjectHasAttribute('day', $ticket);
         $this->assertEquals('#' . strtolower(str_replace(' ', '', $ticket->name)), $ticket->tags);
         $this->assertEquals(1, preg_match('/^PRNT[0-9]+$/', $ticket->code));
+        $this->assertEquals(2, $ticket->day);
 
         return $queue->items;
     }

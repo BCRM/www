@@ -62,6 +62,7 @@ class PrintTicketsCommand extends ContainerAwareCommand
             $data->tag3      = isset($tags[2]) ? $tags[2] : null;
             $data->firstname = $nameParts[0];
             $data->lastname  = isset($nameParts[1]) ? $nameParts[1] : null;
+            $data->day       = $ticket->day == Ticket::DAY_SATURDAY ? 'Sa' : 'So';
             $badge           = $env->render($template, (array)$data);
             $badgeFileName   = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $ticket->code;
             $badgeSVG        = $badgeFileName . '.svg';
