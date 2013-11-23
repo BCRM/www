@@ -75,7 +75,14 @@ class PrintTicketsCommand extends ContainerAwareCommand
                     escapeshellarg($badgeSVG)
                 )
             );
-            copy($badgePDF, rtrim($input->getOption('output'), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $ticket->code . '.pdf');
+            $printFile = rtrim($input->getOption('output'), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $ticket->code . '.pdf';
+            if (is_file($printFile)) {
+                $counter = 1;
+                do {
+                    $printFile = preg_replace('/(\.[0-9]+)*\.pdf$/', '.' . ($counter++) . '.pdf', $printFile);
+                } while (is_file($printFile));
+            }
+            copy($badgePDF, $printFile);
             unlink($badgePDF);
             unlink($badgeSVG);
             // Mark ticket as printed

@@ -17,6 +17,7 @@ use BCRM\PrintBundle\Exception\NotFoundHttpException;
 use Carbon\Carbon;
 use LiteCQRS\Bus\CommandBus;
 use LiteCQRS\Plugin\CRUD\Model\Commands\UpdateResourceCommand;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -73,18 +74,19 @@ class PrintingController
     /**
      * Mark the given ticket as printed.
      *
-     * @param int    $id
-     * @param string $code
+     * @param Request $request
+     * @param int     $id
+     * @param string  $code
      *
      * @return Response
      */
-    public function printAction($id, $code)
+    public function printAction(Request $request, $id, $code)
     {
         $ticket               = $this->ticketRepo->getTicketByIdAndCode($id, $code)->getOrThrow(new NotFoundHttpException('Ticket not found.'));
         $updateCommand        = new UpdateResourceCommand();
         $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Ticket';
         $updateCommand->id    = $id;
-        $updateCommand->data  = array('printed' => 1);
+        $updateCommand->data  = array('printed' => $request->getMethod() === 'PATCH');
         $this->commandBus->handle($updateCommand);
         $response = new Response(json_encode(array('status' => 'OK')));
         $response->setCharset('utf-8');

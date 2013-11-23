@@ -127,5 +127,37 @@ class ConciergeControllerTest extends Base
         $this->assertFalse(in_array($items[0]->{'@subject'}, array_map(function ($item) {
             return $item->{'@subject'};
         }, $queue2->items)));
+
+        return $items;
+    }
+
+    /**
+     * @test
+     * @group   functional
+     * @depends printTicket
+     *
+     * @param array $items
+     */
+    public function ticketsCanBeReprinted(array $items)
+    {
+        $client    = static::createClient(array(), array(
+            'PHP_AUTH_USER' => 'concierge',
+            'PHP_AUTH_PW'   => 'letmein',
+        ));
+        $container = $client->getContainer();
+
+        // Delete printed state
+        $client->request('DELETE', $items[0]->{'@subject'});
+        $response = $client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+
+        /* @var $em \Doctrine\Common\Persistence\ObjectManager */
+        $em = $container
+            ->get('doctrine')
+            ->getManager();
+
+        /* @var $ticket Ticket */
+        $ticket = $em->getRepository('BCRMBackendBundle:Event\Ticket')->findOneBy(array('code' => $items[0]->code));
+        $this->assertFalse($ticket->isPrinted());
     }
 }

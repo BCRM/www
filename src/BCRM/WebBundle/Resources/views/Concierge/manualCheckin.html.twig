@@ -32,7 +32,12 @@
                         {{^checkedIn}}
                             <a href="/checkin/{{id}}/{{code}}" class="btn btn-primary btn-sm pull-right">checkin</a>
                         {{/checkedIn}}
-                        {{#checkedIn}}<i class="glyphicon glyphicon-ok"></i>{{/checkedIn}}
+                        {{#checkedIn}}
+                            <i class="glyphicon glyphicon-ok"></i>
+                            <a href="/api/printing/ticket/{{id}}/{{code}}" data-method="delete" rel="print">
+                                <i class="glyphicon glyphicon-print"></i>
+                            </a>
+                        {{/checkedIn}}
                         </td>
                     </tr>
                     {{/items}}

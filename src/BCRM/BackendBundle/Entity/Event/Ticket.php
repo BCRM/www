@@ -291,6 +291,14 @@ class Ticket extends AggregateResource
         $this->notified = (bool)$notified;
     }
 
+    /**
+     * @return bool
+     */
+    public function isPrinted()
+    {
+        return $this->printed;
+    }
+
 }
 
 

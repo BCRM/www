@@ -6,6 +6,6 @@ bcrmprint_printing_queue:
 
 bcrmprint_ticket:
     path: /ticket/{id}/{code}
-    methods: [PATCH]
+    methods: [PATCH,DELETE]
     defaults:
         _controller: bcrm.print.controller.printing:printAction
