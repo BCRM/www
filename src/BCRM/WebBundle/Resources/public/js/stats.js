@@ -1,7 +1,10 @@
 var Stats = function (parent) {
 
-    var checkinStats = $('<div id="checkin-stats" style="height: 350px; width: 100%;"></div>').appendTo(parent);
-    var checkinUniqueStats = $('<div id="checkin-unique-stats" style="height: 350px; width: 100%;"></div>').appendTo(parent);
+    var checkinStats = $('<div id="stats-checkin" style="height: 350px; width: 100%;"></div>').appendTo(parent);
+    var nowShowsStats = $('<div id="stats-noshows" style="height: 350px; width: 100%;"></div>').appendTo(parent);
+    var checkinUniqueStats = $('<div id="stats-checkin-unique" style="height: 350px; width: 100%;"></div>').appendTo(parent);
+
+    var chartColors = ['#2b6dc5','#78cf2f', '#ffd300'];
 
     // Fetch checkin stats
     function updateCheckinStats() {
@@ -11,38 +14,65 @@ var Stats = function (parent) {
             success: function (response) {
                 // Checkin
                 var data = google.visualization.arrayToDataTable([
-                    ['Tag', 'Checkins'],
-                    ['Samstag', response.stats.checkins.sa],
-                    ['Sonntag', response.stats.checkins.su]
+                    ['Tag', 'Samstag', 'Sonntag'],
+                    ['', response.stats.checkins.sa, response.stats.checkins.su]
                 ]);
 
                 var options = {
                     title: 'Checkins pro Tag',
                     vAxis: {
                         minValue: 0
-                    }
+                    },
+                    colors: chartColors
                 };
 
-                var chart = new google.visualization.ColumnChart(document.getElementById('checkin-stats'));
+                var chart = new google.visualization.ColumnChart(document.getElementById('stats-checkin'));
                 chart.draw(data, options);
 
                 // Unique Checkins
-                var data2 = google.visualization.arrayToDataTable([
-                    ['Tag', 'Checkins'],
-                    ['Nur Samstag', response.stats.checkins.only_sa],
-                    ['Nur Sonntag', response.stats.checkins.only_su],
-                    ['Beide Tage', response.stats.checkins.both]
+                var dataUnique = google.visualization.arrayToDataTable([
+                    ['Tag', 'Nur Samstag', 'Nur Sonntag', 'Beide Tage'],
+                    [
+                        '',
+                        response.stats.checkins.unique.sa,
+                        response.stats.checkins.unique.su,
+                        response.stats.checkins.unique.both
+                    ]
                 ]);
 
-                var options2 = {
-                    title: 'Checkins pro Tag (Eindeutig)',
+                var optionsUnique = {
+                    title: 'WiederholungsCamper?',
                     vAxis: {
                         minValue: 0
-                    }
+                    },
+                    colors: chartColors
                 };
 
-                var chart2 = new google.visualization.ColumnChart(document.getElementById('checkin-unique-stats'));
-                chart2.draw(data2, options2);
+                var chartUnique = new google.visualization.ColumnChart(document.getElementById('stats-checkin-unique'));
+                chartUnique.draw(dataUnique, optionsUnique);
+
+                // No-Shows
+                var dataNoShows = google.visualization.arrayToDataTable([
+                    ['Tag', 'Samstag', 'Sonntag'],
+                    [
+                        '',
+                        response.stats.checkins.noshows.sa / (response.stats.checkins.sa + response.stats.checkins.noshows.sa),
+                        response.stats.checkins.noshows.su / (response.stats.checkins.su + response.stats.checkins.noshows.su)
+                    ]
+                ]);
+
+                var optionsNoShows = {
+                    title: 'No-Shows',
+                    vAxis: {
+                        minValue: 0,
+                        maxValue: 1,
+                        format:'#%'
+                    },
+                    colors: chartColors
+                };
+
+                var chartNoShows = new google.visualization.ColumnChart(document.getElementById('stats-noshows'));
+                chartNoShows.draw(dataNoShows, optionsNoShows);
             }
         });
     }

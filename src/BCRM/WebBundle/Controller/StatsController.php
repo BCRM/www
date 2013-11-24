@@ -81,9 +81,15 @@ class StatsController
             'checkins' => array(
                 'sa'      => $this->getCheckinsPerDay($tickets, Ticket::DAY_SATURDAY),
                 'su'      => $this->getCheckinsPerDay($tickets, Ticket::DAY_SUNDAY),
-                'only_sa' => $this->getOnlyDayCheckins($tickets, Ticket::DAY_SATURDAY),
-                'only_su' => $this->getOnlyDayCheckins($tickets, Ticket::DAY_SUNDAY),
-                'both'    => $this->getOnlyDayCheckins($tickets, Ticket::DAY_SUNDAY, true),
+                'unique'  => array(
+                    'sa'   => $this->getUniqueDayCheckins($tickets, Ticket::DAY_SATURDAY),
+                    'su'   => $this->getUniqueDayCheckins($tickets, Ticket::DAY_SUNDAY),
+                    'both' => $this->getUniqueDayCheckins($tickets, Ticket::DAY_SUNDAY, true),
+                ),
+                'noshows' => array(
+                    'sa' => $this->getNoShows($tickets, Ticket::DAY_SATURDAY),
+                    'su' => $this->getNoShows($tickets, Ticket::DAY_SUNDAY),
+                )
             ),
         );
 
@@ -118,7 +124,7 @@ class StatsController
      *
      * @return integer
      */
-    protected function getOnlyDayCheckins(array $tickets, $day, $both = false)
+    protected function getUniqueDayCheckins(array $tickets, $day, $both = false)
     {
         $otherDayCheckins = array_map(
             function (Ticket $ticket) {
@@ -138,6 +144,17 @@ class StatsController
             && $ticket->isCheckedIn()
             && $ticket->getDay() == $day
             && ($both ? in_array($ticket->getEmail(), $otherDayCheckins) : !in_array($ticket->getEmail(), $otherDayCheckins))
+                ? 1 : 0);
+        }, 0);
+    }
+
+    protected function getNoShows(array $tickets, $day)
+    {
+        return array_reduce($tickets, function ($count, Ticket $ticket) use ($day) {
+            return $count + (
+            $ticket->getType() === Registration::TYPE_NORMAL
+            && !$ticket->isCheckedIn()
+            && $ticket->getDay() == $day
                 ? 1 : 0);
         }, 0);
     }

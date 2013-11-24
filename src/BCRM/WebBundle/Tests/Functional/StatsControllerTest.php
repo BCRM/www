@@ -26,15 +26,17 @@ class StatsControllerTest extends Base
     /**
      * @test
      * @group functional
-     * @group current
      */
     public function stats()
     {
-        $email = $this->createCheckedInTicket(Ticket::DAY_SATURDAY);
-        $this->createCheckedInTicket(Ticket::DAY_SATURDAY);
-        $this->createCheckedInTicket(Ticket::DAY_SUNDAY, $email);
-        $this->createCheckedInTicket(Ticket::DAY_SUNDAY);
-        $this->createCheckedInTicket(Ticket::DAY_SUNDAY);
+        $email = $this->createTicket(Ticket::DAY_SATURDAY);
+        $this->createTicket(Ticket::DAY_SATURDAY);
+        $this->createTicket(Ticket::DAY_SATURDAY, false);
+        $this->createTicket(Ticket::DAY_SATURDAY, false);
+        $this->createTicket(Ticket::DAY_SUNDAY, null, $email);
+        $this->createTicket(Ticket::DAY_SUNDAY);
+        $this->createTicket(Ticket::DAY_SUNDAY);
+        $this->createTicket(Ticket::DAY_SUNDAY, false);
 
         $client = static::createClient();
         $client->request('GET', '/stats.json');
@@ -50,20 +52,23 @@ class StatsControllerTest extends Base
 
         $this->assertEquals(2, $checkins->sa);
         $this->assertEquals(3, $checkins->su);
-        $this->assertEquals(1, $checkins->only_sa);
-        $this->assertEquals(2, $checkins->only_su);
-        $this->assertEquals(1, $checkins->both);
-        $this->assertEquals($checkins->sa, $checkins->only_sa + $checkins->both);
-        $this->assertEquals($checkins->su, $checkins->only_su + $checkins->both);
+        $this->assertEquals(1, $checkins->unique->sa);
+        $this->assertEquals(2, $checkins->unique->su);
+        $this->assertEquals(1, $checkins->unique->both);
+        $this->assertEquals(2, $checkins->noshows->sa);
+        $this->assertEquals(1, $checkins->noshows->su);
+        $this->assertEquals($checkins->sa, $checkins->unique->sa + $checkins->unique->both);
+        $this->assertEquals($checkins->su, $checkins->unique->su + $checkins->unique->both);
 
 
     }
 
     protected $ticketCounter = 1;
 
-    protected function createCheckedInTicket($day, $email = null)
+    protected function createTicket($day, $checkedIn = null, $email = null)
     {
         if ($email === null) $email = sprintf('stats.doe.198%s@domain.com', $this->ticketCounter);
+        if ($checkedIn === null) $checkedIn = true;
         $client    = static::createClient();
         $container = $client->getContainer();
 
@@ -80,7 +85,7 @@ class StatsControllerTest extends Base
         $ticket->setEvent($event);
         $ticket->setDay($day);
         $ticket->setCode(sprintf('STATS%d', $this->ticketCounter++));
-        $ticket->setCheckedIn(true);
+        $ticket->setCheckedIn($checkedIn);
         $em->persist($ticket);
         $em->flush();
         return $email;
