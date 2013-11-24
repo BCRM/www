@@ -8,6 +8,7 @@
 namespace BCRM\WebBundle\Controller;
 
 use BCRM\BackendBundle\Entity\Event\EventRepository;
+use BCRM\BackendBundle\Entity\Event\Registration;
 use BCRM\BackendBundle\Entity\Event\Ticket;
 use BCRM\BackendBundle\Entity\Event\TicketRepository;
 use BCRM\WebBundle\Content\ContentReader;
@@ -92,7 +93,7 @@ class StatsController
     protected function getCheckinsPerDay($tickets, $day)
     {
         return array_reduce($tickets, function ($count, Ticket $ticket) use ($day) {
-            return $count + ($ticket->isCheckedIn() && $ticket->getDay() == $day ? 1 : 0);
+            return $count + ($ticket->getType() === Registration::TYPE_NORMAL && $ticket->isCheckedIn() && $ticket->getDay() == $day ? 1 : 0);
         }, 0);
     }
 }
