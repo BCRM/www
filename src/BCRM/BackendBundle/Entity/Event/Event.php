@@ -57,6 +57,14 @@ class Event extends AggregateResource
     protected $registrationStart;
 
     /**
+     * @var \DateTime
+     * @ORM\Column(type="datetime", name="registration_end")
+     * @Assert\NotBlank()
+     * @Assert\Type(type="\DateTime")
+     */
+    protected $registrationEnd;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      * @var \DateTime
@@ -168,5 +176,20 @@ class Event extends AggregateResource
         return $str;
     }
 
+    /**
+     * @param \DateTime $registrationEnd
+     */
+    public function setRegistrationEnd(\DateTime $registrationEnd)
+    {
+        $this->registrationEnd = $registrationEnd;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getRegistrationEnd()
+    {
+        return $this->registrationEnd;
+    }
 }
 

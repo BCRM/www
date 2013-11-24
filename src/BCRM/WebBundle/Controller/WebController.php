@@ -7,9 +7,11 @@
 
 namespace BCRM\WebBundle\Controller;
 
+use BCRM\BackendBundle\Entity\Event\Event;
 use BCRM\BackendBundle\Entity\Event\EventRepository;
 use BCRM\BackendBundle\Exception\FileNotFoundException;
 use BCRM\WebBundle\Content\ContentReader;
+use Carbon\Carbon;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -76,7 +78,11 @@ class WebController
             'sponsors' => $this->reader->getPage('Sponsoren/Index.md')
         );
         if ($nextEvent->isDefined()) {
-            $data ['nextEvent'] = $nextEvent;
+            /* @var Event $event */
+            $event = $nextEvent->get();
+            if (Carbon::createFromTimestamp($event->getRegistrationEnd()->getTimestamp())->isFuture()) {
+                $data ['nextEvent'] = $nextEvent;
+            }
         }
         return $this->renderer->renderResponse('BCRMWebBundle:Web:index.html.twig', $data, $response);
     }

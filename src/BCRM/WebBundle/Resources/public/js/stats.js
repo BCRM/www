@@ -81,9 +81,5 @@ var Stats = function (parent) {
         });
     }
 
-    function updateStats() {
-        updateCheckinStats();
-    }
-
-    updateStats();
+    updateCheckinStats();
 };

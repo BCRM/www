@@ -20,6 +20,7 @@ use BCRM\WebBundle\Content\ContentReader;
 use BCRM\WebBundle\Form\EventRegisterModel;
 use BCRM\WebBundle\Form\EventRegisterType;
 use BCRM\WebBundle\Form\EventUnregisterType;
+use Carbon\Carbon;
 use LiteCQRS\Bus\CommandBus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -95,7 +96,10 @@ class EventController
     public function registerAction(Request $request)
     {
         $event = $this->eventRepo->getNextEvent()->getOrThrow(new AccessDeniedHttpException('No event.'));
-        $form  = $this->formFactory->create(new EventRegisterType(), null, array('action' => $request->getPathInfo()));
+        if (Carbon::createFromTimestamp($event->getRegistrationEnd()->getTimestamp())->isPast()) {
+            throw new AccessDeniedHttpException('Registration not possible.');
+        }
+        $form = $this->formFactory->create(new EventRegisterType(), null, array('action' => $request->getPathInfo()));
         $form->handleRequest($request);
         if ($form->isValid()) {
             /* @var EventRegisterModel $formData */
