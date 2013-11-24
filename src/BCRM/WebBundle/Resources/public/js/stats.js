@@ -4,7 +4,7 @@ var Stats = function (parent) {
     var nowShowsStats = $('<div id="stats-noshows" style="height: 350px; width: 100%;"></div>').appendTo(parent);
     var checkinUniqueStats = $('<div id="stats-checkin-unique" style="height: 350px; width: 100%;"></div>').appendTo(parent);
 
-    var chartColors = ['#2b6dc5','#78cf2f', '#ffd300'];
+    var chartColors = ['#2b6dc5', '#78cf2f', '#ffd300'];
 
     // Fetch checkin stats
     function updateCheckinStats() {
@@ -61,12 +61,16 @@ var Stats = function (parent) {
                     ]
                 ]);
 
+                var formatter = new google.visualization.NumberFormat({pattern: '#%'});
+                formatter.format(dataNoShows, 1);
+                formatter.format(dataNoShows, 2);
+
                 var optionsNoShows = {
                     title: 'No-Shows',
                     vAxis: {
                         minValue: 0,
                         maxValue: 1,
-                        format:'#%'
+                        format: '#%'
                     },
                     colors: chartColors
                 };
