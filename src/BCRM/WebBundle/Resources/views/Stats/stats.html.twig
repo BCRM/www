@@ -1,0 +1,21 @@
+{% extends "BCRMWebBundle::page.html.twig" %}
+{% block content %}
+    <h2>Statistiken</h2>
+    <div id="stats"></div>
+{% endblock content %}
+
+{% block javascript %}
+    {{ parent() }}
+    {% javascripts filter="yui_js"
+    "bundles/bcrmweb/vendor/mustache/mustache.js"
+    "bundles/bcrmweb/js/stats.js" %}
+    <script type="text/javascript" src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+        google.load("visualization", "1", {packages: ["corechart"]});
+        google.setOnLoadCallback(function () {
+            Stats($('#stats'));
+        });
+    </script>
+{% endblock javascript %}

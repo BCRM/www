@@ -115,3 +115,12 @@ bcrmweb_concierge_ticketsearch_api:
     methods: [GET]
     defaults:
         _controller: bcrm.web.controller.concierge:searchTicketAction
+
+bcrmweb_stats_api:
+    path: /stats.{_format}
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.stats:statsAction
+        _format: html
+    requirements:
+        _format: html|json
