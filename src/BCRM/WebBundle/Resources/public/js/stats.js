@@ -17,7 +17,10 @@ var Stats = function (parent) {
                 ]);
 
                 var options = {
-                    title: 'Checkins pro Tag'
+                    title: 'Checkins pro Tag',
+                    vAxis: {
+                        minValue: 0
+                    }
                 };
 
                 var chart = new google.visualization.ColumnChart(document.getElementById('checkin-stats'));
@@ -32,7 +35,10 @@ var Stats = function (parent) {
                 ]);
 
                 var options2 = {
-                    title: 'Checkins pro Tag (Eindeutig)'
+                    title: 'Checkins pro Tag (Eindeutig)',
+                    vAxis: {
+                        minValue: 0
+                    }
                 };
 
                 var chart2 = new google.visualization.ColumnChart(document.getElementById('checkin-unique-stats'));
