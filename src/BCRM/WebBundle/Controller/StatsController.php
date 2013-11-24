@@ -13,6 +13,7 @@ use BCRM\BackendBundle\Entity\Event\Ticket;
 use BCRM\BackendBundle\Entity\Event\TicketRepository;
 use BCRM\WebBundle\Content\ContentReader;
 use BCRM\WebBundle\Exception\AccesDeniedHttpException;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -78,8 +79,11 @@ class StatsController
 
         $stats = array(
             'checkins' => array(
-                'sa' => $this->getCheckinsPerDay($tickets, 1),
-                'su' => $this->getCheckinsPerDay($tickets, 2),
+                'sa'      => $this->getCheckinsPerDay($tickets, Ticket::DAY_SATURDAY),
+                'su'      => $this->getCheckinsPerDay($tickets, Ticket::DAY_SUNDAY),
+                'only_sa' => $this->getOnlyDayCheckins($tickets, Ticket::DAY_SATURDAY),
+                'only_su' => $this->getOnlyDayCheckins($tickets, Ticket::DAY_SUNDAY),
+                'both'    => $this->getOnlyDayCheckins($tickets, Ticket::DAY_SUNDAY, true),
             ),
         );
 
@@ -90,10 +94,51 @@ class StatsController
         return $response;
     }
 
-    protected function getCheckinsPerDay($tickets, $day)
+    /**
+     * Returns the number of checkins per day.
+     *
+     * @param Ticket[] $tickets
+     * @param integer  $day
+     *
+     * @return mixed
+     */
+    protected function getCheckinsPerDay(array $tickets, $day)
     {
         return array_reduce($tickets, function ($count, Ticket $ticket) use ($day) {
             return $count + ($ticket->getType() === Registration::TYPE_NORMAL && $ticket->isCheckedIn() && $ticket->getDay() == $day ? 1 : 0);
+        }, 0);
+    }
+
+    /**
+     * Returns the number of attendees who have checked in only on the given day
+     *
+     * @param Ticket[] $tickets
+     * @param integer  $day
+     * @param boolean  $both
+     *
+     * @return integer
+     */
+    protected function getOnlyDayCheckins(array $tickets, $day, $both = false)
+    {
+        $otherDayCheckins = array_map(
+            function (Ticket $ticket) {
+                return $ticket->getEmail();
+            },
+            array_filter($tickets, function (Ticket $ticket) use ($day) {
+                return
+                    $ticket->getType() === Registration::TYPE_NORMAL
+                    && $ticket->isCheckedIn()
+                    && $ticket->getDay() != $day;
+            })
+        );
+
+        return array_reduce($tickets, function ($count, Ticket $ticket) use ($otherDayCheckins, $day, $both) {
+            return $count + (
+            $ticket->getType() === Registration::TYPE_NORMAL
+            && $ticket->isCheckedIn()
+            && $ticket->getDay() == $day
+            && ($both ? in_array($ticket->getEmail(), $otherDayCheckins) : !in_array($ticket->getEmail(), $otherDayCheckins))
+                ? 1 : 0);
         }, 0);
     }
 }
