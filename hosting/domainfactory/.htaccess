@@ -9,6 +9,9 @@ AddDefaultCharset Off
 RewriteEngine On
 RewriteBase /
 
+# Outdated links
+RewriteRule ^p/Pressespiegel /p/Nachlese [L,R=permanent]
+
 # Symfony 2
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
