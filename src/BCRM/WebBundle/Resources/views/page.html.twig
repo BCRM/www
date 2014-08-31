@@ -1,6 +1,6 @@
 {% import "BCRMWebBundle::macros.html.twig" as pagemacro %}
-{% set default_title = "BarCamp RheinMain | Dieburg 23./24.11.2013" %}
-{% set default_description = "Das nächste BarCamp RheinMain findet am 23./24.11.2013 auf dem Campus der Hochschule Dieburg statt." %}
+{% set default_title = "BarCamp RheinMain | " ~ barcamp_title %}
+{% set default_description = barcamp_description %}
 {% set default_image %}{{ scheme_and_host }}content/banner.png{% endset %}
 <!DOCTYPE html><!--[if lt IE 7]>
 <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]--><!--[if IE 7]>
@@ -23,15 +23,15 @@
 
     {# Facebook OpenGraph Data #}
     <meta property="og:type"                  content="event">
-    <meta property="event:start_time"         content="2013-11-23T08:00:00+01:00">
-    <meta property="event:end_time"           content="2013-11-24T20:00:00+01:00">
+    <meta property="event:start_time"         content="{{ barcamp_start_time|date('Y-m-d\\TH:i:sP') }}">
+    <meta property="event:end_time"           content="{{ barcamp_end_time|date('Y-m-d\\TH:i:sP') }}">
     <meta property="og:url"                   content="{{ scheme_and_host }}" >
     <meta property="og:title"                 content="{{ default_title }}" >
     <meta property="og:description"           content="{{ default_description }}" >
     <meta property="og:image"                 content="{{ default_image }}" >
     <meta property="event:creator"            content="233370660009977" >
-    <meta property="event:location:latitude"  content="49.901773" >
-    <meta property="event:location:longitude" content="8.8548819" >
+    <meta property="event:location:latitude"  content="{{ barcamp_location_latitude }}" >
+    <meta property="event:location:longitude" content="{{ barcamp_location_longitude }}" >
 
     {% stylesheets filter="yui_css,cssrewrite"
     "bundles/bcrmweb/vendor/h5bp/normalize.css"
@@ -59,16 +59,18 @@
     <header>
         <hr>
         <h1 id="logo">
-            <a href="{{ path('bcrmweb_index') }}" rel="index"><img src="{{ asset('bundles/bcrmweb/images/barcamp_logo.png') }}" alt="BarCamp"><span class="region">RheinMain</span><span class="location-date">Dieburg 23./24.11.2013</span></a>
+            <a href="{{ path('bcrmweb_index') }}" rel="index"><img src="{{ asset('bundles/bcrmweb/images/barcamp_logo.png') }}" alt="BarCamp"><span class="region">RheinMain</span><span class="location-date">{{ barcamp_title }}</span></a>
         </h1>
         <nav class="event">
             <a href="{{ path('bcrmweb_index') }}"
                 {% if app.request.get('_route') == 'bcrmweb_index' %}class="active"{% endif %}
                     rel="index">Das BarCamp</a>
+            {#
             {{ pagemacro.pagelink('Nachlese', 'Nachlese', app.request.get('path')) }}
             <a href="{{ path('bcrmweb_stats') }}"
                {% if app.request.get('_route') == 'bcrmweb_stats' %}class="active"{% endif %}
                     >Statistiken</a>
+            #}
             {{ pagemacro.pagelink('Location', 'Location', app.request.get('path')) }}
             {{ pagemacro.pagelink('Sponsoren', 'Sponsoren', app.request.get('path')) }}
         </nav>
@@ -94,7 +96,7 @@
             {% endif %}
             {% endif %}
 
-            <a class="twitter-timeline" href="https://twitter.com/search?q=%23bcrm+OR+%23bcrm13+OR+%40bc_rm+-RT" data-widget-id="390135869656420353">Tweets zum BarCamp RheinMain</a>
+            <a class="twitter-timeline" href="https://twitter.com/search?q=%23bcrm+OR+%23{{ barcamp_hashtag }}+OR+%40bc_rm+-RT" data-widget-id="390135869656420353">Tweets zum BarCamp RheinMain</a>
         </aside>
 
         <article>

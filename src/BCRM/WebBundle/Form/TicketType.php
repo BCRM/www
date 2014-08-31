@@ -15,7 +15,7 @@ class TicketType extends AbstractType
             ->setMethod('POST')
             ->add('email', 'email', array('label' => 'E-Mail', 'required' => true, 'attr' => array('placeholder' => 'name@domain.de')))
             ->add('name', 'text', array('label' => 'Name', 'required' => true, 'attr' => array('placeholder' => 'Max Musterman')))
-            ->add('tags', 'text', array('label' => 'Tags', 'required' => false, 'attr' => array('placeholder' => '#foo #bar #bcrm13', 'pattern' => '#[^\s]{1,15}( #[^\s]{1,15}){0,2}')))
+            ->add('tags', 'text', array('label' => 'Tags', 'required' => false, 'attr' => array('placeholder' => '#foo #bar', 'pattern' => '#[^\s]{1,15}( #[^\s]{1,15}){0,2}')))
             ->add('saturday', 'checkbox', array('label' => 'Samstag', 'required' => false))
             ->add('sunday', 'checkbox', array('label' => 'Sonntag', 'required' => false))
             ->add('type', 'choice', array('label' => 'Typ', 'required' => true, 'choices' => array(Registration::TYPE_VIP => 'VIP', Registration::TYPE_SPONSOR => 'Sponsor'), 'expanded' => true))

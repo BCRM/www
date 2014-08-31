@@ -23,3 +23,10 @@ parameters:
     web.content_dir: %kernel.root_dir%/../vendor/bcrm/www-content
     password.concierge: letmein
     mailchimp.api_key: somekey
+    barcamp_title: Frankfurt 22./23.11.2014
+    barcamp_description: Das nächste BarCamp RheinMain findet am 22./23.11.2014 bei etecture in Frankfurt statt.
+    barcamp_start_time: 2014-11-22T08:00:00+01:00
+    barcamp_end_time: 2014-11-23T20:00:00+01:00
+    barcamp_location_longitude: "8.690136"
+    barcamp_location_latitude: "50.095335"
+    barcamp_hashtag: bcrm14

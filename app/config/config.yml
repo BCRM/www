@@ -32,6 +32,13 @@ twig:
           assets_version: %assets_version%
           bootstrap_version: 3.0.2
           jquery_version: 1.10.2
+          barcamp_title: %barcamp_title%
+          barcamp_description: %barcamp_description%
+          barcamp_start_time: %barcamp_start_time%
+          barcamp_end_time: %barcamp_end_time%
+          barcamp_hashtag: %barcamp_hashtag%
+          barcamp_location_longitude: %barcamp_location_longitude%
+          barcamp_location_latitude: %barcamp_location_latitude%
 
 # Assetic Configuration
 assetic:
