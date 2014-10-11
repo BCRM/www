@@ -28,7 +28,7 @@
         "doctrine/doctrine-migrations-bundle": "dev-master@dev",
         "phpoption/phpoption": "dev-master",
         "knplabs/knp-markdown-bundle": "1.2.*@dev",
-        "beberlei/lite-cqrs": "1.1.*@dev",
+        "beberlei/lite-cqrs": "dev-master",
         "bcrm/www-content": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "endroid/qrcode-bundle": "dev-master",
