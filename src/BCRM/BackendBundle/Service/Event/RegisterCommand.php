@@ -17,6 +17,8 @@ class RegisterCommand
 
     public $name;
 
+    public $twitter;
+
     public $saturday;
 
     public $sunday;

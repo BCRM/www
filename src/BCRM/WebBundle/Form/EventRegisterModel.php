@@ -22,6 +22,12 @@ class EventRegisterModel
 
     /**
      * @var string
+     * @Assert\Regex("/^@[a-zA-Z0-9_]{1,15}$/")
+     */
+    public $twitter;
+
+    /**
+     * @var string
      * @Assert\NotBlank()
      */
     public $arrival;

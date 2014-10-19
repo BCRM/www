@@ -11,11 +11,11 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg2985"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.48.5 r10040"
    width="283.4625"
    height="177.1625"
    xml:space="preserve"
-   sodipodi:docname="badge.svg"><metadata
+   sodipodi:docname="ticket.svg"><metadata
      id="metadata2991"><rdf:RDF><cc:Work
          rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
@@ -33,12 +33,12 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1366"
-     inkscape:window-height="748"
+     inkscape:window-height="721"
      id="namedview2987"
      showgrid="false"
-     inkscape:zoom="1.8838885"
-     inkscape:cx="127.28325"
-     inkscape:cy="114.61141"
+     inkscape:zoom="2.6642207"
+     inkscape:cx="158.72178"
+     inkscape:cy="84.307432"
      inkscape:window-x="-4"
      inkscape:window-y="-4"
      inkscape:window-maximized="1"
@@ -50,32 +50,34 @@
        transform="scale(1,-1)"
        id="text2995"
        x="64.90519"
-       y="-77.857399"><tspan
+       y="-88.96759"><tspan
          style="font-size:30px;font-variant:normal;font-weight:bold;font-stretch:normal;writing-mode:lr-tb;fill:#231f20;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu-Bold"
          sodipodi:role="line"
          id="tspan2997"
          x="64.90519"
-         y="-77.857399">{{ firstname }}</tspan></text>
+         y="-88.96759">{{ firstname }}</tspan></text>
 <text
        transform="scale(1,-1)"
        id="text2999"
        x="65.430191"
-       y="-59.090801"><tspan
+       y="-70.200989"><tspan
          style="font-size:15px;font-variant:normal;font-weight:bold;font-stretch:normal;writing-mode:lr-tb;fill:#231f20;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu-Bold"
          sodipodi:role="line"
          id="tspan3001"
          x="65.430191"
-         y="-59.090801">{{ lastname }}</tspan></text>
+         y="-70.200989">{{ lastname }}</tspan></text>
 <g
-       id="g3011"><g
+       id="g3011"
+       transform="translate(0,11.110191)"><g
          id="g3013"
          clip-path="url(#clipPath3015)"><g
            id="g3019"
            transform="translate(38.8706,102.7393)"><path
              d="M 0,0 C 1.261,-0.472 2.466,-1.16 3.602,-1.881 4.736,-2.604 6.029,-3.475 5.594,-4.536 4.16,-7.047 0.662,-5.891 -1.325,-4.973 c -2.226,1.031 -4.734,2.621 -7.294,2.183 -2.577,-0.441 -4.006,-3.495 -4.785,-5.731 2.809,0.802 6.968,1.314 8.615,-1.762 1.227,-2.293 1.119,-6.688 -1.647,-7.844 -3.049,-1.269 -5.291,1.508 -7.543,2.808 -1.962,1.131 -5.957,3.392 -7.532,0.507 -1.224,-2.247 0.151,-4.77 -1.009,-6.991 -1.441,-2.759 -4.721,-2.127 -7.18,-1.773 0.574,-0.576 1.124,-1.184 1.768,-1.686 1.177,-0.912 2.658,-1.646 4.187,-1.377 1.314,0.262 2.201,0.922 3.154,1.825 0.975,0.921 1.375,2.121 2.763,2.529 1.078,0.318 2.272,0.142 3.271,-0.35 2.16,-1.07 4.087,-3.42 3.916,-5.929 -0.091,-1.313 -1.075,-2.342 -2.093,-3.077 -0.588,-0.423 -1.744,-0.822 -3.241,-1.009 1.934,-2.68 4.831,-2.594 8.228,-2.305 2.701,0.23 5.681,1.894 8.416,1.244 3.046,-0.725 2.069,-3.852 0.221,-5.35 -2.158,-1.746 -5.059,-2.031 -7.757,-1.81 1.93,-0.979 3.936,-1.824 6.02,-2.412 C 28.027,-51.438 27.275,5.785 0,0"
              style="fill:#231f20;fill-opacity:1;fill-rule:nonzero;stroke:none"
-             id="path3021" /></g></g></g><g
-       transform="scale(1,-1)"
+             id="path3021"
+             inkscape:connector-curvature="0" /></g></g></g><g
+       transform="matrix(1,0,0,-1,0,3.9035806)"
        style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        id="text3053"><text
          xml:space="preserve"
@@ -88,11 +90,11 @@
            id="tspan3070"
            x="23.375935"
            y="-119.7523"
-           style="font-size:11.2px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu">BarCamp RheinMain | Dieburg 2013</tspan></text>
+           style="font-size:11.19999981px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu">BarCamp RheinMain | Frankfurt 2014</tspan></text>
 </g><g
        id="g3072"
        style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       transform="matrix(1,0,0,-1,41.616055,-78.560913)"><text
+       transform="matrix(1,0,0,-1,41.616055,-83.665595)"><text
          sodipodi:linespacing="125%"
          id="text3074"
          y="-119.7523"
@@ -129,13 +131,23 @@
            id="tspan3084"
            sodipodi:role="line">{{ tag3 }}</tspan></text>
 </g><text
-       y="-22.652433"
+       y="-17.54775"
        x="17.555546"
        id="text3929"
        transform="scale(1,-1)"><tspan
-         y="-22.652433"
+         y="-17.54775"
          x="17.555546"
          id="tspan3931"
          sodipodi:role="line"
          style="font-size:30px;font-variant:normal;font-weight:bold;font-stretch:normal;writing-mode:lr-tb;fill:#231f20;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu-Bold">{{ day }}</tspan></text>
+<text
+       y="-49.782261"
+       x="65.430191"
+       id="text3004"
+       transform="scale(1,-1)"><tspan
+         y="-49.782261"
+         x="65.430191"
+         id="tspan3006"
+         sodipodi:role="line"
+         style="font-size:15px;font-variant:normal;font-weight:bold;font-stretch:normal;writing-mode:lr-tb;fill:#231f20;fill-opacity:1;fill-rule:nonzero;stroke:none;font-family:Ubuntu;-inkscape-font-specification:Ubuntu-Bold">{{ twitter }}</tspan></text>
 </g></svg>

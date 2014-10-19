@@ -54,14 +54,16 @@ class PrintingController
         $day   = $now->between($start, $end) ? Ticket::DAY_SATURDAY : Ticket::DAY_SUNDAY;
         $items = array();
         foreach ($this->ticketRepo->getUnprintedTickets($event, $day) as $ticket) {
-            $type    = null;
-            $items[] = array(
+            $registration = $this->registrationRepo->getRegistrationForEmail($event, $ticket->getEmail())->get();
+            $type         = null;
+            $items[]      = array(
                 '@context' => 'http://barcamp-rheinmain.de/jsonld/Ticket',
                 '@subject' => $this->schemeAndHost . $this->router->generate('bcrmprint_ticket', array('id' => $ticket->getId(), 'code' => $ticket->getCode())),
                 'name'     => $ticket->getName(),
+                'twitter'  => $registration->getTwitter(),
                 'code'     => $ticket->getCode(),
                 'day'      => $ticket->getDay(),
-                'tags'     => $this->registrationRepo->getRegistrationForEmail($event, $ticket->getEmail())->getOrElse('')->getTags(),
+                'tags'     => $registration->getTags(),
             );
         }
         $data     = array('items' => $items);

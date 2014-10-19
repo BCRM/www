@@ -54,6 +54,13 @@ class Registration extends AggregateResource
     protected $name;
 
     /**
+     * @var string Arrival
+     * @ORM\Column(type="string", nullable=true)
+     * @Assert\Regex("/^@[a-zA-Z0-9_]{1,15}$/")
+     */
+    protected $twitter;
+
+    /**
      * @var string
      * @Assert\Regex(pattern="/^#[^\s]{1,15}( #[^\s]{1,15}){0,2}$/")
      * @ORM\Column(type="text", nullable=true)
@@ -331,5 +338,21 @@ class Registration extends AggregateResource
     public function isConfirmed()
     {
         return $this->confirmed;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTwitter()
+    {
+        return $this->twitter;
+    }
+
+    /**
+     * @param string|null $twitter
+     */
+    public function setTwitter($twitter = null)
+    {
+        $this->twitter = $twitter;
     }
 }

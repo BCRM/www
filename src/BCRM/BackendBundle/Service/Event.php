@@ -85,6 +85,7 @@ class Event
             'event'     => $command->event,
             'email'     => $command->email,
             'name'      => $command->name,
+            'twitter'   => $command->twitter,
             'saturday'  => $command->saturday,
             'sunday'    => $command->sunday,
             'arrival'   => $command->arrival,

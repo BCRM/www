@@ -108,6 +108,7 @@ class EventController
             $command->event    = $event;
             $command->email    = $formData->email;
             $command->name     = $formData->name;
+            $command->twitter  = $formData->twitter;
             $command->saturday = $formData->wantsSaturday();
             $command->sunday   = $formData->wantsSunday();
             $command->arrival  = $formData->arrival;

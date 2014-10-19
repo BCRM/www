@@ -44,6 +44,7 @@ class EventControllerTest extends Base
         $form['event_register[arrival]'] = 'public';
         $form['event_register[food]']    = 'default';
         $form['event_register[tags]']    = '#foo #bar #bcrm13';
+        $form['event_register[twitter]'] = '@somebody';
         $client->submit($form);
         $response = $client->getResponse();
         $this->assertEquals(302, $response->getStatusCode());
@@ -331,6 +332,7 @@ class EventControllerTest extends Base
         $form['event_register[arrival]'] = 'public';
         $form['event_register[food]']    = 'default';
         $form['event_register[tags]']    = '#zauberwürfel #bar #bcrm13';
+        $form['event_register[twitter]'] = '@somebody';
         $client->submit($form);
         $response = $client->getResponse();
         $this->assertEquals(302, $response->getStatusCode());

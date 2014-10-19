@@ -87,6 +87,7 @@ class ConciergeController
             $registerCommand->event     = $event;
             $registerCommand->email     = $formData->getEmail();
             $registerCommand->name      = $formData->getName();
+            $registerCommand->twitter   = $formData->getTwitter();
             $registerCommand->saturday  = $formData->getSaturday();
             $registerCommand->sunday    = $formData->getSunday();
             $registerCommand->tags      = $formData->getTags();
