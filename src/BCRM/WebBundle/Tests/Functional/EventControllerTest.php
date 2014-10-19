@@ -42,6 +42,7 @@ class EventControllerTest extends Base
         $form['event_register[email]']   = $email;
         $form['event_register[days]']    = 3;
         $form['event_register[arrival]'] = 'public';
+        $form['event_register[food]']    = 'default';
         $form['event_register[tags]']    = '#foo #bar #bcrm13';
         $client->submit($form);
         $response = $client->getResponse();
@@ -328,6 +329,7 @@ class EventControllerTest extends Base
         $form['event_register[email]']   = $email;
         $form['event_register[days]']    = 3;
         $form['event_register[arrival]'] = 'public';
+        $form['event_register[food]']    = 'default';
         $form['event_register[tags]']    = '#zauberwürfel #bar #bcrm13';
         $client->submit($form);
         $response = $client->getResponse();

@@ -20,6 +20,10 @@ class Registration extends AggregateResource
 
     const ARRIVAL_PRIVATE = 'private';
 
+    const FOOD_VEGAN = 'vegan';
+
+    const FOOD_DEFAULT = 'default';
+
     const TYPE_NORMAL = 1;
 
     const TYPE_VIP = 2;
@@ -86,9 +90,15 @@ class Registration extends AggregateResource
 
     /**
      * @var string Arrival
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $arrival;
+
+    /**
+     * @var string Arrival
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $food;
 
     /**
      * @var boolean
@@ -243,6 +253,25 @@ class Registration extends AggregateResource
             throw new \InvalidArgumentException("Invalid arrival");
         }
         $this->arrival = $arrival;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFood()
+    {
+        return $this->food;
+    }
+
+    /**
+     * @param string $food
+     */
+    public function setFood($food)
+    {
+        if (!in_array($food, array(self::FOOD_VEGAN, self::FOOD_DEFAULT))) {
+            throw new \InvalidArgumentException("Invalid food");
+        }
+        $this->food = $food;
     }
 
     /**

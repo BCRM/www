@@ -88,6 +88,7 @@ class Event
             'saturday'  => $command->saturday,
             'sunday'    => $command->sunday,
             'arrival'   => $command->arrival,
+            'food'      => $command->food,
             'tags'      => $command->tags,
             'type'      => $command->type,
             'confirmed' => $command->confirmed

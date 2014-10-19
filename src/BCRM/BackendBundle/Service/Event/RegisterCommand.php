@@ -23,6 +23,8 @@ class RegisterCommand
 
     public $arrival;
 
+    public $food;
+
     public $tags;
 
     public $type = Registration::TYPE_NORMAL;

@@ -27,6 +27,12 @@ class EventRegisterModel
     public $arrival;
 
     /**
+     * @var string
+     * @Assert\NotBlank()
+     */
+    public $food;
+
+    /**
      * @var integer
      * @Assert\Type(type="integer")
      * @Assert\NotBlank()

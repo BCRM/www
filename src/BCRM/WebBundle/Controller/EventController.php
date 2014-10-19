@@ -111,6 +111,7 @@ class EventController
             $command->saturday = $formData->wantsSaturday();
             $command->sunday   = $formData->wantsSunday();
             $command->arrival  = $formData->arrival;
+            $command->food     = $formData->food;
             $command->tags     = $formData->tags;
             $this->commandBus->handle($command);
             return new RedirectResponse($this->router->generate('bcrmweb_registration_ok'));
