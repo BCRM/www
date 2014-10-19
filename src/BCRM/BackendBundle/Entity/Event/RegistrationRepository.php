@@ -7,6 +7,7 @@
 
 namespace BCRM\BackendBundle\Entity\Event;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpOption\Option;
 
 interface RegistrationRepository
@@ -52,4 +53,13 @@ interface RegistrationRepository
      * @return Option
      */
     public function getRegistrationForEmail(Event $event, $email);
+
+    /**
+     * Returns the public participant list for the given event.
+     *
+     * @param Event $event
+     *
+     * @return Registration[]|ArrayCollection
+     */
+    public function getParticipantList(Event $event);
 }

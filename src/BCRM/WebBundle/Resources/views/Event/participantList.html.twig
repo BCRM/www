@@ -1,0 +1,28 @@
+{% extends "BCRMWebBundle::page.html.twig" %}
+{% block content %}
+    <h2>Teilnehmerliste</h2>
+    {% for registration in participants %}
+        {% if loop.first %}
+            <ul>
+        {% endif %}
+        <li>
+            {% if registration.twitter %}
+                <a href="https://twitter.com/{{ registration.twitter|slice(1) }}">
+            {% endif %}
+                {{ registration.name }}
+            {% if registration.twitter %}
+                </a>
+            {% endif %}
+            {% if registration.tags %}
+                <small>//
+                {% for tag in registration.tags|split(" ") %}
+                 <a href="https://twitter.com/hashtag/{{ tag|slice(1) }}?src=hash">{{ tag }}</a>
+                {% endfor %}
+                </small>
+            {% endif %}
+        </li>
+        {% if loop.last %}
+            </ul>
+        {% endif %}
+    {% endfor %}
+{% endblock content %}

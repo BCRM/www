@@ -19,8 +19,8 @@ class EventRegisterType extends AbstractType
             ->add('days', 'choice', array('label' => 'An welchen Tagen möchtest Du am BarCamp teilnehmen?', 'required' => true, 'choices' => array(3 => 'beide Tage', 1 => 'Samstag', 2 => 'Sonntag'), 'expanded' => true))
             ->add('food', 'choice', array('label' => 'Möchtest Du veganes Essen?', 'required' => true, 'choices' => array('default' => 'nein', 'vegan' => 'ja'), 'expanded' => true))
             ->add('arrival', 'choice', array('label' => 'Wie wirst Du anreisen?', 'required' => true, 'choices' => array('public' => 'ÖPNV', 'private' => 'Privat'), 'expanded' => true))
-            ->add('save', 'submit', array('label' => 'Absenden'))
-        ;
+            ->add('participantList', 'choice', array('label' => 'Auf der Teilnehmerliste anzeigen?', 'required' => true, 'choices' => array(1 => 'ja', 0 => 'nein'), 'expanded' => true))
+            ->add('save', 'submit', array('label' => 'Absenden'));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

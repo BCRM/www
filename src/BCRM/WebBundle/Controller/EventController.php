@@ -103,17 +103,18 @@ class EventController
         $form->handleRequest($request);
         if ($form->isValid()) {
             /* @var EventRegisterModel $formData */
-            $formData          = $form->getData();
-            $command           = new RegisterCommand();
-            $command->event    = $event;
-            $command->email    = $formData->email;
-            $command->name     = $formData->name;
-            $command->twitter  = $formData->twitter;
-            $command->saturday = $formData->wantsSaturday();
-            $command->sunday   = $formData->wantsSunday();
-            $command->arrival  = $formData->arrival;
-            $command->food     = $formData->food;
-            $command->tags     = $formData->tags;
+            $formData                 = $form->getData();
+            $command                  = new RegisterCommand();
+            $command->event           = $event;
+            $command->email           = $formData->email;
+            $command->name            = $formData->name;
+            $command->twitter         = $formData->twitter;
+            $command->saturday        = $formData->wantsSaturday();
+            $command->sunday          = $formData->wantsSunday();
+            $command->arrival         = $formData->arrival;
+            $command->food            = $formData->food;
+            $command->participantList = $formData->participantList;
+            $command->tags            = $formData->tags;
             $this->commandBus->handle($command);
             return new RedirectResponse($this->router->generate('bcrmweb_registration_ok'));
         }
@@ -199,6 +200,20 @@ class EventController
 
         return array(
             'ticket'   => $ticket,
+            'sponsors' => $this->reader->getPage('Sponsoren/Index.md'),
+        );
+    }
+
+    /**
+     * @return Response
+     * @Template()
+     */
+    public function participantListAction()
+    {
+        $event        = $this->eventRepo->getNextEvent()->getOrThrow(new AccessDeniedHttpException('No event.'));
+        $participants = $this->registrationRepo->getParticipantList($event);
+        return array(
+            'participants' => $participants,
             'sponsors' => $this->reader->getPage('Sponsoren/Index.md'),
         );
     }

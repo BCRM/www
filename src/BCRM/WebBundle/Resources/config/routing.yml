@@ -124,3 +124,12 @@ bcrmweb_stats:
         _format: html
     requirements:
         _format: html|json
+
+bcrmweb_participant_list:
+    path: /teilnehmerliste
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.event:participantListAction
+        _format: html
+    requirements:
+        _format: html

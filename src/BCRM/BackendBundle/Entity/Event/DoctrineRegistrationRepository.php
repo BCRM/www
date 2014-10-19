@@ -7,11 +7,13 @@
 
 namespace BCRM\BackendBundle\Entity\Event;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\ResultSetMappingBuilder;
 use PhpOption\None;
 use PhpOption\Option;
 use PhpOption\Some;
+use Doctrine\ORM\Query\Expr;
 
 class DoctrineRegistrationRepository extends EntityRepository implements RegistrationRepository
 {
@@ -98,5 +100,35 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParticipantList(Event $event)
+    {
+
+        $qb = $this->createQueryBuilder('r');
+        return new ArrayCollection($qb
+            ->where('r.event = :event')->setParameter('event', $event)
+            ->andWhere('r.participantList = 1')
+            ->andWhere('r.confirmed = 1')
+            ->andWhere($qb->expr()->in('r.email',
+                $this->getEntityManager()->createQueryBuilder()
+                    ->select('t.email')
+                    ->from('BCRMBackendBundle:Event\Ticket', 't')
+                    ->where('t.event = :event')->setParameter('event', $event)
+                    ->getDQL()
+            ))
+            ->andWhere($qb->expr()->in('r.id',
+                $this->createQueryBuilder('r2')
+                    ->select('MAX(r2.id)')
+                    ->where('r2.event = :event')->setParameter('event', $event)
+                    ->groupBy('r2.email')
+                    ->getDQL()
+            ))
+            ->orderBy('r.name')
+            ->getQuery()
+            ->getResult());
     }
 }

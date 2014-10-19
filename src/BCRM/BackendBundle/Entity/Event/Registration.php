@@ -112,6 +112,13 @@ class Registration extends AggregateResource
      * @Assert\Type(type="boolean")
      * @ORM\Column(type="boolean")
      */
+    protected $participantList = false;
+
+    /**
+     * @var boolean
+     * @Assert\Type(type="boolean")
+     * @ORM\Column(type="boolean")
+     */
     protected $confirmed = false;
 
     /**
@@ -354,5 +361,21 @@ class Registration extends AggregateResource
     public function setTwitter($twitter = null)
     {
         $this->twitter = $twitter;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isParticipantList()
+    {
+        return $this->participantList;
+    }
+
+    /**
+     * @param boolean $participantList
+     */
+    public function setParticipantList($participantList)
+    {
+        $this->participantList = (bool)$participantList;
     }
 }

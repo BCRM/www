@@ -31,5 +31,7 @@ class RegisterCommand
 
     public $type = Registration::TYPE_NORMAL;
 
+    public $participantList = false;
+
     public $confirmed = false;
 }

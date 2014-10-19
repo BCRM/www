@@ -82,17 +82,18 @@ class Event
         $createRegistrationCommand        = new CreateResourceCommand();
         $createRegistrationCommand->class = '\BCRM\BackendBundle\Entity\Event\Registration';
         $createRegistrationCommand->data  = array(
-            'event'     => $command->event,
-            'email'     => $command->email,
-            'name'      => $command->name,
-            'twitter'   => $command->twitter,
-            'saturday'  => $command->saturday,
-            'sunday'    => $command->sunday,
-            'arrival'   => $command->arrival,
-            'food'      => $command->food,
-            'tags'      => $command->tags,
-            'type'      => $command->type,
-            'confirmed' => $command->confirmed
+            'event'           => $command->event,
+            'email'           => $command->email,
+            'name'            => $command->name,
+            'twitter'         => $command->twitter,
+            'saturday'        => $command->saturday,
+            'sunday'          => $command->sunday,
+            'arrival'         => $command->arrival,
+            'food'            => $command->food,
+            'tags'            => $command->tags,
+            'type'            => $command->type,
+            'participantList' => $command->participantList,
+            'confirmed'       => $command->confirmed
         );
         $this->commandBus->handle($createRegistrationCommand);
     }
