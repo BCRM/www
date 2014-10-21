@@ -19,7 +19,7 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    background: #E52479 url(../images/bg_sprite.png) no-repeat;
+    background: #bf187b repeat url(../images/bg_sprite.png);
     width: 100%;
 }
 
