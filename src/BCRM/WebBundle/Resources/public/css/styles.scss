@@ -428,11 +428,12 @@ blockquote {
   height: 50px;
   border: none;
   position: relative;
-  background-image: -moz-radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
+  background-color: $link;
   background-image: -webkit-gradient(radial, color-stop(0.01, rgb(255, 136, 0)), color-stop(0.99, rgb(255, 224, 0)));
-  background-image: -webkit-radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
-  background-image: -ms-radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
-  background-image: radial-gradient(rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
+  background-image: -webkit-radial-gradient(farthest-corner at 100% 100%, rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
+  background-image: -moz-radial-gradient(farthest-corner at 100% 100%, rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
+  background-image: -ms-radial-gradient(farthest-corner at 100% 100%, rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
+  background-image: radial-gradient(farthest-corner at 100% 100%, rgb(255, 136, 0) 1%, rgb(255, 224, 0) 99%);
   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Style=2)";
   filter: progid:DXImageTransform.Microsoft.Alpha(Style=2);
   width: 200px;
@@ -567,8 +568,9 @@ footer {
   background: $footer url('../images/bg_footer.png') no-repeat center top;
   h2 {
     color: $bg;
-    text-shadow: 1px 1px 2px #7F7F7F;
+    /*text-shadow: 1px 1px 2px #7F7F7F;*/
     font-size: 1em;
+    font-weight: 400;
   }
   .inner-wrap {
     width: 100%;
