@@ -39,6 +39,7 @@ twig:
           barcamp_hashtag: %barcamp_hashtag%
           barcamp_location_longitude: %barcamp_location_longitude%
           barcamp_location_latitude: %barcamp_location_latitude%
+          twitter_widget_id: %twitter_widget_id%
 
 # Assetic Configuration
 assetic:
