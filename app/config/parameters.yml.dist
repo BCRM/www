@@ -40,4 +40,5 @@ parameters:
     barcamp_location_longitude: "8.690136"
     barcamp_location_latitude: "50.095335"
     barcamp_hashtag: bcrm14
+    twitter_widget_id: 524809884814958594
 
