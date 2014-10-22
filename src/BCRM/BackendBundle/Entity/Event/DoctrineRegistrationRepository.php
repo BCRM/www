@@ -111,8 +111,6 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
         $qb = $this->createQueryBuilder('r');
         return new ArrayCollection($qb
             ->where('r.event = :event')->setParameter('event', $event)
-            ->andWhere('r.participantList = 1')
-            ->andWhere('r.confirmed = 1')
             ->andWhere($qb->expr()->in('r.email',
                 $this->getEntityManager()->createQueryBuilder()
                     ->select('t.email')
@@ -124,6 +122,8 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
                 $this->createQueryBuilder('r2')
                     ->select('MAX(r2.id)')
                     ->where('r2.event = :event')->setParameter('event', $event)
+                    ->andWhere('r2.participantList = 1')
+                    ->andWhere('r2.confirmed = 1')
                     ->groupBy('r2.email')
                     ->getDQL()
             ))
