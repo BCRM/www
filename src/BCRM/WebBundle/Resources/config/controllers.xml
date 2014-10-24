@@ -16,6 +16,7 @@
             <argument type="service" id="router"/>
             <argument type="service" id="bcrm.backend.repo.event" />
             <argument type="service" id="templating" />
+            <argument>%assets_version%</argument>
         </service>
         <service id="bcrm.web.controller.event" class="%bcrm.web.controller.event.class%" scope="request">
             <argument type="service" id="bcrm.web.contentReader"/>

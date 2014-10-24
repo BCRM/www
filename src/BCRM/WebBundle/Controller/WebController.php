@@ -50,19 +50,34 @@ class WebController
      */
     private $renderer;
 
-    public function __construct(ContentReader $reader, FormFactoryInterface $formFactory, RouterInterface $router, EventRepository $eventRepo, EngineInterface $renderer)
+    /**
+     * @var int Unix timestamp of assets modification
+     */
+    private $assetsVersion;
+
+    public function __construct(
+        ContentReader $reader,
+        FormFactoryInterface $formFactory,
+        RouterInterface $router,
+        EventRepository $eventRepo,
+        EngineInterface $renderer,
+        $assetsVersion
+    )
     {
-        $this->reader      = $reader;
-        $this->formFactory = $formFactory;
-        $this->router      = $router;
-        $this->eventRepo   = $eventRepo;
-        $this->renderer    = $renderer;
+        $this->reader        = $reader;
+        $this->formFactory   = $formFactory;
+        $this->router        = $router;
+        $this->eventRepo     = $eventRepo;
+        $this->renderer      = $renderer;
+        $this->assetsVersion = $assetsVersion;
     }
 
     /**
      * Render the index page.
      *
      * @param Request $request
+     *
+     * @return Response
      */
     public function indexAction(Request $request)
     {
@@ -105,7 +120,11 @@ class WebController
         }
         $response = new Response();
         $response->setETag($pageInfo->getEtag());
-        $response->setLastModified($pageInfo->getLastModified());
+        $lastModified = $pageInfo->getLastModified();
+        if ($this->assetsVersion - $pageInfo->getLastModified()->getTimestamp() > 0) {
+            $lastModified = new \DateTime('@' . $this->assetsVersion);
+        }
+        $response->setLastModified($lastModified);
         $response->setPublic();
         if ($response->isNotModified($request)) {
             return $response;
@@ -134,7 +153,11 @@ class WebController
         $pageInfo = $this->reader->getInfo($path . '.md');
         $response = new Response();
         $response->setETag($pageInfo->getEtag());
-        $response->setLastModified($pageInfo->getLastModified());
+        $lastModified = $pageInfo->getLastModified();
+        if ($this->assetsVersion - $pageInfo->getLastModified()->getTimestamp() > 0) {
+            $lastModified = new \DateTime('@' . $this->assetsVersion);
+        }
+        $response->setLastModified($lastModified);
         $response->setPublic();
         if ($response->isNotModified($request)) {
             return $response;
