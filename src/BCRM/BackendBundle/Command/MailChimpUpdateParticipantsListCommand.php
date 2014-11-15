@@ -71,7 +71,7 @@ class MailChimpUpdateParticipantsListCommand extends ContainerAwareCommand
         $result = $mailchimp->listsBatch_unsubscribe(
             array(
                 'id'            => $input->getArgument('list'),
-                'batch'         => $this->toBatch($unsubscribe),
+                'batch'         => $this->toBatch($unsubscribe, false),
                 'delete_member' => true,
                 'send_goodbye'  => false,
             )
@@ -103,11 +103,11 @@ class MailChimpUpdateParticipantsListCommand extends ContainerAwareCommand
      *
      * @return string[]
      */
-    protected function toBatch(ArrayCollection $emails)
+    protected function toBatch(ArrayCollection $emails, $deep = true)
     {
-        return $emails->map(function ($email) {
+        return $emails->map(function ($email) use($deep) {
             return array(
-                'email'      => array('email' => $email),
+                'email'      => $deep ? array('email' => $email) : $email,
                 'email_type' => 'html'
             );
         })->toArray();
