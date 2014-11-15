@@ -104,7 +104,7 @@ class DoctrineTicketRepository extends EntityRepository implements TicketReposit
             ->select('COUNT(t.id)')
             ->andWhere('t.event = :event')->setParameter('event', $event)
             ->andWhere('t.day = :day')->setParameter('day', $day)
-            ->andWhere('t.checkedIn = 1')
+            ->andWhere('t.checkedIn IS NOT NULL')
             ->getQuery()
             ->getSingleScalarResult();
     }
@@ -122,7 +122,7 @@ class DoctrineTicketRepository extends EntityRepository implements TicketReposit
         return $this->createQueryBuilder('t')
             ->andWhere('t.event = :event')->setParameter('event', $event)
             ->andWhere('t.day = :day')->setParameter('day', $day)
-            ->andWhere('t.checkedIn = 1')
+            ->andWhere('t.checkedIn IS NOT NULL')
             ->andWhere('t.printed = 0')
             ->getQuery()
             ->getResult();

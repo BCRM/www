@@ -7,10 +7,7 @@
 
 namespace BCRM\WebBundle\Tests\Functional;
 
-use BCRM\BackendBundle\Entity\Event\Registration;
 use BCRM\BackendBundle\Entity\Event\Ticket;
-use Symfony\Component\BrowserKit\Cookie;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ConciergeControllerTest extends Base
 {
@@ -78,7 +75,11 @@ class ConciergeControllerTest extends Base
         );
 
         /* @var $ticket Ticket */
-        $ticket = $em->getRepository('BCRMBackendBundle:Event\Ticket')->findOneBy(array('code' => 'WOOT', 'checkedIn' => 1));
+        $qb = $em->getRepository('BCRMBackendBundle:Event\Ticket')->createQueryBuilder('t');
+        $qb->andWhere('t.code = :code')->setParameter('code', 'WOOT');
+        $qb->andWhere('t.checkedIn IS NOT NULL');
+        $ticket = $qb->getQuery()->getOneOrNullResult();
+
         // $this->assertEquals(true, $ticket->isCheckedIn()); // FIXME: actually it is 1, possible bug in Doctrine 
         $this->assertEquals('WOOT', $ticket->getCode());
         $em->remove($ticket);

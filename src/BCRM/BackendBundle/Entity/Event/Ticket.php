@@ -77,11 +77,11 @@ class Ticket extends AggregateResource
 
     /**
      * @var boolean
-     * @Assert\NotBlank()
-     * @Assert\Type(type="boolean")
-     * @ORM\Column(type="boolean", name="checked_in")
+     * @ORM\Column(type="datetime", name="checked_in", nullable=true)
+     * @var \DateTime
+     * @Assert\Type(type="\DateTime")
      */
-    protected $checkedIn = 0;
+    protected $checkedIn;
 
     /**
      * @var boolean
@@ -239,7 +239,7 @@ class Ticket extends AggregateResource
 
     public function isCheckedIn()
     {
-        return (boolean)$this->checkedIn;
+        return $this->checkedIn !== null;
     }
 
     /**
@@ -247,7 +247,7 @@ class Ticket extends AggregateResource
      */
     public function setCheckedIn($checkedIn)
     {
-        $this->checkedIn = (boolean)$checkedIn;
+        $this->checkedIn = $checkedIn ? new \DateTime() : null;
     }
 
     /**

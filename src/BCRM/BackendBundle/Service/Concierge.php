@@ -42,7 +42,7 @@ class Concierge
         $updateCommand        = new UpdateResourceCommand();
         $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Ticket';
         $updateCommand->id    = $command->ticket->getId();
-        $updateCommand->data  = array('checkedIn' => '1');
+        $updateCommand->data  = array('checkedIn' => new \DateTime());
         $this->commandBus->handle($updateCommand);
 
         $event         = new CheckedInEvent();
