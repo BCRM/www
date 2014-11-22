@@ -243,6 +243,14 @@ class Ticket extends AggregateResource
     }
 
     /**
+     * @return \DateTime|null
+     */
+    public function getCheckinTime()
+    {
+        return $this->checkedIn;
+    }
+
+    /**
      * @param boolean $checkedIn
      */
     public function setCheckedIn($checkedIn)

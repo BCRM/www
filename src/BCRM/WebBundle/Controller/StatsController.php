@@ -80,7 +80,9 @@ class StatsController
         $stats = array(
             'checkins' => array(
                 'sa'      => $this->getCheckinsPerDay($tickets, Ticket::DAY_SATURDAY),
+                'sa_hour' => $this->getCheckinsPerHour($tickets, Ticket::DAY_SATURDAY),
                 'su'      => $this->getCheckinsPerDay($tickets, Ticket::DAY_SUNDAY),
+                'su_hour' => $this->getCheckinsPerHour($tickets, Ticket::DAY_SUNDAY),
                 'unique'  => array(
                     'sa'   => $this->getUniqueDayCheckins($tickets, Ticket::DAY_SATURDAY),
                     'su'   => $this->getUniqueDayCheckins($tickets, Ticket::DAY_SUNDAY),
@@ -157,5 +159,33 @@ class StatsController
             && $ticket->getDay() == $day
                 ? 1 : 0);
         }, 0);
+    }
+
+    /**
+     * Returns the number of checkins per hour summarized for every 10 minutes.
+     *
+     * @param Ticket[] $tickets
+     * @param integer  $day
+     *
+     * @return array
+     */
+    protected function getCheckinsPerHour(array $tickets, $day)
+    {
+        $hourCount = array();
+        foreach ($tickets as $ticket) {
+            if ($ticket->getDay() != $day
+                || !$ticket->isCheckedIn()
+            ) {
+                continue;
+            }
+            $slot = min(max(800, intval(substr(ltrim($ticket->getCheckinTime()->format('Hi'), '0'), 0, -1)) * 10), 1600);
+            if (!isset($hourCount[$slot])) {
+                $hourCount[$slot] = 1;
+            } else {
+                $hourCount[$slot]++;
+            }
+        }
+        asort($hourCount);
+        return $hourCount;
     }
 }

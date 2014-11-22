@@ -1,8 +1,11 @@
+"use strict";
+
 var Stats = function (parent) {
 
-    var checkinStats = $('<div id="stats-checkin" style="height: 350px; width: 100%;"></div>').appendTo(parent);
-    var nowShowsStats = $('<div id="stats-noshows" style="height: 350px; width: 100%;"></div>').appendTo(parent);
-    var checkinUniqueStats = $('<div id="stats-checkin-unique" style="height: 350px; width: 100%;"></div>').appendTo(parent);
+    $('<div id="stats-checkin" style="height: 350px; width: 100%;"></div>').appendTo(parent);
+    $('<div id="stats-checkin-hour" style="height: 350px; width: 100%;"></div>').appendTo(parent);
+    $('<div id="stats-noshows" style="height: 350px; width: 100%;"></div>').appendTo(parent);
+    $('<div id="stats-checkin-unique" style="height: 350px; width: 100%;"></div>').appendTo(parent);
 
     var chartColors = ['#2b6dc5', '#78cf2f', '#ffd300'];
 
@@ -28,6 +31,53 @@ var Stats = function (parent) {
 
                 var chart = new google.visualization.ColumnChart(document.getElementById('stats-checkin'));
                 chart.draw(data, options);
+
+                // Checkin per Hour
+                var dataCheckinsHour = new google.visualization.DataTable();
+                dataCheckinsHour.addColumn('string', 'Uhrzeit');
+                dataCheckinsHour.addColumn('number', 'Samstag');
+                dataCheckinsHour.addColumn('number', 'Sonntag');
+                dataCheckinsHour.addRows(49);
+                var labelindex = [];
+                var n = 0;
+
+                for (var h = 0; h < 8; h++) {
+                    for (var m = 0; m < 6; m++) {
+                        var slot = (h + 8) + ":" + (m == 0 ? "00" : (m * 10));
+                        labelindex[slot.replace(":", "")] = n;
+                        dataCheckinsHour.setValue(n, 0, slot);
+                        n++;
+                    }
+                }
+                dataCheckinsHour.setValue(n, 0, "16:00");
+                labelindex["1600"] = n;
+                var max = 0;
+                for (var slot in response.stats.checkins.sa_hour) {
+                    var v = response.stats.checkins.sa_hour[slot];
+                    if (max < v) {
+                        max = v;
+                    }
+                    dataCheckinsHour.setValue(labelindex[slot], 1, v);
+                }
+                for (var slot in response.stats.checkins.su_hour) {
+                    var v = response.stats.checkins.sa_hour[slot];
+                    if (max < v) {
+                        max = v;
+                    }
+                    dataCheckinsHour.setValue(labelindex[slot], 2, v);
+                }
+
+                var optionsCheckinHour = {
+                    title: 'Checkins pro Stunde',
+                    vAxis: {
+                        minValue: 0,
+                        maxValue: max
+                    },
+                    colors: chartColors
+                };
+
+                var chartCheckinHour = new google.visualization.ColumnChart(document.getElementById('stats-checkin-hour'));
+                chartCheckinHour.draw(dataCheckinsHour, optionsCheckinHour);
 
                 // Unique Checkins
                 var dataUnique = google.visualization.arrayToDataTable([
