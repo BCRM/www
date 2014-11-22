@@ -52,23 +52,26 @@ var Stats = function (parent) {
                 dataCheckinsHour.setValue(n, 0, "16:00");
                 labelindex["1600"] = n;
                 var max = 0;
+                var saSum = 0;
                 for (var slot in response.stats.checkins.sa_hour) {
-                    var v = response.stats.checkins.sa_hour[slot];
-                    if (max < v) {
-                        max = v;
+                    saSum += response.stats.checkins.sa_hour[slot];
+                    if (max < saSum) {
+                        max = saSum;
                     }
-                    dataCheckinsHour.setValue(labelindex[slot], 1, v);
+                    dataCheckinsHour.setValue(labelindex[slot], 1, saSum);
                 }
+                var soSum = 0;
                 for (var slot in response.stats.checkins.su_hour) {
-                    var v = response.stats.checkins.sa_hour[slot];
-                    if (max < v) {
-                        max = v;
+                    soSum += response.stats.checkins.sa_hour[slot];
+                    if (max < soSum) {
+                        max = soSum;
                     }
-                    dataCheckinsHour.setValue(labelindex[slot], 2, v);
+                    dataCheckinsHour.setValue(labelindex[slot], 2, soSum);
                 }
 
                 var optionsCheckinHour = {
                     title: 'Checkins pro Stunde',
+                    interpolateNulls: true,
                     vAxis: {
                         minValue: 0,
                         maxValue: max
@@ -76,7 +79,7 @@ var Stats = function (parent) {
                     colors: chartColors
                 };
 
-                var chartCheckinHour = new google.visualization.ColumnChart(document.getElementById('stats-checkin-hour'));
+                var chartCheckinHour = new google.visualization.LineChart(document.getElementById('stats-checkin-hour'));
                 chartCheckinHour.draw(dataCheckinsHour, optionsCheckinHour);
 
                 // Unique Checkins
