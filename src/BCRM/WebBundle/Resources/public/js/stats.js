@@ -62,7 +62,7 @@ var Stats = function (parent) {
                 }
                 var soSum = 0;
                 for (var slot in response.stats.checkins.su_hour) {
-                    soSum += response.stats.checkins.sa_hour[slot];
+                    soSum += response.stats.checkins.su_hour[slot];
                     if (max < soSum) {
                         max = soSum;
                     }
