@@ -28,4 +28,11 @@ interface UnregistrationRepository
      * @return Unregistration[]
      */
     public function getUnprocessedUnregistrations(Event $event);
+
+    /**
+     * @param Event $event
+     *
+     * @return Unregistration[]
+     */
+    public function getUnregistrationsForEvent(Event $event);
 }

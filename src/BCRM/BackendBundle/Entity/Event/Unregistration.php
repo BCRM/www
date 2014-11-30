@@ -191,6 +191,13 @@ class Unregistration extends AggregateResource
         $this->event = $event;
     }
 
+    /**
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
 
 }
 

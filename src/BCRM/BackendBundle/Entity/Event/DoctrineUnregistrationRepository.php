@@ -60,4 +60,19 @@ class DoctrineUnregistrationRepository extends EntityRepository implements Unreg
         $result = $qb->getQuery()->getOneOrNullResult();
         return $result === null ? None::create() : new Some($result);
     }
+
+    /**
+     * @param Event $event
+     *
+     * @return Unregistration[]
+     */
+    public function getUnregistrationsForEvent(Event $event)
+    {
+        return $this->createQueryBuilder('r')
+            ->andWhere('r.event = :event')->setParameter('event', $event)
+            ->getQuery()
+            ->getResult();
+    }
+
+
 }

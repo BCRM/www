@@ -7,13 +7,15 @@
 
 namespace BCRM\WebBundle\Controller;
 
+use BCRM\BackendBundle\Entity\Event\Event;
 use BCRM\BackendBundle\Entity\Event\EventRepository;
 use BCRM\BackendBundle\Entity\Event\Registration;
 use BCRM\BackendBundle\Entity\Event\Ticket;
 use BCRM\BackendBundle\Entity\Event\TicketRepository;
+use BCRM\BackendBundle\Entity\Event\Unregistration;
+use BCRM\BackendBundle\Entity\Event\UnregistrationRepository;
 use BCRM\WebBundle\Content\ContentReader;
 use BCRM\WebBundle\Exception\AccesDeniedHttpException;
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
@@ -23,12 +25,19 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
  */
 class StatsController
 {
-    public function __construct(ContentReader $reader, EventRepository $eventRepo, TicketRepository $ticketRepo, EngineInterface $renderer)
+    public function __construct(
+        ContentReader $reader,
+        EventRepository $eventRepo,
+        TicketRepository $ticketRepo,
+        UnregistrationRepository $unregistrationRepo,
+        EngineInterface $renderer
+    )
     {
-        $this->eventRepo  = $eventRepo;
-        $this->ticketRepo = $ticketRepo;
-        $this->reader     = $reader;
-        $this->renderer   = $renderer;
+        $this->eventRepo          = $eventRepo;
+        $this->ticketRepo         = $ticketRepo;
+        $this->unregistrationRepo = $unregistrationRepo;
+        $this->reader             = $reader;
+        $this->renderer           = $renderer;
     }
 
     /**
@@ -74,11 +83,12 @@ class StatsController
         if ($response->isNotModified($request)) {
             return $response;
         }
-        $event   = $this->eventRepo->getNextEvent()->getOrThrow(new AccesDeniedHttpException('No event.'));
-        $tickets = $this->ticketRepo->getTicketsForEvent($event);
+        $event           = $this->eventRepo->getNextEvent()->getOrThrow(new AccesDeniedHttpException('No event.'));
+        $tickets         = $this->ticketRepo->getTicketsForEvent($event);
+        $unregistrations = $this->unregistrationRepo->getUnregistrationsForEvent($event);
 
         $stats = array(
-            'checkins' => array(
+            'checkins'        => array(
                 'sa'      => $this->getCheckinsPerDay($tickets, Ticket::DAY_SATURDAY),
                 'sa_hour' => $this->getCheckinsPerHour($tickets, Ticket::DAY_SATURDAY),
                 'su'      => $this->getCheckinsPerDay($tickets, Ticket::DAY_SUNDAY),
@@ -93,6 +103,7 @@ class StatsController
                     'su' => $this->getNoShows($tickets, Ticket::DAY_SUNDAY),
                 )
             ),
+            'unregistrations' => $this->getUnregistrationsPerDay($unregistrations)
         );
 
         $data = array('stats' => $stats);
@@ -187,5 +198,33 @@ class StatsController
         }
         asort($hourCount);
         return $hourCount;
+    }
+
+    /**
+     * Returns the number of checkins per day.
+     *
+     * @param Unregistration[] $unregistrations
+     *
+     * @return array
+     */
+    protected function getUnregistrationsPerDay($unregistrations)
+    {
+        $data = array();
+        $sort = array();
+        foreach ($unregistrations as $unregistration) {
+            $slot = $unregistration->getCreated()->format('j.m.');
+            if (!isset($data[$slot])) {
+                $data[$slot] = array('sa' => 0, 'su' => 0);
+                $sort[] = $unregistration->getCreated()->format('Y-m-d');
+            }
+            if ($unregistration->getSaturday()) {
+                $data[$slot]['sa'] += 1;
+            }
+            if ($unregistration->getSunday()) {
+                $data[$slot]['su'] += 1;
+            }
+        }
+        array_multisort($sort, SORT_ASC, $data);
+        return $data;
     }
 }

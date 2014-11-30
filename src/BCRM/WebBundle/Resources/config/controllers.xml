@@ -44,6 +44,7 @@
             <argument type="service" id="bcrm.web.contentReader"/>
             <argument type="service" id="bcrm.backend.repo.event" />
             <argument type="service" id="bcrm.backend.repo.ticket" />
+            <argument type="service" id="bcrm.backend.repo.unregistration" />
             <argument type="service" id="templating" />
         </service>
     </services>

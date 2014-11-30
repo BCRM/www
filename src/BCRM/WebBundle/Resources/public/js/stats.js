@@ -5,6 +5,7 @@ var Stats = function (parent) {
     $('<div id="stats-checkin" style="height: 350px; width: 100%;"></div>').appendTo(parent);
     $('<div id="stats-checkin-hour" style="height: 350px; width: 100%;"></div>').appendTo(parent);
     $('<div id="stats-noshows" style="height: 350px; width: 100%;"></div>').appendTo(parent);
+    $('<div id="stats-unregistrations" style="height: 350px; width: 100%;"></div>').appendTo(parent);
     $('<div id="stats-checkin-unique" style="height: 350px; width: 100%;"></div>').appendTo(parent);
 
     var chartColors = ['#2b6dc5', '#78cf2f', '#ffd300'];
@@ -130,6 +131,29 @@ var Stats = function (parent) {
 
                 var chartNoShows = new google.visualization.ColumnChart(document.getElementById('stats-noshows'));
                 chartNoShows.draw(dataNoShows, optionsNoShows);
+
+                // Unregistrations per Day
+                var dataUnregistrationsDay = new google.visualization.DataTable();
+                dataUnregistrationsDay.addColumn('string', 'Tag');
+                dataUnregistrationsDay.addColumn('number', 'Samstag');
+                dataUnregistrationsDay.addColumn('number', 'Sonntag');
+
+                for (var slot in response.stats.unregistrations) {
+                    dataUnregistrationsDay.addRow(
+                        [slot, response.stats.unregistrations[slot]['sa'], response.stats.unregistrations[slot]['su']]
+                    );
+                }
+
+                var optionsunregistrationDay = {
+                    title: 'Stornierungen pro Tag',
+                    vAxis: {
+                        minValue: 0
+                    },
+                    colors: chartColors
+                };
+
+                var chartunregistrationDay = new google.visualization.ColumnChart(document.getElementById('stats-unregistrations'));
+                chartunregistrationDay.draw(dataUnregistrationsDay, optionsunregistrationDay);
             }
         });
     }
