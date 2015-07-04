@@ -30,8 +30,10 @@
     <meta property="og:description"           content="{{ default_description }}" >
     <meta property="og:image"                 content="{{ default_image }}" >
     <meta property="event:creator"            content="233370660009977" >
+    {% if barcamp_location_latitude %}
     <meta property="event:location:latitude"  content="{{ barcamp_location_latitude }}" >
     <meta property="event:location:longitude" content="{{ barcamp_location_longitude }}" >
+    {% endif %}
 
     {% stylesheets filter="yui_css,cssrewrite"
     "bundles/bcrmweb/vendor/h5bp/normalize.css"
