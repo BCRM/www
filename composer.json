@@ -11,7 +11,7 @@
     "require": {
         "php": ">=5.3.3",
         "symfony/symfony": "2.3.*",
-        "doctrine/orm": ">=2.2.3,<2.4-dev",
+        "doctrine/orm": "~2.2,>=2.2.3",
         "doctrine/doctrine-bundle": "1.2.*",
         "twig/extensions": "1.0.*",
         "symfony/assetic-bundle": "2.3.*",
@@ -31,10 +31,10 @@
         "beberlei/lite-cqrs": "1.1.*@dev",
         "bcrm/www-content": "dev-master",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
-        "endroid/qrcode-bundle": "dev-master",
+        "endroid/qrcode-bundle": "1.5.1",
         "kriswallsmith/buzz": "dev-master@dev",
         "coderbyheart/mailchimp-bundle": "dev-master@dev",
-        "nesbot/carbon": "dev-master"
+        "nesbot/carbon": "1.17.0"
     },
     "scripts": {
         "post-install-cmd": [
