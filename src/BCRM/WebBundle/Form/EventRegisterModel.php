@@ -60,6 +60,34 @@ class EventRegisterModel
      */
     public $tags;
 
+
+    /**
+     * @var integer
+     * @Assert\Type(type="integer")
+     * @Assert\NotBlank()
+     * @Assert\Range(min=0)
+     */
+    protected $donation = 0;
+
+    /**
+     * @var string
+     * @Assert\Choice(choices={"barzahlen.de", "paypal"})
+     */
+    public $payment;
+
+    /**
+     * @var boolean
+     * @Assert\Type(type="integer")
+     * @Assert\NotBlank()
+     * @Assert\Range(min=1,max=1,groups={"review"})
+     */
+    public $norefund = 0;
+
+    /**
+     * @var Event
+     */
+    public $event;
+
     /**
      * @return bool
      */
@@ -74,5 +102,21 @@ class EventRegisterModel
     public function wantsSunday()
     {
         return $this->days === 2 || $this->days === 3;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDonation()
+    {
+        return $this->donation;
+    }
+
+    /**
+     * @param mixed $donation
+     */
+    public function setDonation($donation)
+    {
+        $this->donation = (int)$donation;
     }
 }

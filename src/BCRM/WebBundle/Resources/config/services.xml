@@ -5,6 +5,8 @@
     <parameters>
         <parameter key="bcrm.web.contentReader.class">BCRM\WebBundle\Content\PageContentReader</parameter>
         <parameter key="bcrm.markdown.parser.class">BCRM\WebBundle\Content\MarkdownParser</parameter>
+        <parameter key="bcrm.form.type.event_register.class">BCRM\WebBundle\Form\EventRegisterType</parameter>
+        <parameter key="bcrm.form.type.event_register_review.class">BCRM\WebBundle\Form\EventRegisterReviewType</parameter>
     </parameters>
     <services>
         <service id="bcrm.web.contentReader" class="%bcrm.web.contentReader.class%">
@@ -14,6 +16,18 @@
         </service>
         <service id="bcrm.markdown.parser" class="%bcrm.markdown.parser.class%" public="false">
             <tag name="markdown.parser" alias="bcrm"/>
+        </service>
+        <service id="bcrm.form.type.event_register" class="%bcrm.form.type.event_register.class%">
+            <argument type="service" id="dothiv_moneyformat.money_format"/>
+            <tag name="form.type" alias="event_register"/>
+        </service>
+        <service id="bcrm.form.type.event_register_review" class="%bcrm.form.type.event_register_review.class%">
+            <argument type="service" id="dothiv_moneyformat.money_format"/>
+            <tag name="form.type" alias="event_register_review"/>
+        </service>
+        <service id="bcrm.twig_extension.money_format" class="Dothiv\Bundle\MoneyFormatBundle\Twig\Extension\MoneyFormatTwigExtension">
+            <argument type="service" id="dothiv_moneyformat.money_format"/>
+            <tag name="twig_extension"/>
         </service>
     </services>
 </container>

@@ -26,7 +26,7 @@
         "gedmo/doctrine-extensions": "dev-master",
         "doctrine/migrations": "dev-master@dev",
         "doctrine/doctrine-migrations-bundle": "dev-master@dev",
-        "phpoption/phpoption": "dev-master",
+        "phpoption/phpoption": "1.4.x",
         "knplabs/knp-markdown-bundle": "1.2.*@dev",
         "beberlei/lite-cqrs": "1.1.*@dev",
         "bcrm/www-content": "dev-master",
@@ -34,7 +34,8 @@
         "endroid/qrcode-bundle": "1.5.1",
         "kriswallsmith/buzz": "dev-master@dev",
         "coderbyheart/mailchimp-bundle": "dev-master@dev",
-        "nesbot/carbon": "1.17.0"
+        "nesbot/carbon": "1.17.0",
+        "dothiv/dothiv-moneyformat-bundle": "1.x"
     },
     "scripts": {
         "post-install-cmd": [

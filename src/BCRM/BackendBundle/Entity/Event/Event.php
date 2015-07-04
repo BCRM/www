@@ -65,6 +65,17 @@ class Event extends AggregateResource
     protected $registrationEnd;
 
     /**
+     * Price for aticket in cents (including VAT)
+     *
+     * @var integer
+     * @Assert\NotBlank()
+     * @Assert\Type(type="integer")
+     * @Assert\Range(min=1)
+     * @ORM\Column(type="integer")
+     */
+    protected $price;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      * @var \DateTime
@@ -136,6 +147,22 @@ class Event extends AggregateResource
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param int $price
+     */
+    public function setPrice($price)
+    {
+        $this->price = (int)$price;
     }
 
     /**

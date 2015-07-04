@@ -21,6 +21,7 @@ use BCRM\WebBundle\Form\EventRegisterModel;
 use BCRM\WebBundle\Form\EventRegisterType;
 use BCRM\WebBundle\Form\EventUnregisterType;
 use Carbon\Carbon;
+use Dothiv\Bundle\MoneyFormatBundle\Service\MoneyFormatServiceInterface;
 use LiteCQRS\Bus\CommandBus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -76,7 +77,21 @@ class EventController
      */
     private $ticketRepo;
 
-    public function __construct(ContentReader $reader, FormFactoryInterface $formFactory, RouterInterface $router, CommandBus $commandBus, EventRepository $eventRepo, RegistrationRepository $registrationRepo, UnregistrationRepository $unregistrationRepo, TicketRepository $ticketRepo)
+    /**
+     * @var MoneyFormatServiceInterface
+     */
+    private $moneyFormat;
+
+    public function __construct(
+        ContentReader $reader,
+        FormFactoryInterface $formFactory,
+        RouterInterface $router,
+        CommandBus $commandBus,
+        EventRepository $eventRepo,
+        RegistrationRepository $registrationRepo,
+        UnregistrationRepository $unregistrationRepo,
+        TicketRepository $ticketRepo,
+        MoneyFormatServiceInterface $moneyFormat)
     {
         $this->reader             = $reader;
         $this->formFactory        = $formFactory;
@@ -86,6 +101,7 @@ class EventController
         $this->registrationRepo   = $registrationRepo;
         $this->unregistrationRepo = $unregistrationRepo;
         $this->ticketRepo         = $ticketRepo;
+        $this->moneyFormat        = $moneyFormat;
     }
 
     /**
@@ -99,7 +115,52 @@ class EventController
         if (Carbon::createFromTimestamp($event->getRegistrationEnd()->getTimestamp())->isPast()) {
             throw new AccessDeniedHttpException('Registration not possible.');
         }
-        $form = $this->formFactory->create(new EventRegisterType(), null, array('action' => $request->getPathInfo()));
+        $model = new EventRegisterModel();
+        if ($request->getSession()->has('registration')) {
+            $model = $request->getSession()->get('registration');
+        }
+        $model->event = $event;
+        $form         = $this->formFactory->create('event_register', $model,
+            array(
+                'action'            => $request->getPathInfo(),
+                'validation_groups' => array('registration')
+            )
+        );
+        $form->handleRequest($request);
+        if ($form->isValid()) {
+            $request->getSession()->set('registration', $form->getData());
+            return new RedirectResponse($this->router->generate('bcrmweb_registration_review'));
+        } else {
+            print_r($form->getErrors());
+        }
+        return array(
+            'sponsors'             => $this->reader->getPage('Sponsoren/Index.md'),
+            'event'                => $event,
+            'pricePerDayFormatted' => $this->moneyFormat->format($event->getPrice() / 100, 'de'),
+            'form'                 => $form->createView(),
+        );
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @Template()
+     */
+    public function registerReviewAction(Request $request)
+    {
+        $event = $this->eventRepo->getNextEvent()->getOrThrow(new AccessDeniedHttpException('No event.'));
+        if (Carbon::createFromTimestamp($event->getRegistrationEnd()->getTimestamp())->isPast()) {
+            throw new AccessDeniedHttpException('Registration not possible.');
+        }
+        /** @var EventRegisterModel $model */
+        $model        = $request->getSession()->get('registration');
+        $model->event = $event;
+        $form         = $this->formFactory->create('event_register_review', $model,
+            array(
+                'action' => $request->getPathInfo(),
+                'validation_groups' => array('review')
+            )
+        );
         $form->handleRequest($request);
         if ($form->isValid()) {
             /* @var EventRegisterModel $formData */
@@ -118,9 +179,14 @@ class EventController
             $this->commandBus->handle($command);
             return new RedirectResponse($this->router->generate('bcrmweb_registration_ok'));
         }
+        // TODO: Move to service
+        $total = $model->getDonation() * 100 + (($model->days === 3 ? 2 : 1) * $event->getPrice());
         return array(
-            'sponsors' => $this->reader->getPage('Sponsoren/Index.md'),
-            'form'     => $form->createView(),
+            'sponsors'             => $this->reader->getPage('Sponsoren/Index.md'),
+            'event'                => $event,
+            'pricePerDayFormatted' => $this->moneyFormat->format($event->getPrice() / 100, 'de'),
+            'totalFormatted'       => $this->moneyFormat->format($total / 100, 'de'),
+            'form'                 => $form->createView(),
         );
     }
 
@@ -214,7 +280,7 @@ class EventController
         $participants = $this->registrationRepo->getParticipantList($event);
         return array(
             'participants' => $participants,
-            'sponsors' => $this->reader->getPage('Sponsoren/Index.md'),
+            'sponsors'     => $this->reader->getPage('Sponsoren/Index.md'),
         );
     }
 }

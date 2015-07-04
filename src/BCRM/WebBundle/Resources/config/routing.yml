@@ -34,6 +34,12 @@ bcrmweb_event_register:
     defaults:
         _controller: bcrm.web.controller.event:registerAction
 
+bcrmweb_registration_review:
+    path: /anmeldung/check
+    methods: [GET,POST]
+    defaults:
+        _controller: bcrm.web.controller.event:registerReviewAction
+
 bcrmweb_registration_ok:
     path: /anmeldung/ok
     methods: [GET]

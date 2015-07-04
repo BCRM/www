@@ -1,0 +1,13 @@
+{% extends "BCRMWebBundle::page.html.twig" %}
+{% form_theme form "BCRMWebBundle:Form:custom.html.twig" %}
+{% block content %}
+    <h2>Registrierung überprüfen</h2>
+    <p>
+        Summe: {{ totalFormatted }}
+    </p>
+    {{ form_start(form) }}
+    <fieldset>
+        {{ form_rest(form) }}
+    </fieldset>
+    {{ form_end(form) }}
+{% endblock content %}

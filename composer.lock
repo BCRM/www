@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cc633c681d9945796c5dc6b4a5cfff99",
+    "hash": "4d39812492d39dc1264c217b46f799a0",
     "packages": [
         {
             "name": "bcrm/www-content",
@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BCRM/www-content.git",
-                "reference": "c02ec2ac27beaa02adfa4150b0d5219977a9d55d"
+                "reference": "dbd8843359d86f9c66e0509e6c7ecfde6d8d4bfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BCRM/www-content/zipball/c02ec2ac27beaa02adfa4150b0d5219977a9d55d",
-                "reference": "c02ec2ac27beaa02adfa4150b0d5219977a9d55d",
+                "url": "https://api.github.com/repos/BCRM/www-content/zipball/dbd8843359d86f9c66e0509e6c7ecfde6d8d4bfa",
+                "reference": "dbd8843359d86f9c66e0509e6c7ecfde6d8d4bfa",
                 "shasum": ""
             },
             "type": "library",
@@ -35,7 +35,7 @@
                 "source": "https://github.com/BCRM/www-content/tree/master",
                 "issues": "https://github.com/BCRM/www-content/issues"
             },
-            "time": "2015-07-04 12:03:27"
+            "time": "2015-07-04 12:22:15"
         },
         {
             "name": "beberlei/lite-cqrs",
@@ -1062,6 +1062,48 @@
             "time": "2014-12-16 13:45:01"
         },
         {
+            "name": "dothiv/dothiv-moneyformat-bundle",
+            "version": "v1.1.0",
+            "target-dir": "Dothiv/Bundle/MoneyFormatBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dothiv/DothivMoneyFormatBundle.git",
+                "reference": "f6fe08bff19ecebd20986ea3271e018ac336a600"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dothiv/DothivMoneyFormatBundle/zipball/f6fe08bff19ecebd20986ea3271e018ac336a600",
+                "reference": "f6fe08bff19ecebd20986ea3271e018ac336a600",
+                "shasum": ""
+            },
+            "require": {
+                "phpoption/phpoption": "1.4.*",
+                "symfony/framework-bundle": "~2.3",
+                "twig/extensions": "1.0.*"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Dothiv\\Bundle\\MoneyFormatBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Markus Tacker",
+                    "email": "m@tld.hiv"
+                }
+            ],
+            "description": "MoneyFormatBundle for the Symfony Framework",
+            "time": "2015-07-04 14:41:27"
+        },
+        {
             "name": "endroid/qrcode",
             "version": "1.5.3",
             "source": {
@@ -1780,23 +1822,20 @@
         },
         {
             "name": "phpoption/phpoption",
-            "version": "dev-master",
+            "version": "1.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/php-option.git",
-                "reference": "2767db6e285e0d27b8de4b759f475d1e9b7fb9bb"
+                "reference": "5d099bcf0393908bf4ad69cc47dafb785d51f7f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/2767db6e285e0d27b8de4b759f475d1e9b7fb9bb",
-                "reference": "2767db6e285e0d27b8de4b759f475d1e9b7fb9bb",
+                "url": "https://api.github.com/repos/schmittjoh/php-option/zipball/5d099bcf0393908bf4ad69cc47dafb785d51f7f5",
+                "reference": "5d099bcf0393908bf4ad69cc47dafb785d51f7f5",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "4.7.*"
             },
             "type": "library",
             "extra": {
@@ -1815,8 +1854,10 @@
             ],
             "authors": [
                 {
-                    "name": "Johannes M. Schmitt",
-                    "email": "schmittjoh@gmail.com"
+                    "name": "Johannes Schmitt",
+                    "email": "schmittjoh@gmail.com",
+                    "homepage": "https://github.com/schmittjoh",
+                    "role": "Developer of wrapped JMSSerializerBundle"
                 }
             ],
             "description": "Option Type for PHP",
@@ -1826,7 +1867,7 @@
                 "php",
                 "type"
             ],
-            "time": "2015-06-08 12:38:23"
+            "time": "2014-01-09 22:37:17"
         },
         {
             "name": "psr/log",
@@ -2462,7 +2503,6 @@
         "gedmo/doctrine-extensions": 20,
         "doctrine/migrations": 20,
         "doctrine/doctrine-migrations-bundle": 20,
-        "phpoption/phpoption": 20,
         "knplabs/knp-markdown-bundle": 20,
         "beberlei/lite-cqrs": 20,
         "bcrm/www-content": 20,

@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new BCRM\PrintBundle\BCRMPrintBundle(),
             new BCRM\BackendBundle\BCRMBackendBundle(),
             new Coderbyheart\MailChimpBundle\CoderbyheartMailChimpBundle(),
+            new Dothiv\Bundle\MoneyFormatBundle\DothivMoneyFormatBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
