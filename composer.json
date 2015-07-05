@@ -38,7 +38,7 @@
         "dothiv/dothiv-moneyformat-bundle": "1.x"
     },
     "require-dev": {
-      "phpunit/phpunit": "*@dev"
+      "phpunit/phpunit": "4.x"
     },
     "scripts": {
         "post-install-cmd": [
