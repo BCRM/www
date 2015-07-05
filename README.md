@@ -1,12 +1,14 @@
-# BarCamp RheinMain – Website 2013
+# BarCamp RheinMain – Website
 
-[![Build Status](https://travis-ci.org/BCRM/www.png)](https://travis-ci.org/BCRM/www)
+[![Build Status](https://travis-ci.org/BCRM/www.png)](https://travis-ci.org/BCRM/www) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/BCRM/www/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/BCRM/www/?branch=master)
 
-This is the source code for [barcamp-rheinmain.org](http://barcamp-rheinmain.org/).
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/40ee3236-6312-42b7-a1e9-1d54b249ff34/big.png)](https://insight.sensiolabs.com/projects/40ee3236-6312-42b7-a1e9-1d54b249ff34)
+
+This is the source code for [barcamp-rheinmain.de](http://barcamp-rheinmain.de/).
 
 Design: [Martin Kraft](http://martinkraft.com/)  
 Webdesign: [Alex Wenz](http://alexwenz.de/)  
-Development: [Markus Tacker](http://coderbyheart.de)
+Development: [Markus Tacker](https://cto.hiv/)
 
 ## Setup
 
@@ -27,7 +29,7 @@ In a nutshell:
 
 ## LICENSE
 
-Copyright (c) 2013 Verein zur Förderung der Netzkultur im Rhein-Main-Gebiet e.V. | http://netzkultur-rheinmain.de/
+Copyright (c) 2013-2015 Verein zur Förderung der Netzkultur im Rhein-Main-Gebiet e.V. | http://netzkultur-rheinmain.de/
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
 documentation files (the "Software"), to deal in the Software without restriction, including without limitation
