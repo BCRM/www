@@ -26,7 +26,7 @@ abstract class Base extends WebTestCase
         $container = $client->getContainer();
         static::runCommand($container, new DropSchemaDoctrineCommand(), 'doctrine:schema:drop', array('--force' => true));
         static::runCommand($container, new CreateSchemaDoctrineCommand(), 'doctrine:schema:create');
-        static::runCommand($container, new LoadDataFixturesDoctrineCommand(), 'doctrine:fixtures:load', array('--append' => true));
+        static::runCommand($container, new LoadDataFixturesDoctrineCommand(), 'doctrine:fixtures:load', array('--append' => true, '--fixtures' => './src/BCRM/BackendBundle/Tests/data/fixtures/'));
     }
 
     /**

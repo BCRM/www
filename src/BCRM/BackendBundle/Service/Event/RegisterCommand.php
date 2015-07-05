@@ -11,6 +11,8 @@ use BCRM\BackendBundle\Entity\Event\Registration;
 
 class RegisterCommand
 {
+    public $uuid;
+
     public $event;
 
     public $email;
@@ -34,4 +36,8 @@ class RegisterCommand
     public $participantList = false;
 
     public $confirmed = false;
+
+    public $payment;
+
+    public $donation;
 }

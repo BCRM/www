@@ -9,6 +9,7 @@ namespace BCRM\PrintBundle\Tests\Functional;
 
 use BCRM\BackendBundle\Entity\Event\Registration;
 use BCRM\BackendBundle\Entity\Event\Ticket;
+use BCRM\BackendBundle\Entity\Payment;
 use BCRM\WebBundle\Tests\Functional\Base;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -42,7 +43,12 @@ class ConciergeControllerTest extends Base
 
         // Create registrations
         for ($i = 0; $i < 5; $i++) {
+            $payment = new Payment();
+            $payment->setTransactionId('payment' . $i);
+            $payment->setMethod('cash');
+            $em->persist($payment);
             $registration = new Registration();
+            $registration->setUuid($i);
             $registration->setEmail(sprintf('john.doe.198%d@domain.com', $i));
             $registration->setName(sprintf('John Doe %d', $i));
             $registration->setEvent($event);
@@ -50,6 +56,7 @@ class ConciergeControllerTest extends Base
             $registration->setSaturday(false);
             $registration->setSunday(true);
             $registration->setTags(sprintf('#johndoe%d', $i));
+            $registration->setPayment($payment);
             $em->persist($registration);
         }
 

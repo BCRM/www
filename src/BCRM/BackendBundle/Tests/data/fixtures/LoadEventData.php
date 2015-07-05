@@ -1,6 +1,6 @@
 <?php
 
-namespace BCRM\BackendBundle\DataFixtures\ORM;
+namespace BCRM\BackendBundle\Tests\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;

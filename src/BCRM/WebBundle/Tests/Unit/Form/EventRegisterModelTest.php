@@ -26,10 +26,39 @@ class EventRegisterModelTest extends \PHPUnit_Framework_TestCase
      */
     public function itShouldReportTheCorrectDays($daysValue, $hasSaturday, $hasSunday)
     {
-        $model       = new \BCRM\WebBundle\Form\EventRegisterModel();
+        $model       = $this->createTestObject();
         $model->days = $daysValue;
         $this->assertEquals($model->wantsSaturday(), $hasSaturday);
         $this->assertEquals($model->wantsSunday(), $hasSunday);
+    }
+
+    /**
+     * @test
+     * @group        unit
+     */
+    public function itShouldConvertEur()
+    {
+        $model = $this->createTestObject();
+        $model->setDonation(100);
+        $this->assertEquals($model->getDonation(), 100);
+        $this->assertEquals($model->getDonationEur(), 1.0);
+
+        $model->setDonationEur(123.45);
+        $this->assertEquals($model->getDonation(), 12345);
+        $this->assertEquals($model->getDonationEur(), 123.45);
+
+        $model->setDonationEur('17,17');
+        $this->assertEquals($model->getDonation(), 1717);
+        $this->assertEquals($model->getDonationEur(), 17.17);
+    }
+
+    /**
+     * @return \BCRM\WebBundle\Form\EventRegisterModel
+     */
+    protected function createTestObject()
+    {
+        $model = new \BCRM\WebBundle\Form\EventRegisterModel();
+        return $model;
     }
 
 }

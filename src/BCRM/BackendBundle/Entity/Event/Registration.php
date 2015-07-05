@@ -2,6 +2,7 @@
 
 namespace BCRM\BackendBundle\Entity\Event;
 
+use BCRM\BackendBundle\Entity\Payment;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use LiteCQRS\Plugin\CRUD\AggregateResource;
@@ -11,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Registration
  *
- * @ORM\Table(name="registration",indexes={@ORM\Index(name="email_idx", columns={"email"})})
+ * @ORM\Table(name="registration",indexes={@ORM\Index(name="email_idx", columns={"email"})})})
  * @ORM\Entity(repositoryClass="BCRM\BackendBundle\Entity\Event\DoctrineRegistrationRepository")
  */
 class Registration extends AggregateResource
@@ -37,6 +38,12 @@ class Registration extends AggregateResource
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=false)
+     */
+    protected $uuid;
 
     /**
      * @Assert\NotBlank()
@@ -130,6 +137,14 @@ class Registration extends AggregateResource
     protected $type = self::TYPE_NORMAL;
 
     /**
+     * @Assert\NotBlank()
+     * @ORM\ManyToOne(targetEntity="BCRM\BackendBundle\Entity\Payment")
+     * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", nullable=true)
+     * @var Payment
+     */
+    protected $payment;
+
+    /**
      * @Gedmo\Timestampable(on="create")
      * @ORM\Column(type="datetime")
      * @var \DateTime
@@ -151,6 +166,22 @@ class Registration extends AggregateResource
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @param string $uuid
+     */
+    public function setUuid($uuid)
+    {
+        $this->uuid = $uuid;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUuid()
+    {
+        return $this->uuid;
     }
 
     /**
@@ -377,5 +408,29 @@ class Registration extends AggregateResource
     public function setParticipantList($participantList)
     {
         $this->participantList = (bool)$participantList;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPaid()
+    {
+        return $this->payment !== null;
+    }
+
+    /**
+     * @param Payment $payment
+     */
+    public function setPayment(Payment $payment)
+    {
+        $this->payment = $payment;
+    }
+
+    /**
+     * @return Payment
+     */
+    public function getPayment()
+    {
+        return $this->payment;
     }
 }

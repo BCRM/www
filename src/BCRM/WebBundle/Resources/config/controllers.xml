@@ -5,6 +5,7 @@
     <parameters>
         <parameter key="bcrm.web.controller.web.class">BCRM\WebBundle\Controller\WebController</parameter>
         <parameter key="bcrm.web.controller.event.class">BCRM\WebBundle\Controller\EventController</parameter>
+        <parameter key="bcrm.web.controller.paypal.class">BCRM\WebBundle\Controller\PaypalController</parameter>
         <parameter key="bcrm.web.controller.checkin.class">BCRM\WebBundle\Controller\CheckinController</parameter>
         <parameter key="bcrm.web.controller.concierge.class">BCRM\WebBundle\Controller\ConciergeController</parameter>
         <parameter key="bcrm.web.controller.stats.class">BCRM\WebBundle\Controller\StatsController</parameter>
@@ -28,6 +29,9 @@
             <argument type="service" id="bcrm.backend.repo.unregistration" />
             <argument type="service" id="bcrm.backend.repo.ticket" />
             <argument type="service" id="dothiv_moneyformat.money_format"/>
+        </service>
+        <service id="bcrm.web.controller.paypal" class="%bcrm.web.controller.paypal.class%" scope="request">
+            <argument type="service" id="command_bus"/>
         </service>
         <service id="bcrm.web.controller.checkin" class="%bcrm.web.controller.checkin.class%" scope="request">
             <argument type="service" id="bcrm.backend.repo.event" />

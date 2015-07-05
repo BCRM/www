@@ -31,8 +31,9 @@ class EventRegisterReviewType extends AbstractType
         $event = $model->event;
         $builder
             ->setMethod('POST')
-            ->add('norefund', 'choice', array('label' => 'Mir ist bekannt, dass ich die Registrierungsgebühr nicht zurück erstattet bekomme.', 'required' => true, 'choices' => array(1 => 'ja', 0 => 'nein'), 'expanded' => true))
-            ->add('save', 'submit', array('label' => 'Registrierung bestätigen'));
+            ->add('norefund', 'choice', array('label' => 'Mir ist bekannt, dass ich im Falle eine Stornierung durch mich keine Erstattung erhalte:', 'required' => true, 'choices' => array(1 => 'ja', 0 => 'nein'), 'expanded' => true))
+            ->add('autocancel', 'choice', array('label' => sprintf('Mir ist bekannt, dass meine Registrierung automatisch storniert wird, wenn ich den Gesamtbetrag nicht bis %s mit dem ausgewählten Zahlungsmittel begleiche:', $model->getAutoCancelDate()->format('d.m.Y H:i')), 'required' => true, 'choices' => array(1 => 'ja', 0 => 'nein'), 'expanded' => true))
+            ->add('save', 'submit', array('label' => 'Kostenpflichtig bestellen'));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)

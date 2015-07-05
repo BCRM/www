@@ -37,6 +37,9 @@
         "nesbot/carbon": "1.17.0",
         "dothiv/dothiv-moneyformat-bundle": "1.x"
     },
+    "require-dev": {
+      "phpunit/phpunit": "*@dev"
+    },
     "scripts": {
         "post-install-cmd": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",

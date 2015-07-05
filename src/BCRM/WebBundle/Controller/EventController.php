@@ -31,6 +31,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Util\SecureRandom;
 
 /**
  * Manages event registrations.
@@ -130,8 +131,6 @@ class EventController
         if ($form->isValid()) {
             $request->getSession()->set('registration', $form->getData());
             return new RedirectResponse($this->router->generate('bcrmweb_registration_review'));
-        } else {
-            print_r($form->getErrors());
         }
         return array(
             'sponsors'             => $this->reader->getPage('Sponsoren/Index.md'),
@@ -157,7 +156,7 @@ class EventController
         $model->event = $event;
         $form         = $this->formFactory->create('event_register_review', $model,
             array(
-                'action' => $request->getPathInfo(),
+                'action'            => $request->getPathInfo(),
                 'validation_groups' => array('review')
             )
         );
@@ -176,17 +175,58 @@ class EventController
             $command->food            = $formData->food;
             $command->participantList = $formData->participantList;
             $command->tags            = $formData->tags;
+            $command->donation        = $formData->getDonation();
+            $command->payment         = $formData->payment;
+            $generator                = new SecureRandom();
+            $command->uuid            = sha1($generator->nextBytes(16));
             $this->commandBus->handle($command);
-            return new RedirectResponse($this->router->generate('bcrmweb_registration_ok'));
+            $request->getSession()->set('registrationCommand', $command);
+            return new RedirectResponse($this->router->generate('bcrmweb_registration_payment'));
         }
         // TODO: Move to service
-        $total = $model->getDonation() * 100 + (($model->days === 3 ? 2 : 1) * $event->getPrice());
+        $ticketPrice = ($model->days === 3 ? 2 : 1) * $event->getPrice();
+        $orderTotal  = $model->getDonation() + $ticketPrice;
+        $fees        = 0;
+        if ($model->payment === 'paypal') {
+            //  Mit Paypal (zzgl. 1,9% + 0,35 Cent)
+            $fees = ceil($orderTotal * 0.019) + 35;
+        } else {
+            // Mit barzahlen.de (zzgl. 3,0% + 0,35 Cent)
+            $fees = ceil($orderTotal * 0.03) + 35;
+        }
+        $total = $model->getDonation() + $ticketPrice + $fees;
         return array(
             'sponsors'             => $this->reader->getPage('Sponsoren/Index.md'),
             'event'                => $event,
             'pricePerDayFormatted' => $this->moneyFormat->format($event->getPrice() / 100, 'de'),
+            'ticketPriceFormatted' => $this->moneyFormat->format($ticketPrice / 100, 'de'),
+            'donationFormatted'    => $this->moneyFormat->format($model->getDonation() / 100, 'de'),
+            'orderTotalFormatted'  => $this->moneyFormat->format($orderTotal / 100, 'de'),
+            'feesFormatted'        => $this->moneyFormat->format($fees / 100, 'de'),
             'totalFormatted'       => $this->moneyFormat->format($total / 100, 'de'),
             'form'                 => $form->createView(),
+            'registration'         => $model,
+        );
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @Template()
+     *
+     * @return array
+     */
+    public function registerPaymentAction(Request $request)
+    {
+        $event = $this->eventRepo->getNextEvent()->getOrThrow(new AccessDeniedHttpException('No event.'));
+        if (Carbon::createFromTimestamp($event->getRegistrationEnd()->getTimestamp())->isPast()) {
+            throw new AccessDeniedHttpException('Registration not possible.');
+        }
+        /** @var EventRegisterModel $model */
+        return array(
+            'sponsors'     => $this->reader->getPage('Sponsoren/Index.md'),
+            'event'        => $event,
+            'registration' => $request->getSession()->get('registrationCommand'),
         );
     }
 

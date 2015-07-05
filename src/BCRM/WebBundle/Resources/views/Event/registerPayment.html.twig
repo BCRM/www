@@ -1,0 +1,34 @@
+{% extends "BCRMWebBundle::page.html.twig" %}
+{% block content %}
+    <h2>Registrierung bezahlen</h2>
+
+    <p>
+        Vielen Dank, du hast es fast geschafft.
+    </p>
+
+    {% if registration.payment == "paypal" %}
+        <p>
+            Klicke nun auf den folgende Button um den ausstehenden Betrag mit Paypal zu begleichen.
+        </p>
+        {% set text %}{% spaceless %}{{ event.name }} Ticket für {{ registration.name }} gültig {% if registration.days == 3 %} an beiden Tagen {% elseif registration.days == 2 %}am Sonntag{% else %}am Samstag{% endif %}{% endspaceless %}{% endset %}
+        <script async="async" src="https://www.paypalobjects.com/js/external/paypal-button.min.js?merchant={{ paypal_merchant_id }}"
+                data-button="buynow"
+                data-name="{{ text }}"
+                data-quantity="{% if registration.days == 3 %}2{% else %}1{% endif %}"
+                data-amount="37.50"
+                data-currency="EUR"
+                data-shipping="0"
+                data-tax="0"
+                data-locale="de"
+                data-lc="de_DE"
+                data-size="small"
+                data-number="{{ registration.uuid }}"
+                data-callback="{{ app.request.scheme ~'://' ~ app.request.httpHost ~ path('bcrmweb_registration_paypal') }}"
+                {% if paypal_sandbox %}
+                data-env="sandbox"
+                {% endif %}
+                ></script>
+    {% else %}
+        Barzahlen.de
+    {% endif %}
+{% endblock content %}

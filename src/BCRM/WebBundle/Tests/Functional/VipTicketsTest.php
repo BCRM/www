@@ -10,6 +10,7 @@ namespace BCRM\WebBundle\Tests\Functional;
 use BCRM\BackendBundle\Command\CreateTicketsCommand;
 use BCRM\BackendBundle\Entity\Event\Registration;
 use BCRM\BackendBundle\Entity\Event\Ticket;
+use BCRM\BackendBundle\Entity\Payment;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -43,20 +44,32 @@ class VipTicketsTest extends Base
         $event = $em->getRepository('BCRMBackendBundle:Event\Event')->findAll()[0];
 
         // Create normal registrations
+        $johnPays = new Payment();
+        $johnPays->setTransactionId('johnpay');
+        $johnPays->setMethod('cash');
+        $em->persist($johnPays);
         $john = new Registration();
+        $john->setUuid('john');
         $john->setName('John');
         $john->setEvent($event);
         $john->setEmail('john@domain.com');
         $john->setSaturday(true);
         $john->setConfirmed(true);
+        $john->setPayment($johnPays);
         $em->persist($john);
 
+        $maryPays = new Payment();
+        $maryPays->setTransactionId('marypay');
+        $maryPays->setMethod('cash');
+        $em->persist($maryPays);
         $mary = new Registration();
+        $mary->setUuid('mary');
         $mary->setName('Mary');
         $mary->setEvent($event);
         $mary->setEmail('mary@domain.com');
         $mary->setSaturday(true);
         $mary->setConfirmed(true);
+        $mary->setPayment($maryPays);
         $em->persist($mary);
 
         $em->flush();
@@ -70,6 +83,7 @@ class VipTicketsTest extends Base
 
         // Create VIP registration
         $vip = new Registration();
+        $vip->setUuid('VIP');
         $vip->setName('VIP');
         $vip->setEvent($event);
         $vip->setEmail('vip@domain.com');
@@ -80,6 +94,7 @@ class VipTicketsTest extends Base
 
         // Create Sponsor registration
         $sponsor = new Registration();
+        $sponsor->setUuid('Sponsor');
         $sponsor->setName('Sponsor');
         $sponsor->setEvent($event);
         $sponsor->setEmail('sponsor@domain.com');
@@ -119,18 +134,31 @@ class VipTicketsTest extends Base
         $event = $em->getRepository('BCRMBackendBundle:Event\Event')->findAll()[0];
 
         // Create two other normal registrations
+        $joePays = new Payment();
+        $joePays->setTransactionId('joepay');
+        $joePays->setMethod('cash');
+        $em->persist($joePays);
         $joe = new Registration();
         $joe->setName('Joe');
+        $joe->setUuid('Joe');
         $joe->setEvent($event);
         $joe->setEmail('joe@domain.com');
         $joe->setSaturday(true);
         $joe->setConfirmed(true);
+        $joe->setPayment($joePays);
+        $em->persist($joe);
+        $jillPays = new Payment();
+        $jillPays->setTransactionId('jillpays');
+        $jillPays->setMethod('cash');
+        $em->persist($jillPays);
         $jill = new Registration();
         $jill->setName('Jill');
+        $jill->setUuid('Jill');
         $jill->setEvent($event);
         $jill->setEmail('jill@domain.com');
         $jill->setSaturday(true);
         $jill->setConfirmed(true);
+        $jill->setPayment($jillPays);
         $em->persist($jill);
         $em->flush();
         $this->createTicketsCommand($container);
@@ -139,11 +167,11 @@ class VipTicketsTest extends Base
             'day'   => Ticket::DAY_SATURDAY,
         ))));
     }
-    
+
     /**
      * @test
-     * @group functional
-     * @group regression
+     * @group   functional
+     * @group   regression
      * @depends vipTicketsShouldNotCountForEventCapacity
      */
     public function vipTicketsShouldBeCreatedIfEventIsOverCapacity()
@@ -163,6 +191,7 @@ class VipTicketsTest extends Base
         // Create Sponsor registration
         $sponsor2 = new Registration();
         $sponsor2->setName('Sponsor 2');
+        $sponsor2->setUuid('Sponsor 2');
         $sponsor2->setEvent($event);
         $sponsor2->setEmail('sponsor2@domain.com');
         $sponsor2->setSaturday(true);

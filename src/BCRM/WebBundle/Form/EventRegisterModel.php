@@ -3,6 +3,7 @@
 namespace BCRM\WebBundle\Form;
 
 use BCRM\BackendBundle\Entity\Event\Event;
+use Carbon\Carbon;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class EventRegisterModel
@@ -79,9 +80,17 @@ class EventRegisterModel
      * @var boolean
      * @Assert\Type(type="integer")
      * @Assert\NotBlank()
-     * @Assert\Range(min=1,max=1,groups={"review"})
+     * @Assert\Range(min=1,max=1,groups={"review"},minMessage="Bitte bestätigen!")
      */
     public $norefund = 0;
+
+    /**
+     * @var boolean
+     * @Assert\Type(type="integer")
+     * @Assert\NotBlank()
+     * @Assert\Range(min=1,max=1,groups={"review"},minMessage="Bitte bestätigen!")
+     */
+    public $autocancel = 0;
 
     /**
      * @var Event
@@ -105,7 +114,7 @@ class EventRegisterModel
     }
 
     /**
-     * @return mixed
+     * @return int
      */
     public function getDonation()
     {
@@ -113,10 +122,35 @@ class EventRegisterModel
     }
 
     /**
-     * @param mixed $donation
+     * @param int $donation
      */
     public function setDonation($donation)
     {
         $this->donation = (int)$donation;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDonationEur()
+    {
+        return $this->donation / 100;
+    }
+
+    /**
+     * @param float $donation
+     * NOTE: currently only supports german notation of floats
+     */
+    public function setDonationEur($donation)
+    {
+        $this->donation = (int)round(floatval(str_replace(',', '.', $donation)) * 100);
+    }
+
+    /**
+     * @return Carbon
+     */
+    public function getAutoCancelDate()
+    {
+        return Carbon::create()->addDays(4);
     }
 }

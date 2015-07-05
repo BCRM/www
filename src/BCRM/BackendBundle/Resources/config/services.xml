@@ -8,6 +8,7 @@
         <parameter key="bcrm.backend.eventservice.class">BCRM\BackendBundle\Service\Event</parameter>
         <parameter key="bcrm.backend.conciergeservice.class">BCRM\BackendBundle\Service\Concierge</parameter>
         <parameter key="bcrm.backend.ticketservice.class">BCRM\BackendBundle\Service\Ticket</parameter>
+        <parameter key="bcrm.backend.paymentservice.class">BCRM\BackendBundle\Service\Payment</parameter>
         <parameter key="bcrm.backend.contentReader.class">BCRM\BackendBundle\Content\FileContentReader</parameter>
         <parameter key="bcrm.twig.loader.content.class">BCRM\BackendBundle\Content\TwigLoader</parameter>
     </parameters>
@@ -37,6 +38,11 @@
         <service id="bcrm.backend.ticketservice" class="%bcrm.backend.ticketservice.class%">
             <argument type="service" id="command_bus"/>
             <tag name="lite_cqrs.event_handler"/>
+        </service>
+        <service id="bcrm.backend.paymentservice" class="%bcrm.backend.paymentservice.class%">
+            <argument type="service" id="command_bus"/>
+            <argument type="service" id="litecqrs.event_message_bus"/>
+            <tag name="lite_cqrs.command_handler"/>
         </service>
         <service id="bcrm.backend.contentReader" class="%bcrm.backend.contentReader.class%">
             <argument>%bcrm_web.content_dir%</argument>

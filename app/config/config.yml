@@ -93,3 +93,8 @@ bcrm_web:
 
 coderbyheart_mail_chimp:
   api_key: %mailchimp.api_key%
+
+twig:
+  globals:
+    paypal_merchant_id: %paypal_merchant_id%
+    paypal_sandbox: %paypal_sandbox%

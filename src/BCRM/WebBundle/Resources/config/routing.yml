@@ -40,6 +40,18 @@ bcrmweb_registration_review:
     defaults:
         _controller: bcrm.web.controller.event:registerReviewAction
 
+bcrmweb_registration_payment:
+    path: /anmeldung/payment
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.event:registerPaymentAction
+
+bcrmweb_registration_paypal:
+    path: /paypal
+    methods: [POST]
+    defaults:
+        _controller: bcrm.web.controller.paypal:webhookAction
+
 bcrmweb_registration_ok:
     path: /anmeldung/ok
     methods: [GET]

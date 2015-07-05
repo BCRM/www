@@ -42,3 +42,5 @@ parameters:
     barcamp_hashtag: bcrm14
     twitter_widget_id: 524809884814958594
 
+    paypal_merchant_id: MADLHS6XJAZFS
+    paypal_sandbox: true

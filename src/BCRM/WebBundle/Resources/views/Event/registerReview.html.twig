@@ -2,12 +2,61 @@
 {% form_theme form "BCRMWebBundle:Form:custom.html.twig" %}
 {% block content %}
     <h2>Registrierung überprüfen</h2>
-    <p>
-        Summe: {{ totalFormatted }}
-    </p>
+    <table class="register">
+        <thead>
+            <tr>
+                <th>Bezeichnung</th>
+                <th class="right">Betrag</th>
+            </tr>
+        </thead>
+        <tfoot>
+        <tr>
+            <td>
+                Gebühren
+                {% if registration.payment == "paypal" %}
+                (Paypal)
+                {% else %}
+                (Barzahlen.de)
+                {% endif %}
+            </td>
+            <td class="right">
+                {{ feesFormatted }}
+            </td>
+        </tr>
+        <tr>
+            <th>Summe</th>
+            <th class="right">{{ totalFormatted }}</th>
+        </tr>
+        </tfoot>
+        <tbody>
+        <tr>
+            <td>
+                {{ event.name }} Ticket für {{ registration.name }}<br>
+                gültig
+                {% if registration.days == 3 %}
+                    an beiden Tagen
+                {% elseif registration.days == 2 %}
+                    am Sonntag
+                {% else %}
+                    am Samstag
+                {% endif %}
+            </td>
+            <td class="right">
+                {{ ticketPriceFormatted }}
+            </td>
+        </tr>
+        {% if registration.donation > 0 %}
+            <tr>
+                <td>Freiwillige Spende</td>
+                <td class="right">{{ donationFormatted }}</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
     {{ form_start(form) }}
     <fieldset>
         {{ form_rest(form) }}
+        <p>Auf der nächsten Seite findest Du einen Link zur Zahlung.</p>
     </fieldset>
     {{ form_end(form) }}
 {% endblock content %}

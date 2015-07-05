@@ -12,6 +12,8 @@
         <parameter key="bcrm.backend.entity.event.class">BCRM\BackendBundle\Entity\Event\Event</parameter>
         <parameter key="bcrm.backend.repo.ticket.class">BCRM\BackendBundle\Entity\Event\DoctrineTicketRepository</parameter>
         <parameter key="bcrm.backend.entity.ticket.class">BCRM\BackendBundle\Entity\Event\Ticket</parameter>
+        <parameter key="bcrm.backend.repo.payment.class">BCRM\BackendBundle\Entity\DoctrinePaymentRepository</parameter>
+        <parameter key="bcrm.backend.entity.payment.class">BCRM\BackendBundle\Entity\Payment</parameter>
     </parameters>
     <services>
         <service id="bcrm.backend.repo.registration"
@@ -37,6 +39,12 @@
                  factory-method="getRepository"
                  class="%bcrm.backend.repo.ticket.class%">
             <argument>%bcrm.backend.entity.ticket.class%</argument>
+        </service>
+        <service id="bcrm.backend.repo.payment"
+                 factory-service="doctrine.orm.entity_manager"
+                 factory-method="getRepository"
+                 class="%bcrm.backend.repo.payment.class%">
+            <argument>%bcrm.backend.entity.payment.class%</argument>
         </service>
     </services>
 </container>

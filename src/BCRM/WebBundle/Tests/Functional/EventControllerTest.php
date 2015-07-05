@@ -14,6 +14,7 @@ use BCRM\BackendBundle\Command\SendConfirmRegistrationMailCommand;
 use BCRM\BackendBundle\Command\SendConfirmUnregistrationMailCommand;
 use BCRM\BackendBundle\Command\CreateTicketsCommand;
 use BCRM\BackendBundle\Command\ProcessUnregistrationsCommand;
+use BCRM\BackendBundle\Entity\Payment;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class EventControllerTest extends Base
@@ -41,6 +42,8 @@ class EventControllerTest extends Base
         $form['event_register[name]']            = 'John Doe';
         $form['event_register[email]']           = $email;
         $form['event_register[days]']            = 3;
+        $form['event_register[donationEur]']     = '12,34';
+        $form['event_register[payment]']         = 'paypal';
         $form['event_register[arrival]']         = 'public';
         $form['event_register[food]']            = 'default';
         $form['event_register[tags]']            = '#foo #bar #bcrm13';
@@ -49,8 +52,20 @@ class EventControllerTest extends Base
         $client->submit($form);
         $response = $client->getResponse();
         $this->assertEquals(302, $response->getStatusCode());
-        $this->assertTrue($response->isRedirect('/anmeldung/ok'), sprintf('Unexpected redirect to %s', $response->headers->get('Location')));
-        return $email;
+        $this->assertTrue($response->isRedirect('/anmeldung/check'), sprintf('Unexpected redirect to %s', $response->headers->get('Location')));
+
+        $crawler                                   = $client->followRedirect();
+        $form                                      = $crawler->selectButton('event_register_review[save]')->form();
+        $form['event_register_review[norefund]']   = '1';
+        $form['event_register_review[autocancel]'] = '1';
+        $client->submit($form);
+        $response = $client->getResponse();
+        $this->assertEquals(302, $response->getStatusCode());
+        $this->assertTrue($response->isRedirect('/anmeldung/payment'), sprintf('Unexpected redirect to %s', $response->headers->get('Location')));
+        $client->followRedirect();
+        $response = $client->getResponse();
+        preg_match('/data-number="([^"]+)"/', $response->getContent(), $registrationUuidMatch);
+        return $registrationUuidMatch[1];
     }
 
     /**
@@ -58,7 +73,7 @@ class EventControllerTest extends Base
      * @group   functional
      * @depends eventRegistration
      */
-    public function confirmEventRegistration($email)
+    public function confirmEventRegistration($uuid)
     {
         $client    = static::createClient();
         $container = $client->getContainer();
@@ -73,15 +88,26 @@ class EventControllerTest extends Base
 
         /* @var $registration Registration */
         $registration = $em->getRepository('BCRMBackendBundle:Event\Registration')->findOneBy(array(
-            'email' => $email
+            'uuid' => $uuid
         ));
+
+        // Add payment
+        $payment = new Payment();
+        $payment->setMethod('cash');
+        $payment->setTransactionId($uuid);
+        $em->persist($payment);
+
+        $registration->setPayment($payment);
+        $em->persist($registration);
+
+        $em->flush();
 
         // Confirm
         $client->request('GET', sprintf('/anmeldung/bestaetigen/%d/%s', $registration->getId(), $registration->getConfirmationKey()));
         $response = $client->getResponse();
         $this->assertEquals(302, $response->getStatusCode());
         $this->assertTrue($response->isRedirect('/anmeldung/aktiviert'), sprintf('Unexpected redirect to %s', $response->headers->get('Location')));
-        return $email;
+        return $registration->getEmail();
     }
 
     protected function confirmRegistrationCommand(ContainerInterface $container)
@@ -243,6 +269,12 @@ class EventControllerTest extends Base
             $registration->setEmail($email);
             $registration->setSaturday(true);
             $registration->setConfirmed(true);
+            $registration->setUuid($email);
+            $payment = new Payment();
+            $payment->setMethod('cash');
+            $payment->setTransactionId($email);
+            $em->persist($payment);
+            $registration->setPayment($payment);
             $em->persist($registration);
         }
         $em->flush();
@@ -330,6 +362,7 @@ class EventControllerTest extends Base
         $form['event_register[name]']            = 'John Doe';
         $form['event_register[email]']           = $email;
         $form['event_register[days]']            = 3;
+        $form['event_register[payment]']         = 'paypal';
         $form['event_register[arrival]']         = 'public';
         $form['event_register[food]']            = 'default';
         $form['event_register[tags]']            = '#zauberwürfel #bar #bcrm13';
@@ -338,7 +371,7 @@ class EventControllerTest extends Base
         $client->submit($form);
         $response = $client->getResponse();
         $this->assertEquals(302, $response->getStatusCode());
-        $this->assertTrue($response->isRedirect('/anmeldung/ok'), sprintf('Unexpected redirect to %s', $response->headers->get('Location')));
+        $this->assertTrue($response->isRedirect('/anmeldung/check'), sprintf('Unexpected redirect to %s', $response->headers->get('Location')));
         return $email;
     }
 }

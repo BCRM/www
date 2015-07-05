@@ -62,4 +62,13 @@ interface RegistrationRepository
      * @return Registration[]|ArrayCollection
      */
     public function getParticipantList(Event $event);
+
+    /**
+     * Find a registration by uuid
+     *
+     * @param string $uuid
+     *
+     * @return Option of Registration
+     */
+    public function findByUuid($uuid);
 }

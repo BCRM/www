@@ -7,11 +7,13 @@
 
 namespace BCRM\BackendBundle\Service;
 
+use BCRM\BackendBundle\Entity\Event\Registration;
 use BCRM\BackendBundle\Entity\Event\RegistrationRepository;
 use BCRM\BackendBundle\Entity\Event\TicketRepository;
 use BCRM\BackendBundle\Entity\Event\UnregistrationRepository;
 use BCRM\BackendBundle\Event\Event\TicketDeletedEvent;
 use BCRM\BackendBundle\Event\Event\TicketMailSentEvent;
+use BCRM\BackendBundle\Event\Payment\PaymentVerifiedEvent;
 use BCRM\BackendBundle\Service\Event\ConfirmUnregistrationCommand;
 use BCRM\BackendBundle\Service\Event\CreateTicketCommand;
 use BCRM\BackendBundle\Service\Event\RegisterCommand;
@@ -93,7 +95,8 @@ class Event
             'tags'            => $command->tags,
             'type'            => $command->type,
             'participantList' => $command->participantList,
-            'confirmed'       => $command->confirmed
+            'confirmed'       => $command->confirmed,
+            'uuid'            => $command->uuid
         );
         $this->commandBus->handle($createRegistrationCommand);
     }
@@ -234,6 +237,7 @@ class Event
         // Create a new registration matching the unregistration
         $registration = $this->registrationRepo->getRegistrationForEmail($command->event, $command->unregistration->getEmail());
         if ($registration->isDefined()) {
+            /** @var Registration $r */
             $r                = $registration->get();
             $registrationData = array(
                 'event'     => $command->event,
@@ -246,6 +250,8 @@ class Event
                 'confirmed' => 1,
                 'saturday'  => $r->getSaturday(),
                 'sunday'    => $r->getSunday(),
+                'uuid'      => $r->getUuid(),
+                'payment'   => $r->getPayment(),
             );
             if ($command->unregistration->getSaturday()) {
                 $registrationData['saturday'] = false;
@@ -281,6 +287,27 @@ class Event
         $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Unregistration';
         $updateCommand->id    = $command->unregistration->getId();
         $updateCommand->data  = array('processed' => true);
+        $this->commandBus->handle($updateCommand);
+    }
+
+    /**
+     * Once a payment has been verified, find the registration it belongs to and mark it as paid
+     * so the tickets can be assigned.
+     *
+     * @param PaymentVerifiedEvent $event
+     */
+    public function onPaymentVerified(PaymentVerifiedEvent $event)
+    {
+        $registrationOptional = $this->registrationRepo->findByUuid($event->payment->getPayload()->get('item_number'));
+        if ($registrationOptional->isEmpty()) {
+            return;
+        }
+        $registration = $registrationOptional->get();
+        // Mark registration as paid
+        $updateCommand        = new UpdateResourceCommand();
+        $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Registration';
+        $updateCommand->id    = $registration->getId();
+        $updateCommand->data  = array('payment' => $event->payment);
         $this->commandBus->handle($updateCommand);
     }
 }

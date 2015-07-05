@@ -55,7 +55,7 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
         $type          = Registration::TYPE_NORMAL;
         $eventId       = $event->getId();
         $dayName       = $day == Ticket::DAY_SATURDAY ? 'saturday' : 'sunday';
-        $registrations = "SELECT MAX(id) FROM registration WHERE confirmed = 1 AND type = $type AND event_id = $eventId GROUP BY event_id, email ORDER BY created ASC, id ASC";
+        $registrations = "SELECT MAX(id) FROM registration WHERE confirmed = 1 AND payment_id IS NOT NULL AND type = $type AND event_id = $eventId GROUP BY event_id, email ORDER BY created ASC, id ASC";
         $sql           = "SELECT * FROM registration WHERE id IN ($registrations) AND email NOT IN (SELECT email FROM ticket WHERE day = $day AND event_id = $eventId) AND $dayName = 1 LIMIT $capacity";
         $query         = $this->_em->createNativeQuery(
             $sql,
@@ -96,6 +96,7 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
             ->andWhere('r.event = :event')->setParameter('event', $event)
             ->andWhere('r.email = :email')->setParameter('email', $email)
             ->andWhere('r.confirmed = 1')
+            ->andWhere('r.payment IS NOT NULL')
             ->orderBy('r.created', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
@@ -124,11 +125,29 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
                     ->where('r2.event = :event')->setParameter('event', $event)
                     ->andWhere('r2.participantList = 1')
                     ->andWhere('r2.confirmed = 1')
+                    ->andWhere('r2.payment IS NOT NULL')
                     ->groupBy('r2.email')
                     ->getDQL()
             ))
             ->orderBy('r.name')
             ->getQuery()
             ->getResult());
+    }
+
+    /**
+     * Find a registration by uuid
+     *
+     * @param string $uuid
+     *
+     * @return Option of Registration
+     */
+    public function findByUuid($uuid)
+    {
+        return Option::fromValue($this->createQueryBuilder('r')
+            ->andWhere('r.uuid = :uuid')->setParameter('uuid', $uuid)
+            ->orderBy('r.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult());
     }
 }
