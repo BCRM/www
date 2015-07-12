@@ -15,7 +15,7 @@
                 data-button="buynow"
                 data-name="{{ text }}"
                 data-quantity="{% if registration.days == 3 %}2{% else %}1{% endif %}"
-                data-amount="{{ total / 100 }}"
+                data-amount="{{ (total / 100)|number_format(2, '.') }}"
                 data-currency="EUR"
                 data-shipping="0"
                 data-tax="0"
