@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bb22513f2f6af88f690a44d59f2acf13",
+    "hash": "860abfd4931337fc1a512e4a12b59736",
     "packages": [
         {
             "name": "bcrm/www-content",
-            "version": "dev-master",
+            "version": "dev-paid-tickets",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BCRM/www-content.git",
-                "reference": "dae141cc5ee967e46bd01763b53ae60c8cf44caa"
+                "reference": "ec517aa49ea1a023ae5a0bc06bd067c7bfe3135e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BCRM/www-content/zipball/dae141cc5ee967e46bd01763b53ae60c8cf44caa",
-                "reference": "dae141cc5ee967e46bd01763b53ae60c8cf44caa",
+                "url": "https://api.github.com/repos/BCRM/www-content/zipball/ec517aa49ea1a023ae5a0bc06bd067c7bfe3135e",
+                "reference": "ec517aa49ea1a023ae5a0bc06bd067c7bfe3135e",
                 "shasum": ""
             },
             "type": "library",
@@ -32,10 +32,10 @@
             ],
             "description": "Content for http://2015.barcamp-rheinmain.de/ based on simple Markdown files.",
             "support": {
-                "source": "https://github.com/BCRM/www-content/tree/master",
+                "source": "https://github.com/BCRM/www-content/tree/paid-tickets",
                 "issues": "https://github.com/BCRM/www-content/issues"
             },
-            "time": "2015-07-05 10:54:16"
+            "time": "2015-07-12 18:05:08"
         },
         {
             "name": "beberlei/lite-cqrs",
@@ -927,12 +927,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "70c580174e4e16a79296a02256fb40a34192731c"
+                "reference": "78954cce4962a4655ff47c0751eb78021fbaf2cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/70c580174e4e16a79296a02256fb40a34192731c",
-                "reference": "70c580174e4e16a79296a02256fb40a34192731c",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/78954cce4962a4655ff47c0751eb78021fbaf2cc",
+                "reference": "78954cce4962a4655ff47c0751eb78021fbaf2cc",
                 "shasum": ""
             },
             "require": {
@@ -940,9 +940,6 @@
                 "php": ">=5.4.0",
                 "symfony/console": "~2.3",
                 "symfony/yaml": "~2.3"
-            },
-            "conflict": {
-                "doctrine/orm": "<2.4"
             },
             "require-dev": {
                 "doctrine/coding-standard": "dev-master",
@@ -986,7 +983,7 @@
                 "database",
                 "migrations"
             ],
-            "time": "2015-06-29 10:57:05"
+            "time": "2015-07-05 21:24:36"
         },
         {
             "name": "doctrine/orm",
@@ -1231,12 +1228,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Atlantic18/DoctrineExtensions.git",
-                "reference": "a4b18cc617c619acc7260ed6ef5407f7fea67c67"
+                "reference": "cdfe95db80e55f01718b6cb309c7565da4c11e21"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/a4b18cc617c619acc7260ed6ef5407f7fea67c67",
-                "reference": "a4b18cc617c619acc7260ed6ef5407f7fea67c67",
+                "url": "https://api.github.com/repos/Atlantic18/DoctrineExtensions/zipball/cdfe95db80e55f01718b6cb309c7565da4c11e21",
+                "reference": "cdfe95db80e55f01718b6cb309c7565da4c11e21",
                 "shasum": ""
             },
             "require": {
@@ -1246,7 +1243,7 @@
             },
             "require-dev": {
                 "doctrine/common": ">=2.5.0",
-                "doctrine/mongodb-odm": ">=1.0.0-BETA13",
+                "doctrine/mongodb-odm": "dev-master",
                 "doctrine/orm": ">=2.5.0",
                 "phpunit/phpunit": "~4.4",
                 "phpunit/phpunit-mock-objects": "~2.3",
@@ -1302,7 +1299,7 @@
                 "tree",
                 "uploadable"
             ],
-            "time": "2015-07-02 13:31:49"
+            "time": "2015-07-10 10:20:02"
         },
         {
             "name": "incenteev/composer-parameter-handler",
@@ -1589,12 +1586,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafo/scssphp.git",
-                "reference": "a561fe7d969ff30ad7db51aacb1f4ffc5ccfa930"
+                "reference": "e6582d9ae67a86c670e2770934976166876bf807"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafo/scssphp/zipball/a561fe7d969ff30ad7db51aacb1f4ffc5ccfa930",
-                "reference": "a561fe7d969ff30ad7db51aacb1f4ffc5ccfa930",
+                "url": "https://api.github.com/repos/leafo/scssphp/zipball/e6582d9ae67a86c670e2770934976166876bf807",
+                "reference": "e6582d9ae67a86c670e2770934976166876bf807",
                 "shasum": ""
             },
             "require": {
@@ -1637,20 +1634,20 @@
                 "scss",
                 "stylesheet"
             ],
-            "time": "2015-07-06 04:24:08"
+            "time": "2015-07-11 00:16:19"
         },
         {
             "name": "monolog/monolog",
-            "version": "1.14.0",
+            "version": "1.15.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Seldaek/monolog.git",
-                "reference": "b287fbbe1ca27847064beff2bad7fb6920bf08cc"
+                "reference": "dc5150cc608f2334c72c3b6a553ec9668a4156b0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/b287fbbe1ca27847064beff2bad7fb6920bf08cc",
-                "reference": "b287fbbe1ca27847064beff2bad7fb6920bf08cc",
+                "url": "https://api.github.com/repos/Seldaek/monolog/zipball/dc5150cc608f2334c72c3b6a553ec9668a4156b0",
+                "reference": "dc5150cc608f2334c72c3b6a553ec9668a4156b0",
                 "shasum": ""
             },
             "require": {
@@ -1687,7 +1684,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.14.x-dev"
+                    "dev-master": "1.15.x-dev"
                 }
             },
             "autoload": {
@@ -1713,7 +1710,7 @@
                 "logging",
                 "psr-3"
             ],
-            "time": "2015-06-19 13:29:54"
+            "time": "2015-07-12 13:54:09"
         },
         {
             "name": "nesbot/carbon",

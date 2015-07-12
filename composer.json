@@ -29,7 +29,7 @@
         "phpoption/phpoption": "1.4.x",
         "knplabs/knp-markdown-bundle": "1.2.*@dev",
         "beberlei/lite-cqrs": "1.1.*@dev",
-        "bcrm/www-content": "dev-master",
+        "bcrm/www-content": "dev-paid-tickets",
         "doctrine/doctrine-fixtures-bundle": "dev-master",
         "endroid/qrcode-bundle": "1.5.1",
         "kriswallsmith/buzz": "dev-master@dev",
