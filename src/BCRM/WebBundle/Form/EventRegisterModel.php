@@ -151,6 +151,6 @@ class EventRegisterModel
      */
     public function getAutoCancelDate()
     {
-        return Carbon::create()->addDays(4);
+        return Carbon::create()->addDays(3);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace BCRM\BackendBundle\Entity\Event;
 
+use BCRM\BackendBundle\Entity\Payment;
 use BCRM\BackendBundle\Exception\InvalidArgumentException;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -66,6 +67,14 @@ class Ticket extends AggregateResource
      * @var string Ticket code
      */
     protected $code;
+
+    /**
+     * @Assert\NotBlank()
+     * @ORM\ManyToOne(targetEntity="BCRM\BackendBundle\Entity\Payment")
+     * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", nullable=true)
+     * @var Payment
+     */
+    protected $payment;
 
     /**
      * @var boolean
@@ -302,11 +311,42 @@ class Ticket extends AggregateResource
     /**
      * @return bool
      */
+    public function isNotified()
+    {
+        return (bool)$this->notified;
+    }
+
+    /**
+     * @return bool
+     */
     public function isPrinted()
     {
         return $this->printed;
     }
 
+    /**
+     * @return boolean
+     */
+    public function isPaid()
+    {
+        return $this->payment !== null;
+    }
+
+    /**
+     * @param Payment $payment
+     */
+    public function setPayment(Payment $payment)
+    {
+        $this->payment = $payment;
+    }
+
+    /**
+     * @return Payment
+     */
+    public function getPayment()
+    {
+        return $this->payment;
+    }
 }
 
 

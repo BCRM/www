@@ -137,12 +137,26 @@ class Registration extends AggregateResource
     protected $type = self::TYPE_NORMAL;
 
     /**
+     * @var string Payment method
+     * @Assert\NotBlank()
+     * @ORM\Column(name="payment_method", type="string", nullable=true)
+     * @Assert\Choice(choices={"barzahlen.de", "paypal"})
+     */
+    protected $paymentMethod;
+
+    /**
      * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="BCRM\BackendBundle\Entity\Payment")
      * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", nullable=true)
      * @var Payment
      */
     protected $payment;
+
+    /**
+     * @ORM\Column(name="payment_notified", type="datetime", nullable=true)
+     * @var \DateTime
+     */
+    protected $paymentNotified;
 
     /**
      * @Gedmo\Timestampable(on="create")
@@ -328,6 +342,14 @@ class Registration extends AggregateResource
     }
 
     /**
+     * @return Event
+     */
+    public function getEvent()
+    {
+        return $this->event;
+    }
+
+    /**
      * @param boolean $confirmed
      */
     public function setConfirmed($confirmed)
@@ -411,6 +433,22 @@ class Registration extends AggregateResource
     }
 
     /**
+     * @return mixed
+     */
+    public function getPaymentMethod()
+    {
+        return $this->paymentMethod;
+    }
+
+    /**
+     * @param mixed $paymentMethod
+     */
+    public function setPaymentMethod($paymentMethod)
+    {
+        $this->paymentMethod = $paymentMethod;
+    }
+
+    /**
      * @return boolean
      */
     public function isPaid()
@@ -432,5 +470,29 @@ class Registration extends AggregateResource
     public function getPayment()
     {
         return $this->payment;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getPaymentNotified()
+    {
+        return $this->paymentNotified;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPaymentNotified()
+    {
+        return $this->paymentNotified !== null;
+    }
+
+    /**
+     * @param \DateTime $paymentNotified
+     */
+    public function setPaymentNotified($paymentNotified)
+    {
+        $this->paymentNotified = $paymentNotified;
     }
 }

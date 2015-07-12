@@ -7,18 +7,18 @@
 
 namespace BCRM\BackendBundle\Command;
 
-use BCRM\BackendBundle\Service\Event\SendRegistrationConfirmationMailCommand;
+use BCRM\BackendBundle\Service\Event\SendPaymentNotificationMailCommand;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SendConfirmRegistrationMailCommand extends ContainerAwareCommand
+class SendPayRegistrationMailCommand extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
-            ->setName('bcrm:registration:confirm')
-            ->setDescription('Send registration confirmation emails');
+            ->setName('bcrm:registration:pay')
+            ->setDescription('Send registration payment emails');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -27,11 +27,11 @@ class SendConfirmRegistrationMailCommand extends ContainerAwareCommand
         $repo = $this->getContainer()->get('bcrm.backend.repo.registration');
         /** @var \LiteCQRS\Bus\CommandBus $commandBus */
         $commandBus = $this->getContainer()->get('command_bus');
-        foreach ($repo->getToConfirm() as $registration) {
+        foreach ($repo->getToPay() as $registration) {
             if ($output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
-                $output->writeln(sprintf('Sending registration confirmation mail for %s', $registration));
+                $output->writeln(sprintf('Sending payment notification mail for %s', $registration));
             }
-            $command                = new SendRegistrationConfirmationMailCommand();
+            $command                = new SendPaymentNotificationMailCommand();
             $command->registration  = $registration;
             $command->schemeAndHost = $this->getContainer()->getParameter('scheme_and_host');
             $commandBus->handle($command);

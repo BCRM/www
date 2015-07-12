@@ -16,7 +16,7 @@ interface TicketRepository
      *
      * @return Ticket[]
      */
-    public function getNewTickets(Event $event);
+    public function getToNotify(Event $event);
 
     /**
      * @param Event $event

@@ -7,6 +7,8 @@
 
 namespace BCRM\WebBundle\Tests\Functional;
 
+use BCRM\BackendBundle\Command\SendPayRegistrationMailCommand;
+use BCRM\BackendBundle\Command\SendTicketsMailCommand;
 use BCRM\BackendBundle\Entity\Event\Ticket;
 use BCRM\BackendBundle\Entity\Event\Registration;
 use BCRM\BackendBundle\Entity\Event\Unregistration;
@@ -15,6 +17,7 @@ use BCRM\BackendBundle\Command\SendConfirmUnregistrationMailCommand;
 use BCRM\BackendBundle\Command\CreateTicketsCommand;
 use BCRM\BackendBundle\Command\ProcessUnregistrationsCommand;
 use BCRM\BackendBundle\Entity\Payment;
+use BCRM\BackendBundle\Service\Payment\PayRegistrationCommand;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class EventControllerTest extends Base
@@ -61,11 +64,8 @@ class EventControllerTest extends Base
         $client->submit($form);
         $response = $client->getResponse();
         $this->assertEquals(302, $response->getStatusCode());
-        $this->assertTrue($response->isRedirect('/anmeldung/payment'), sprintf('Unexpected redirect to %s', $response->headers->get('Location')));
-        $client->followRedirect();
-        $response = $client->getResponse();
-        preg_match('/data-number="([^"]+)"/', $response->getContent(), $registrationUuidMatch);
-        return $registrationUuidMatch[1];
+        $this->assertTrue($response->isRedirect('/anmeldung/ok'), sprintf('Unexpected redirect to %s', $response->headers->get('Location')));
+        return $email;
     }
 
     /**
@@ -73,7 +73,7 @@ class EventControllerTest extends Base
      * @group   functional
      * @depends eventRegistration
      */
-    public function confirmEventRegistration($uuid)
+    public function confirmEventRegistration($email)
     {
         $client    = static::createClient();
         $container = $client->getContainer();
@@ -88,19 +88,8 @@ class EventControllerTest extends Base
 
         /* @var $registration Registration */
         $registration = $em->getRepository('BCRMBackendBundle:Event\Registration')->findOneBy(array(
-            'uuid' => $uuid
+            'email' => $email
         ));
-
-        // Add payment
-        $payment = new Payment();
-        $payment->setMethod('cash');
-        $payment->setTransactionId($uuid);
-        $em->persist($payment);
-
-        $registration->setPayment($payment);
-        $em->persist($registration);
-
-        $em->flush();
 
         // Confirm
         $client->request('GET', sprintf('/anmeldung/bestaetigen/%d/%s', $registration->getId(), $registration->getConfirmationKey()));
@@ -126,6 +115,8 @@ class EventControllerTest extends Base
         $container = $client->getContainer();
 
         $this->createTicketsCommand($container);
+        $this->sendTicketsCommand($container); // Tickets should not be sent, because not yet paid for
+        $this->sendPayTicketCommand($container); // but a payment notification should be sent
 
         /* @var $em \Doctrine\Common\Persistence\ObjectManager */
         $em = $container
@@ -145,6 +136,71 @@ class EventControllerTest extends Base
         $this->assertTrue(in_array(Ticket::DAY_SUNDAY, $days));
         $this->assertEquals(1, $tickets[0]->getEvent()->getId());
         $this->assertEquals(1, $tickets[1]->getEvent()->getId());
+        $this->assertNull($tickets[0]->getPayment());
+        $this->assertNull($tickets[1]->getPayment());
+        $this->assertFalse($tickets[0]->isNotified());
+        $this->assertFalse($tickets[1]->isNotified());
+
+        /** @var Registration[] $registration */
+        $registration = $em->getRepository('BCRMBackendBundle:Event\Registration')->findOneByEmail($email);
+        $this->assertTrue($registration->isPaymentNotified());
+
+        return $email;
+    }
+
+    /**
+     * @test
+     * @group   functional
+     * @depends createTickets
+     */
+    public function payRegistration($email)
+    {
+        $client    = static::createClient();
+        $container = $client->getContainer();
+        /* @var $em \Doctrine\Common\Persistence\ObjectManager */
+        $em = $container
+            ->get('doctrine')
+            ->getManager();
+        /** @var Registration $registration */
+        $registration = $em->getRepository('BCRMBackendBundle:Event\Registration')->findOneByEmail($email);
+        $this->assertEquals('paypal', $registration->getPaymentMethod());
+        $this->assertNull($registration->getPayment());
+
+        $client = static::createClient();
+        $client->request('GET', '/anmeldung/' . $registration->getUuid() . '/payment');
+        $response = $client->getResponse();
+        $this->assertEquals(200, $response->getStatusCode());
+        preg_match('/data-number="([^"]+)"/', $response->getContent(), $registrationUuidMatch);
+        $this->assertCount(2, $registrationUuidMatch);
+        $this->assertEquals($registration->getUuid(), $registrationUuidMatch[1]);
+
+        // Add payment
+        $payment = new Payment();
+        $payment->setMethod('cash');
+        $payment->setTransactionId($email);
+        $em->persist($payment);
+        $em->flush();
+
+        $command               = new PayRegistrationCommand();
+        $command->registration = $registration;
+        $command->payment      = $payment;
+        /** @var \LiteCQRS\Bus\CommandBus $commandBus */
+        $commandBus = $container->get('command_bus');
+        $commandBus->handle($command);
+        $registration = $em->getRepository('BCRMBackendBundle:Event\Registration')->findOneByEmail($email);
+        $this->assertEquals($payment, $registration->getPayment());
+
+        // Send tickets
+        $this->sendTicketsCommand($container);
+
+        /* @var $tickets Ticket[] */
+        $tickets = $em->getRepository('BCRMBackendBundle:Event\Ticket')->findAll();
+        $this->assertEquals(2, count($tickets));
+        $this->assertEquals($payment, $tickets[0]->getPayment());
+        $this->assertEquals($payment, $tickets[1]->getPayment());
+        $this->assertTrue($tickets[0]->isNotified());
+        $this->assertTrue($tickets[1]->isNotified());
+
         return $email;
     }
 
@@ -153,10 +209,20 @@ class EventControllerTest extends Base
         $this->runCommand($container, new CreateTicketsCommand(), 'bcrm:tickets:create');
     }
 
+    protected function sendTicketsCommand(ContainerInterface $container)
+    {
+        $this->runCommand($container, new SendTicketsMailCommand(), 'bcrm:tickets:send');
+    }
+
+    protected function sendPayTicketCommand(ContainerInterface $container)
+    {
+        $this->runCommand($container, new SendPayRegistrationMailCommand(), 'bcrm:registration:pay');
+    }
+
     /**
      * @test
      * @group   functional
-     * @depends createTickets
+     * @depends payRegistration
      */
     public function eventUnregistration($email)
     {

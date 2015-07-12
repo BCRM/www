@@ -6,7 +6,7 @@
         Vielen Dank, du hast es fast geschafft.
     </p>
 
-    {% if registration.payment == "paypal" %}
+    {% if registration.paymentMethod == "paypal" %}
         <p>
             Klicke nun auf den folgende Button um den ausstehenden Betrag mit Paypal zu begleichen.
         </p>
@@ -29,6 +29,6 @@
                 {% endif %}
                 ></script>
     {% else %}
-        Barzahlen.de
+        {{ registration.paymentMethod }}
     {% endif %}
 {% endblock content %}

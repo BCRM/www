@@ -1,9 +1,7 @@
 {% extends "BCRMWebBundle::page.html.twig" %}
 {% form_theme form "BCRMWebBundle:Form:custom.html.twig" %}
 {% block content %}
-    <h2>Registrierung</h2>
-    <p>Du möchtest am nächsten {{ event.name }} teilnehmen? Registrier dir hier dein Ticket!</p>
-    <p>Seit diesem Jahr kostet die Teilnahme am {{ event.name }} pro Tag {{ pricePerDayFormatted }}. Weitere Informationen dazu findest Du <a href="/p/Tickets">hier</a>.</p>
+    {{ content.content|replace({"%%event%%": event.name, "%%pricePerDay%%": pricePerDayFormatted})|raw }}
     {{ form_start(form) }}
     <fieldset>
         {{ form_row(form.email) }}

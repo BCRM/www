@@ -41,7 +41,7 @@ bcrmweb_registration_review:
         _controller: bcrm.web.controller.event:registerReviewAction
 
 bcrmweb_registration_payment:
-    path: /anmeldung/payment
+    path: /anmeldung/{id}/payment
     methods: [GET]
     defaults:
         _controller: bcrm.web.controller.event:registerPaymentAction

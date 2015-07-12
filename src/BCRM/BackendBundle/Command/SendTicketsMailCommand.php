@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SendTicketNotificationCommand extends ContainerAwareCommand
+class SendTicketsMailCommand extends ContainerAwareCommand
 {
     /**
      * @var OutputInterface
@@ -25,8 +25,8 @@ class SendTicketNotificationCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('bcrm:tickets:notify')
-            ->setDescription('Send ticket notifications');
+            ->setName('bcrm:tickets:send')
+            ->setDescription('Send tickets');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -45,7 +45,7 @@ class SendTicketNotificationCommand extends ContainerAwareCommand
         $repo = $this->getContainer()->get('bcrm.backend.repo.ticket');
         /** @var \LiteCQRS\Bus\CommandBus $commandBus */
         $commandBus = $this->getContainer()->get('command_bus');
-        foreach ($repo->getNewTickets($event) as $ticket) {
+        foreach ($repo->getToNotify($event) as $ticket) {
             if ($this->output->getVerbosity() > OutputInterface::VERBOSITY_NORMAL) {
                 $this->output->writeln(sprintf('Sending ticket notification for %s', $ticket));
             }

@@ -17,6 +17,7 @@ use BCRM\BackendBundle\Event\Payment\PaymentVerifiedEvent;
 use BCRM\BackendBundle\Service\Event\ConfirmUnregistrationCommand;
 use BCRM\BackendBundle\Service\Event\CreateTicketCommand;
 use BCRM\BackendBundle\Service\Event\RegisterCommand;
+use BCRM\BackendBundle\Service\Event\SendPaymentNotificationMailCommand;
 use BCRM\BackendBundle\Service\Event\SendRegistrationConfirmationMailCommand;
 use BCRM\BackendBundle\Service\Event\SendTicketMailCommand;
 use BCRM\BackendBundle\Service\Event\SendUnregistrationConfirmationMailCommand;
@@ -96,7 +97,8 @@ class Event
             'type'            => $command->type,
             'participantList' => $command->participantList,
             'confirmed'       => $command->confirmed,
-            'uuid'            => $command->uuid
+            'uuid'            => $command->uuid,
+            'paymentMethod'   => $command->payment
         );
         $this->commandBus->handle($createRegistrationCommand);
     }
@@ -117,6 +119,24 @@ class Event
         $emailCommand->templateData = array(
             'registration'      => $command->registration,
             'confirmation_link' => rtrim($command->schemeAndHost, '/') . $this->router->generate('bcrm_registration_confirm', array('id' => $command->registration->getId(), 'key' => $key))
+        );
+        $this->commandBus->handle($emailCommand);
+    }
+
+    public function sendPaymentNotificationMail(SendPaymentNotificationMailCommand $command)
+    {
+        $updateCommand        = new UpdateResourceCommand();
+        $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Registration';
+        $updateCommand->id    = $command->registration->getId();
+        $updateCommand->data  = array('paymentNotified' => new \DateTime());
+        $this->commandBus->handle($updateCommand);
+
+        $emailCommand               = new SendTemplateMailCommand();
+        $emailCommand->email        = $command->registration->getEmail();
+        $emailCommand->template     = 'RegistrationPayment';
+        $emailCommand->templateData = array(
+            'registration' => $command->registration,
+            'payment_link' => rtrim($command->schemeAndHost, '/') . $this->router->generate('bcrmweb_registration_payment', array('id' => $command->registration->getUuid()))
         );
         $this->commandBus->handle($emailCommand);
     }
@@ -240,18 +260,19 @@ class Event
             /** @var Registration $r */
             $r                = $registration->get();
             $registrationData = array(
-                'event'     => $command->event,
-                'email'     => $command->unregistration->getEmail(),
-                'name'      => $r->getName(),
-                'twitter'   => $r->getTwitter(),
-                'arrival'   => $r->getArrival(),
-                'food'      => $r->getFood(),
-                'tags'      => $r->getTags(),
-                'confirmed' => 1,
-                'saturday'  => $r->getSaturday(),
-                'sunday'    => $r->getSunday(),
-                'uuid'      => $r->getUuid(),
-                'payment'   => $r->getPayment(),
+                'event'         => $command->event,
+                'email'         => $command->unregistration->getEmail(),
+                'name'          => $r->getName(),
+                'twitter'       => $r->getTwitter(),
+                'arrival'       => $r->getArrival(),
+                'food'          => $r->getFood(),
+                'tags'          => $r->getTags(),
+                'confirmed'     => 1,
+                'saturday'      => $r->getSaturday(),
+                'sunday'        => $r->getSunday(),
+                'uuid'          => $r->getUuid(),
+                'payment'       => $r->getPayment(),
+                'paymentMethod' => $r->getPaymentMethod(),
             );
             if ($command->unregistration->getSaturday()) {
                 $registrationData['saturday'] = false;

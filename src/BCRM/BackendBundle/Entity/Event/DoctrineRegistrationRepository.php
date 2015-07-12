@@ -20,12 +20,24 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
     /**
      * @return Registration[]
      */
-    public function getNewRegistrations()
+    public function getToConfirm()
     {
         $qb = $this->createQueryBuilder('r');
         $qb->andWhere('r.confirmed=0');
         $qb->andWhere('r.confirmationKey IS NULL');
         $qb->groupBy('r.email');
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @return Registration[]
+     */
+    public function getToPay()
+    {
+        $qb = $this->createQueryBuilder('r');
+        $qb->andWhere('r.confirmed=1');
+        $qb->andWhere('r.payment IS NULL');
+        $qb->andWhere('r.paymentNotified IS NULL');
         return $qb->getQuery()->getResult();
     }
 
@@ -45,6 +57,19 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
     }
 
     /**
+     * @param string $uuid
+     *
+     * @return \PhpOption\Option
+     */
+    public function getRegistrationByUuid($uuid)
+    {
+        $qb = $this->createQueryBuilder('r');
+        $qb->andWhere('r.uuid = :uuid')->setParameter('uuid', $uuid);
+        $registration = $qb->getQuery()->getOneOrNullResult();
+        return $registration === null ? None::create() : new Some($registration);
+    }
+
+    /**
      * {@inheritDocs}
      */
     public function getNextRegistrations(Event $event, $day, $capacity)
@@ -55,7 +80,7 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
         $type          = Registration::TYPE_NORMAL;
         $eventId       = $event->getId();
         $dayName       = $day == Ticket::DAY_SATURDAY ? 'saturday' : 'sunday';
-        $registrations = "SELECT MAX(id) FROM registration WHERE confirmed = 1 AND payment_id IS NOT NULL AND type = $type AND event_id = $eventId GROUP BY event_id, email ORDER BY created ASC, id ASC";
+        $registrations = "SELECT MAX(id) FROM registration WHERE confirmed = 1 AND type = $type AND event_id = $eventId GROUP BY event_id, email ORDER BY created ASC, id ASC";
         $sql           = "SELECT * FROM registration WHERE id IN ($registrations) AND email NOT IN (SELECT email FROM ticket WHERE day = $day AND event_id = $eventId) AND $dayName = 1 LIMIT $capacity";
         $query         = $this->_em->createNativeQuery(
             $sql,
@@ -108,7 +133,6 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
      */
     public function getParticipantList(Event $event)
     {
-
         $qb = $this->createQueryBuilder('r');
         return new ArrayCollection($qb
             ->where('r.event = :event')->setParameter('event', $event)

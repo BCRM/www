@@ -20,11 +20,12 @@ class DoctrineTicketRepository extends EntityRepository implements TicketReposit
      *
      * @return Ticket[]
      */
-    public function getNewTickets(Event $event)
+    public function getToNotify(Event $event)
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.event = :event')->setParameter('event', $event)
             ->andWhere('t.notified = 0')
+            ->andWhere('t.payment IS NOT NULL')
             ->getQuery()
             ->getResult();
     }

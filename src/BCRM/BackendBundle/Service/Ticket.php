@@ -7,21 +7,13 @@
 
 namespace BCRM\BackendBundle\Service;
 
-use BCRM\BackendBundle\Entity\Event\RegistrationRepository;
+use BCRM\BackendBundle\Entity\Event\TicketRepository;
 use BCRM\BackendBundle\Event\Event\TicketDeletedEvent;
 use BCRM\BackendBundle\Event\Event\TicketMailSentEvent;
-use BCRM\BackendBundle\Service\Event\CreateTicketCommand;
-use BCRM\BackendBundle\Service\Event\RegisterCommand;
-use BCRM\BackendBundle\Service\Event\SendRegistrationConfirmationMailCommand;
-use BCRM\BackendBundle\Service\Event\SendTicketMailCommand;
+use BCRM\BackendBundle\Event\Payment\RegistrationPaidEvent;
 use BCRM\BackendBundle\Service\Mail\SendTemplateMailCommand;
-use BCRM\BackendBundle\Service\Event\ConfirmRegistrationCommand;
 use LiteCQRS\Bus\CommandBus;
-use LiteCQRS\Bus\EventMessageBus;
-use LiteCQRS\Plugin\CRUD\Model\Commands\CreateResourceCommand;
 use LiteCQRS\Plugin\CRUD\Model\Commands\UpdateResourceCommand;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Util\SecureRandom;
 
 class Ticket
 {
@@ -31,11 +23,18 @@ class Ticket
     private $commandBus;
 
     /**
-     * @param CommandBus $commandBus
+     * @var TicketRepository
      */
-    public function __construct(CommandBus $commandBus)
+    private $ticketRepo;
+
+    /**
+     * @param CommandBus       $commandBus
+     * @param TicketRepository $ticketRepo
+     */
+    public function __construct(CommandBus $commandBus, TicketRepository $ticketRepo)
     {
         $this->commandBus = $commandBus;
+        $this->ticketRepo = $ticketRepo;
     }
 
     public function onTicketMailSent(TicketMailSentEvent $event)
@@ -56,5 +55,24 @@ class Ticket
             'ticket' => $event->ticket,
         );
         $this->commandBus->handle($emailCommand);
+    }
+
+    /**
+     * Register payment on tickets
+     *
+     * @param RegistrationPaidEvent $event
+     */
+    public function onRegistrationPaid(RegistrationPaidEvent $event)
+    {
+        foreach ($this->ticketRepo->getTicketsForEmail(
+            $event->registration->getEvent(),
+            $event->registration->getEmail()
+        ) as $ticket) {
+            $updateCommand        = new UpdateResourceCommand();
+            $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Ticket';
+            $updateCommand->id    = $ticket->getId();
+            $updateCommand->data  = array('payment' => $event->payment);
+            $this->commandBus->handle($updateCommand);
+        }
     }
 }

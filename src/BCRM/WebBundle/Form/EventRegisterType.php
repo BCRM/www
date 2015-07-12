@@ -45,7 +45,7 @@ class EventRegisterType extends AbstractType
             ->add('twitter', 'text', array('label' => 'Twitter-Handle', 'required' => false, 'trim' => true, 'attr' => array('placeholder' => '@max_mustermann', 'pattern' => '@[a-zA-Z0-9_]{1,15}')))
             ->add('tags', 'text', array('label' => 'Beschreibe deine Interesse in maximal 3 Tags (je 15 Zeichen)', 'required' => false, 'trim' => true, 'attr' => array('placeholder' => '#foo #bar', 'pattern' => '#[^\s]{1,15}( #[^\s]{1,15}){0,2}')))
             ->add('days', 'choice', array('label' => 'An welchen Tagen möchtest Du am BarCamp teilnehmen?', 'required' => true, 'choices' => $days, 'expanded' => true))
-            ->add('donationEur', 'text', array('label' => 'Freiwillige Spende? (in €)', 'required' => false, 'pattern' => '^[0-9]+,[0-9]{2}$'))
+            ->add('donationEur', 'text', array('label' => 'Freiwillige Spende? (in €)', 'required' => false, 'pattern' => '^[0-9]+(,[0-9]{2})?$'))
             ->add('payment', 'choice', array('label' => 'Wie möchtest Du bezahlen?', 'required' => true, 'choices' => $payment, 'expanded' => true))
             ->add('food', 'choice', array('label' => 'Möchtest Du veganes Essen?', 'required' => true, 'choices' => array('default' => 'nein', 'vegan' => 'ja'), 'expanded' => true))
             ->add('arrival', 'choice', array('label' => 'Wie wirst Du anreisen?', 'required' => true, 'choices' => array('public' => 'ÖPNV', 'private' => 'Privat'), 'expanded' => true))

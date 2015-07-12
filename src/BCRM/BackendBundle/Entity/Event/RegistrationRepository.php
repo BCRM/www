@@ -13,9 +13,18 @@ use PhpOption\Option;
 interface RegistrationRepository
 {
     /**
+     * Returns the registrations that need to be confirmed
+     *
      * @return Registration[]
      */
-    public function getNewRegistrations();
+    public function getToConfirm();
+
+    /**
+     * Returns the registrations that need to be paid
+     *
+     * @return Registration[]
+     */
+    public function getToPay();
 
     /**
      * @param string $id
@@ -24,6 +33,13 @@ interface RegistrationRepository
      * @return \PhpOption\Option
      */
     public function getRegistrationByIdAndKey($id, $key);
+
+    /**
+     * @param string $uuid
+     *
+     * @return \PhpOption\Option
+     */
+    public function getRegistrationByUuid($uuid);
 
     /**
      * Returns up to $capacity registrations for the event $event without tickets for the given day $day.
