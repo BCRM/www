@@ -137,6 +137,13 @@ class Registration extends AggregateResource
     protected $type = self::TYPE_NORMAL;
 
     /**
+     * @var int Donation
+     * @Assert\Range(min=0)
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    protected $donation = 0;
+
+    /**
      * @var string Payment method
      * @Assert\NotBlank()
      * @ORM\Column(name="payment_method", type="string", nullable=true)
@@ -494,5 +501,21 @@ class Registration extends AggregateResource
     public function setPaymentNotified($paymentNotified)
     {
         $this->paymentNotified = $paymentNotified;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDonation()
+    {
+        return $this->donation;
+    }
+
+    /**
+     * @param int $donation
+     */
+    public function setDonation($donation)
+    {
+        $this->donation = $donation;
     }
 }

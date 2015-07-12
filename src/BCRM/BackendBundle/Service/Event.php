@@ -98,7 +98,8 @@ class Event
             'participantList' => $command->participantList,
             'confirmed'       => $command->confirmed,
             'uuid'            => $command->uuid,
-            'paymentMethod'   => $command->payment
+            'paymentMethod'   => $command->payment,
+            'donation'        => $command->donation
         );
         $this->commandBus->handle($createRegistrationCommand);
     }
@@ -271,6 +272,7 @@ class Event
                 'saturday'      => $r->getSaturday(),
                 'sunday'        => $r->getSunday(),
                 'uuid'          => $r->getUuid(),
+                'donation'      => $r->getDonation(),
                 'payment'       => $r->getPayment(),
                 'paymentMethod' => $r->getPaymentMethod(),
             );

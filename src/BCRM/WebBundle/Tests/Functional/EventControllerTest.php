@@ -171,8 +171,9 @@ class EventControllerTest extends Base
         $response = $client->getResponse();
         $this->assertEquals(200, $response->getStatusCode());
         preg_match('/data-number="([^"]+)"/', $response->getContent(), $registrationUuidMatch);
-        $this->assertCount(2, $registrationUuidMatch);
+        preg_match('/data-amount="([^"]+)"/', $response->getContent(), $registrationAmountMatch);
         $this->assertEquals($registration->getUuid(), $registrationUuidMatch[1]);
+        $this->assertEquals(sprintf('%.2f', ceil((2000 + 1234) * 1.019 + 35) / 100), $registrationAmountMatch[1]);
 
         // Add payment
         $payment = new Payment();

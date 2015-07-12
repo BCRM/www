@@ -8,6 +8,7 @@
 namespace BCRM\WebBundle\Controller;
 
 use BCRM\BackendBundle\Entity\Event\EventRepository;
+use BCRM\BackendBundle\Entity\Event\Registration;
 use BCRM\BackendBundle\Entity\Event\RegistrationRepository;
 use BCRM\BackendBundle\Entity\Event\Ticket;
 use BCRM\BackendBundle\Entity\Event\TicketRepository;
@@ -134,7 +135,7 @@ class EventController
         }
         return array(
             'sponsors'             => $this->reader->getPage('Sponsoren/Index.md'),
-            'content'             => $this->reader->getPage('Registrierung/Intro.md'),
+            'content'              => $this->reader->getPage('Registrierung/Intro.md'),
             'event'                => $event,
             'pricePerDayFormatted' => $this->moneyFormat->format($event->getPrice() / 100, 'de'),
             'form'                 => $form->createView(),
@@ -223,15 +224,38 @@ class EventController
         if (Carbon::createFromTimestamp($event->getRegistrationEnd()->getTimestamp())->isPast()) {
             throw new AccessDeniedHttpException('Registration not possible.');
         }
-        $registration = $this->registrationRepo->getRegistrationByUuid($id);
-        if ($registration->isEmpty()) {
+        $registrationOptional = $this->registrationRepo->getRegistrationByUuid($id);
+        if ($registrationOptional->isEmpty()) {
             throw new NotFoundHttpException('Unknown registration.');
         }
+        /** @var Registration $registration */
+        $registration = $registrationOptional->get();
+        // TODO: Move to service
+        $days = 0;
+        if ($registration->getSaturday()) {
+            $days += 1;
+        }
+        if ($registration->getSunday()) {
+            $days += 1;
+        }
+        $ticketPrice = $days * $event->getPrice();
+        $orderTotal  = $registration->getDonation() + $ticketPrice;
+        $fees        = 0;
+        if ($registration->getPaymentMethod() === 'paypal') {
+            //  Mit Paypal (zzgl. 1,9% + 0,35 Cent)
+            $fees = ceil($orderTotal * 0.019) + 35;
+        } else {
+            // Mit barzahlen.de (zzgl. 3,0% + 0,35 Cent)
+            $fees = ceil($orderTotal * 0.03) + 35;
+        }
+        $total = $registration->getDonation() + $ticketPrice + $fees;
+
         /** @var EventRegisterModel $model */
         return array(
             'sponsors'     => $this->reader->getPage('Sponsoren/Index.md'),
             'event'        => $event,
-            'registration' => $registration->get()
+            'registration' => $registration,
+            'total'        => $total
         );
     }
 
