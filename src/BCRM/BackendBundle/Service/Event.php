@@ -30,11 +30,14 @@ use LiteCQRS\Bus\EventMessageBus;
 use LiteCQRS\Plugin\CRUD\Model\Commands\CreateResourceCommand;
 use LiteCQRS\Plugin\CRUD\Model\Commands\DeleteResourceCommand;
 use LiteCQRS\Plugin\CRUD\Model\Commands\UpdateResourceCommand;
+use PhpOption\Option;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Util\SecureRandom;
 use Endroid\QrCode\QrCode;
 
-class Event
+class Event implements LoggerAwareInterface
 {
     /**
      * @var \LiteCQRS\Bus\CommandBus
@@ -67,6 +70,11 @@ class Event
     private $ticketRepo;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * @param CommandBus      $commandBus
      * @param RouterInterface $router
      */
@@ -79,6 +87,19 @@ class Event
         $this->unregistrationRepo = $unregistrationRepo;
         $this->ticketRepo         = $ticketRepo;
     }
+
+    /**
+     * Sets a logger instance on the object
+     *
+     * @param LoggerInterface $logger
+     *
+     * @return null
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
 
     public function register(RegisterCommand $command)
     {
@@ -321,8 +342,12 @@ class Event
      */
     public function onPaymentVerified(PaymentVerifiedEvent $event)
     {
-        $registrationOptional = $this->registrationRepo->findByUuid($event->payment->getPayload()->get('item_number'));
+        $payment              = $event->payment;
+        $registrationOptional = $this->registrationRepo->findByUuid($payment->getPayload()->get('item_number'));
         if ($registrationOptional->isEmpty()) {
+            Option::fromValue($this->logger)->map(function (LoggerInterface $logger) use ($payment) {
+                $logger->alert(sprintf('No registration found with uuid "%s"', $payment->getPayload()->get('item_number')), array($payment));
+            });
             return;
         }
         $registration = $registrationOptional->get();
