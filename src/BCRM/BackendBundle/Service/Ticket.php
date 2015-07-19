@@ -14,8 +14,11 @@ use BCRM\BackendBundle\Event\Payment\RegistrationPaidEvent;
 use BCRM\BackendBundle\Service\Mail\SendTemplateMailCommand;
 use LiteCQRS\Bus\CommandBus;
 use LiteCQRS\Plugin\CRUD\Model\Commands\UpdateResourceCommand;
+use PhpOption\Option;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerInterface;
 
-class Ticket
+class Ticket implements LoggerAwareInterface
 {
     /**
      * @var \LiteCQRS\Bus\CommandBus
@@ -28,6 +31,11 @@ class Ticket
     private $ticketRepo;
 
     /**
+     * @var LoggerInterface
+     */
+    private $logger;
+
+    /**
      * @param CommandBus       $commandBus
      * @param TicketRepository $ticketRepo
      */
@@ -35,6 +43,18 @@ class Ticket
     {
         $this->commandBus = $commandBus;
         $this->ticketRepo = $ticketRepo;
+    }
+
+    /**
+     * Sets a logger instance on the object
+     *
+     * @param LoggerInterface $logger
+     *
+     * @return null
+     */
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
     }
 
     public function onTicketMailSent(TicketMailSentEvent $event)
@@ -64,15 +84,23 @@ class Ticket
      */
     public function onRegistrationPaid(RegistrationPaidEvent $event)
     {
+        $payment      = $event->payment;
+        $registration = $event->registration;
+        Option::fromValue($this->logger)->map(function (LoggerInterface $logger) use ($registration, $payment) {
+            $logger->alert(sprintf('Registration "%s" has been paid with payment "%s".', $registration->getId(), $payment->getId()));
+        });
         foreach ($this->ticketRepo->getTicketsForEmail(
-            $event->registration->getEvent(),
-            $event->registration->getEmail()
+            $registration->getEvent(),
+            $registration->getEmail()
         ) as $ticket) {
             $updateCommand        = new UpdateResourceCommand();
             $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Ticket';
             $updateCommand->id    = $ticket->getId();
-            $updateCommand->data  = array('payment' => $event->payment);
+            $updateCommand->data  = array('payment' => $payment);
             $this->commandBus->handle($updateCommand);
+            Option::fromValue($this->logger)->map(function (LoggerInterface $logger) use ($payment, $ticket) {
+                $logger->alert(sprintf('Assigning payment "%s" to ticket "%s"', $payment->getId(), $ticket->getCode()));
+            });
         }
     }
 }

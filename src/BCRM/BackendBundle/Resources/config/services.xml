@@ -42,6 +42,9 @@
         <service id="bcrm.backend.ticketservice" class="%bcrm.backend.ticketservice.class%">
             <argument type="service" id="command_bus"/>
             <argument type="service" id="bcrm.backend.repo.ticket"/>
+            <call method="setLogger">
+                <argument type="service" id="logger" />
+            </call>
             <tag name="lite_cqrs.event_handler"/>
         </service>
         <service id="bcrm.backend.paymentservice" class="%bcrm.backend.paymentservice.class%">

@@ -4,7 +4,7 @@ namespace BCRM\BackendBundle\Event\Payment;
 
 
 use BCRM\BackendBundle\Entity\Event\Registration;
-use BCRM\BackendBundle\Service\Payment;
+use BCRM\BackendBundle\Entity\Payment;
 use LiteCQRS\Bus\EventMessageHeader;
 use LiteCQRS\DomainEvent;
 
