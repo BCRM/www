@@ -36,7 +36,7 @@ class EventRegisterModel
      * @var string
      * @Assert\NotBlank()
      */
-    public $food = 'default';
+    public $food;
 
     /**
      * @var boolean
@@ -44,7 +44,7 @@ class EventRegisterModel
      * @Assert\NotBlank()
      * @Assert\Range(min=0,max=1)
      */
-    public $participantList = 0;
+    public $participantList;
 
     /**
      * @var integer
