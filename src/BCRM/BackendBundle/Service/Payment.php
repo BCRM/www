@@ -8,10 +8,8 @@
 namespace BCRM\BackendBundle\Service;
 
 use BCRM\BackendBundle\Event\Payment\PaymentVerifiedEvent;
-use BCRM\BackendBundle\Event\Payment\RegistrationPaidEvent;
 use BCRM\BackendBundle\Service\Event\CreatePaymentCommand;
 use BCRM\BackendBundle\Service\Payment\CheckPaymentCommand;
-use BCRM\BackendBundle\Service\Payment\PayRegistrationCommand;
 use LiteCQRS\Bus\CommandBus;
 use LiteCQRS\Bus\EventMessageBus;
 use LiteCQRS\Plugin\CRUD\Model\Commands\CreateResourceCommand;
@@ -104,19 +102,5 @@ class Payment implements LoggerAwareInterface
         }
 
         $this->commandBus->handle($updateCommand);
-    }
-
-    public function payRegistration(PayRegistrationCommand $command)
-    {
-        $updateCommand        = new UpdateResourceCommand();
-        $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Registration';
-        $updateCommand->id    = $command->registration->getId();
-        $updateCommand->data  = array('payment' => $command->payment);
-        $this->commandBus->handle($updateCommand);
-
-        $event               = new RegistrationPaidEvent();
-        $event->registration = $command->registration;
-        $event->payment      = $command->payment;
-        $this->eventMessageBus->publish($event);
     }
 }

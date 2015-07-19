@@ -14,6 +14,7 @@ use BCRM\BackendBundle\Entity\Event\UnregistrationRepository;
 use BCRM\BackendBundle\Event\Event\TicketDeletedEvent;
 use BCRM\BackendBundle\Event\Event\TicketMailSentEvent;
 use BCRM\BackendBundle\Event\Payment\PaymentVerifiedEvent;
+use BCRM\BackendBundle\Event\Payment\RegistrationPaidEvent;
 use BCRM\BackendBundle\Service\Event\ConfirmUnregistrationCommand;
 use BCRM\BackendBundle\Service\Event\CreateTicketCommand;
 use BCRM\BackendBundle\Service\Event\RegisterCommand;
@@ -25,6 +26,7 @@ use BCRM\BackendBundle\Service\Event\UnregisterCommand;
 use BCRM\BackendBundle\Service\Event\UnregisterTicketCommand;
 use BCRM\BackendBundle\Service\Mail\SendTemplateMailCommand;
 use BCRM\BackendBundle\Service\Event\ConfirmRegistrationCommand;
+use BCRM\BackendBundle\Service\Payment\PayRegistrationCommand;
 use LiteCQRS\Bus\CommandBus;
 use LiteCQRS\Bus\EventMessageBus;
 use LiteCQRS\Plugin\CRUD\Model\Commands\CreateResourceCommand;
@@ -351,11 +353,24 @@ class Event implements LoggerAwareInterface
             return;
         }
         $registration = $registrationOptional->get();
-        // Mark registration as paid
+
+        $command               = new PayRegistrationCommand();
+        $command->registration = $registration;
+        $command->payment      = $payment;
+        $this->payRegistration($command);
+    }
+
+    public function payRegistration(PayRegistrationCommand $command)
+    {
         $updateCommand        = new UpdateResourceCommand();
         $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Registration';
-        $updateCommand->id    = $registration->getId();
-        $updateCommand->data  = array('payment' => $event->payment);
+        $updateCommand->id    = $command->registration->getId();
+        $updateCommand->data  = array('payment' => $command->payment);
         $this->commandBus->handle($updateCommand);
+
+        $event               = new RegistrationPaidEvent();
+        $event->registration = $command->registration;
+        $event->payment      = $command->payment;
+        $this->eventMessageBus->publish($event);
     }
 }
