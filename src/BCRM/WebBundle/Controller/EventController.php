@@ -117,7 +117,8 @@ class EventController
         if (Carbon::createFromTimestamp($event->getRegistrationEnd()->getTimestamp())->isPast()) {
             throw new AccessDeniedHttpException('Registration not possible.');
         }
-        $model = new EventRegisterModel();
+        $model          = new EventRegisterModel();
+        $model->payment = 'paypal';
         if ($request->getSession()->has('registration')) {
             $model = $request->getSession()->get('registration');
         }
@@ -230,15 +231,17 @@ class EventController
         }
         /** @var Registration $registration */
         $registration = $registrationOptional->get();
+        $tickets      = $this->ticketRepo->getTicketsForEmail($event, $registration->getEmail());
+        $numTickets   = count($tickets);
         // TODO: Move to service
-        $days = 0;
+        $registeredDays = 0;
         if ($registration->getSaturday()) {
-            $days += 1;
+            $registeredDays += 1;
         }
         if ($registration->getSunday()) {
-            $days += 1;
+            $registeredDays += 1;
         }
-        $ticketPrice = $days * $event->getPrice();
+        $ticketPrice = $numTickets * $event->getPrice();
         $orderTotal  = $registration->getDonation() + $ticketPrice;
         $fees        = 0;
         if ($registration->getPaymentMethod() === 'paypal') {
@@ -255,7 +258,9 @@ class EventController
             'sponsors'     => $this->reader->getPage('Sponsoren/Index.md'),
             'event'        => $event,
             'registration' => $registration,
-            'total'        => $total
+            'total'        => $total,
+            'tickets'      => $tickets,
+            'partialOrder' => $registeredDays !== $numTickets
         );
     }
 

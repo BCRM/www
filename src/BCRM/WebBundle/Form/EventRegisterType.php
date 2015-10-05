@@ -36,7 +36,7 @@ class EventRegisterType extends AbstractType
         );
         $payment = array(
             'paypal' => 'Mit Paypal (zzgl. 1,9% + 0,35 Cent)',
-            'barzahlen.de' => 'Mit barzahlen.de (zzgl. 3,0% + 0,35 Cent)',
+            // 'barzahlen.de' => 'Mit barzahlen.de (zzgl. 3,0% + 0,35 Cent)',
         );
         $builder
             ->setMethod('POST')
@@ -46,7 +46,8 @@ class EventRegisterType extends AbstractType
             ->add('tags', 'text', array('label' => 'Beschreibe deine Interesse in maximal 3 Tags (je 15 Zeichen)', 'required' => false, 'trim' => true, 'attr' => array('placeholder' => '#foo #bar', 'pattern' => '#[^\s]{1,15}( #[^\s]{1,15}){0,2}')))
             ->add('days', 'choice', array('label' => 'An welchen Tagen möchtest Du am BarCamp teilnehmen?', 'required' => true, 'choices' => $days, 'expanded' => true))
             ->add('donationEur', 'text', array('label' => 'Freiwillige Spende? (in €)', 'required' => false, 'pattern' => '^[0-9]+(,[0-9]{2})?$'))
-            ->add('payment', 'choice', array('label' => 'Wie möchtest Du bezahlen?', 'required' => true, 'choices' => $payment, 'expanded' => true))
+            // ->add('payment', 'choice', array('label' => 'Wie möchtest Du bezahlen?', 'required' => true, 'choices' => $payment, 'expanded' => true))
+            ->add('payment', 'hidden', array('required' => true))
             ->add('food', 'choice', array('label' => 'Möchtest Du veganes Essen?', 'required' => true, 'choices' => array('default' => 'nein', 'vegan' => 'ja'), 'expanded' => true))
             ->add('arrival', 'choice', array('label' => 'Wie wirst Du anreisen?', 'required' => true, 'choices' => array('public' => 'ÖPNV', 'private' => 'Privat'), 'expanded' => true))
             ->add('participantList', 'choice', array('label' => 'Auf der Teilnehmerliste anzeigen?', 'required' => true, 'choices' => array(1 => 'ja', 0 => 'nein'), 'expanded' => true))

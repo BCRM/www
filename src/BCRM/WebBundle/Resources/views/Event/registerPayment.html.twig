@@ -31,4 +31,19 @@
     {% else %}
         {{ registration.paymentMethod }}
     {% endif %}
+
+    {%  if partialOrder %}
+        <h3>Achtung!</h3>
+
+        <p>
+            Du hast für Samstag <em>und</em> Sonntag reserviert.
+            Leider sind nicht genug freie Tickets vorhanden!
+            Leider kannst Du jetzt nur dein Ticket für <strong>{% if tickets[0].isSaturday() %}Samstag{% else %}Sonntag{% endif %}</strong> kaufen.
+        </p>
+
+        <p>
+            Sobald ein Ticket für {% if tickets[0].isSunday() %}Samstag{% else %}Sonntag{% endif %} für dich frei wird,
+            erhältst Du eine E-Mail und kannst dieses dann auch bezahlen.
+        </p>
+    {% endif %}
 {% endblock content %}
