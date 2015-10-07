@@ -9,6 +9,10 @@ AddDefaultCharset Off
 RewriteEngine On
 RewriteBase /
 
+# Force SSL
+RewriteCond %{HTTPS} !=on
+RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
+
 # Outdated links
 RewriteRule ^p/Pressespiegel /p/Nachlese [L,R=permanent]
 
