@@ -17,10 +17,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Registration extends AggregateResource
 {
-    const ARRIVAL_PUBLIC = 'public';
-
-    const ARRIVAL_PRIVATE = 'private';
-
     const FOOD_VEGAN = 'vegan';
 
     const FOOD_VEGETARIAN = 'vegetarian';
@@ -63,7 +59,7 @@ class Registration extends AggregateResource
     protected $name;
 
     /**
-     * @var string Arrival
+     * @var string
      * @ORM\Column(type="string", nullable=true)
      * @Assert\Regex("/^@[a-zA-Z0-9_]{1,15}$/")
      */
@@ -105,13 +101,7 @@ class Registration extends AggregateResource
     protected $confirmationKey;
 
     /**
-     * @var string Arrival
-     * @ORM\Column(type="string", nullable=true)
-     */
-    protected $arrival;
-
-    /**
-     * @var string Arrival
+     * @var string
      * @ORM\Column(type="string", nullable=true)
      */
     protected $food;
@@ -302,25 +292,6 @@ class Registration extends AggregateResource
     public function setSaturday($saturday)
     {
         $this->saturday = (bool)$saturday;
-    }
-
-    /**
-     * @return string
-     */
-    public function getArrival()
-    {
-        return $this->arrival;
-    }
-
-    /**
-     * @param string $arrival
-     */
-    public function setArrival($arrival)
-    {
-        if (!in_array($arrival, array(self::ARRIVAL_PRIVATE, self::ARRIVAL_PUBLIC))) {
-            throw new \InvalidArgumentException("Invalid arrival");
-        }
-        $this->arrival = $arrival;
     }
 
     /**

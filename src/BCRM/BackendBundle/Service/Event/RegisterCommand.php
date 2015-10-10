@@ -25,8 +25,6 @@ class RegisterCommand
 
     public $sunday;
 
-    public $arrival;
-
     public $food;
 
     public $tags;

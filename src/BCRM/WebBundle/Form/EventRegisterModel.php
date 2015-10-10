@@ -31,12 +31,6 @@ class EventRegisterModel
      * @var string
      * @Assert\NotBlank()
      */
-    public $arrival;
-
-    /**
-     * @var string
-     * @Assert\NotBlank()
-     */
     public $food;
 
     /**

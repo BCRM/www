@@ -174,7 +174,6 @@ class EventController
             $command->twitter         = $formData->twitter;
             $command->saturday        = $formData->wantsSaturday();
             $command->sunday          = $formData->wantsSunday();
-            $command->arrival         = $formData->arrival;
             $command->food            = $formData->food;
             $command->participantList = $formData->participantList;
             $command->tags            = $formData->tags;
