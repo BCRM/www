@@ -62,7 +62,7 @@ class EventRegisterModel
      * @Assert\NotBlank()
      * @Assert\Range(min=0)
      */
-    protected $donation = 0;
+    protected $donation;
 
     /**
      * @var string
@@ -76,7 +76,7 @@ class EventRegisterModel
      * @Assert\NotBlank()
      * @Assert\Range(min=1,max=1,groups={"review"},minMessage="Bitte bestätigen!")
      */
-    public $norefund = 0;
+    public $norefund;
 
     /**
      * @var boolean
@@ -84,7 +84,7 @@ class EventRegisterModel
      * @Assert\NotBlank()
      * @Assert\Range(min=1,max=1,groups={"review"},minMessage="Bitte bestätigen!")
      */
-    public $autocancel = 0;
+    public $autocancel;
 
     /**
      * @var Event
