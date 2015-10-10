@@ -259,7 +259,8 @@ class EventController
             'registration' => $registration,
             'total'        => $total,
             'tickets'      => $tickets,
-            'partialOrder' => $registeredDays !== $numTickets
+            'partialOrder' => $registeredDays !== $numTickets,
+            'days'         => $registeredDays
         );
     }
 
