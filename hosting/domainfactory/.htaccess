@@ -1,8 +1,9 @@
 ############################################
 # Options
 Options +FollowSymLinks
-DirectoryIndex app.php
+DirectoryIndex app.php index.php
 AddDefaultCharset Off
+AddType application/x-httpd-php56 .php
 
 ############################################
 ## Rewrite rules
