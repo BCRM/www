@@ -50,7 +50,7 @@ class EventRegisterType extends AbstractType
             ->add('payment', 'hidden', array('required' => true))
             ->add('food', 'choice', array('label' => 'Möchtest Du vegetarisches Essen?', 'required' => true, 'choices' => array('default' => 'nein', 'vegetarian' => 'ja'), 'expanded' => true))
             ->add('arrival', 'choice', array('label' => 'Wie wirst Du anreisen?', 'required' => true, 'choices' => array('public' => 'ÖPNV', 'private' => 'Privat'), 'expanded' => true))
-            ->add('participantList', 'choice', array('label' => 'Auf der Teilnehmerliste anzeigen?', 'required' => true, 'choices' => array(1 => 'ja', 0 => 'nein'), 'expanded' => true))
+            ->add('participantList', 'choice', array('label' => 'Möchtest Du auf der Teilnehmerliste angezeigt werden?', 'required' => true, 'choices' => array(1 => 'ja', 0 => 'nein'), 'expanded' => true))
             ->add('save', 'submit', array('label' => 'Registrierung überprüfen'));
     }
 
