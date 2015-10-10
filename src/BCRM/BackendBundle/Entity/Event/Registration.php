@@ -69,7 +69,7 @@ class Registration extends AggregateResource
 
     /**
      * @var string
-     * @Assert\Regex(pattern="/^#[^\s]{1,15}( #[^\s]{1,15}){0,2}$/")
+     * @Assert\Regex(pattern="/^#[^\s]{1,25}( #[^\s]{1,25}){0,2}$/")
      * @ORM\Column(type="text", nullable=true)
      */
     protected $tags;
