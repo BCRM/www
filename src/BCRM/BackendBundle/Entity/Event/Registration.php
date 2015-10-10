@@ -23,6 +23,8 @@ class Registration extends AggregateResource
 
     const FOOD_VEGAN = 'vegan';
 
+    const FOOD_VEGETARIAN = 'vegetarian';
+
     const FOOD_DEFAULT = 'default';
 
     const TYPE_NORMAL = 1;
@@ -334,7 +336,7 @@ class Registration extends AggregateResource
      */
     public function setFood($food)
     {
-        if (!in_array($food, array(self::FOOD_VEGAN, self::FOOD_DEFAULT))) {
+        if (!in_array($food, array(self::FOOD_VEGAN, self::FOOD_VEGETARIAN, self::FOOD_DEFAULT))) {
             throw new \InvalidArgumentException("Invalid food");
         }
         $this->food = $food;
