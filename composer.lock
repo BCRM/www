@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "860abfd4931337fc1a512e4a12b59736",
-    "content-hash": "547e91baa0de82f0bdd8b4a22bd81805",
+    "hash": "5ff18da20d5ceca92672382d782303c9",
+    "content-hash": "73dbb34f0657ce8bfee57692494cf32f",
     "packages": [
         {
             "name": "bcrm/www-content",
-            "version": "dev-paid-tickets",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/BCRM/www-content.git",
-                "reference": "ec517aa49ea1a023ae5a0bc06bd067c7bfe3135e"
+                "reference": "95ee406a19a97672d5bce0b033495ed18bae80aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BCRM/www-content/zipball/ec517aa49ea1a023ae5a0bc06bd067c7bfe3135e",
-                "reference": "ec517aa49ea1a023ae5a0bc06bd067c7bfe3135e",
+                "url": "https://api.github.com/repos/BCRM/www-content/zipball/95ee406a19a97672d5bce0b033495ed18bae80aa",
+                "reference": "95ee406a19a97672d5bce0b033495ed18bae80aa",
                 "shasum": ""
             },
             "type": "library",
@@ -33,10 +33,10 @@
             ],
             "description": "Content for http://2015.barcamp-rheinmain.de/ based on simple Markdown files.",
             "support": {
-                "source": "https://github.com/BCRM/www-content/tree/paid-tickets",
+                "source": "https://github.com/BCRM/www-content/tree/master",
                 "issues": "https://github.com/BCRM/www-content/issues"
             },
-            "time": "2015-07-12 18:05:08"
+            "time": "2015-10-05 18:31:30"
         },
         {
             "name": "beberlei/lite-cqrs",
