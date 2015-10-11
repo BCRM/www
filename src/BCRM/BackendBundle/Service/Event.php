@@ -191,6 +191,10 @@ class Event implements LoggerAwareInterface
                     array('id' => $command->ticket->getId(), 'code' => $command->ticket->getCode())
                 )
         );
+        $registrationOptional = $this->registrationRepo->getRegistrationForEmail($command->event, $command->ticket->getEmail());
+        if ($registrationOptional->isDefined()) {
+            $emailCommand->templateData['registration'] = $registrationOptional->get();
+        }
         $emailCommand->image        = $qrfile;
         $emailCommand->format       = 'text/html';
         $this->commandBus->handle($emailCommand);
