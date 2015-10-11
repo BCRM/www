@@ -7,7 +7,6 @@
 
 namespace BCRM\BackendBundle\Command;
 
-use BCRM\BackendBundle\Service\Event\SendRegistrationConfirmationMailCommand;
 use BCRM\BackendBundle\Service\Event\SendUnregistrationConfirmationMailCommand;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;

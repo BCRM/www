@@ -29,7 +29,6 @@ class ConciergeControllerTest extends Base
         $client    = static::createClient();
         $container = $client->getContainer();
 
-        // Confirm registration key
         /* @var $em \Doctrine\Common\Persistence\ObjectManager */
         $em = $container
             ->get('doctrine')
@@ -95,7 +94,6 @@ class ConciergeControllerTest extends Base
         $client    = static::createClient();
         $container = $client->getContainer();
 
-        // Confirm registration key
         /* @var $em \Doctrine\Common\Persistence\ObjectManager */
         $em = $container
             ->get('doctrine')
@@ -139,7 +137,6 @@ class ConciergeControllerTest extends Base
         $client    = static::createClient();
         $container = $client->getContainer();
 
-        // Confirm registration key
         /* @var $em \Doctrine\Common\Persistence\ObjectManager */
         $em = $container
             ->get('doctrine')
@@ -181,7 +178,6 @@ class ConciergeControllerTest extends Base
         ));
         $container = $client->getContainer();
 
-        // Confirm registration key
         /* @var $em \Doctrine\Common\Persistence\ObjectManager */
         $em = $container
             ->get('doctrine')

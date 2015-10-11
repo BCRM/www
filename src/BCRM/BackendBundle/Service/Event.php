@@ -19,13 +19,11 @@ use BCRM\BackendBundle\Service\Event\ConfirmUnregistrationCommand;
 use BCRM\BackendBundle\Service\Event\CreateTicketCommand;
 use BCRM\BackendBundle\Service\Event\RegisterCommand;
 use BCRM\BackendBundle\Service\Event\SendPaymentNotificationMailCommand;
-use BCRM\BackendBundle\Service\Event\SendRegistrationConfirmationMailCommand;
 use BCRM\BackendBundle\Service\Event\SendTicketMailCommand;
 use BCRM\BackendBundle\Service\Event\SendUnregistrationConfirmationMailCommand;
 use BCRM\BackendBundle\Service\Event\UnregisterCommand;
 use BCRM\BackendBundle\Service\Event\UnregisterTicketCommand;
 use BCRM\BackendBundle\Service\Mail\SendTemplateMailCommand;
-use BCRM\BackendBundle\Service\Event\ConfirmRegistrationCommand;
 use BCRM\BackendBundle\Service\Payment\PayRegistrationCommand;
 use LiteCQRS\Bus\CommandBus;
 use LiteCQRS\Bus\EventMessageBus;
@@ -118,32 +116,11 @@ class Event implements LoggerAwareInterface
             'tags'            => $command->tags,
             'type'            => $command->type,
             'participantList' => $command->participantList,
-            'confirmed'       => $command->confirmed,
             'uuid'            => $command->uuid,
             'paymentMethod'   => $command->payment,
             'donation'        => $command->donation
         );
         $this->commandBus->handle($createRegistrationCommand);
-    }
-
-    public function sendRegistrationConfirmationMail(SendRegistrationConfirmationMailCommand $command)
-    {
-        $sr                   = new SecureRandom();
-        $key                  = sha1($sr->nextBytes(256), false);
-        $updateCommand        = new UpdateResourceCommand();
-        $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Registration';
-        $updateCommand->id    = $command->registration->getId();
-        $updateCommand->data  = array('confirmationKey' => $key);
-        $this->commandBus->handle($updateCommand);
-
-        $emailCommand               = new SendTemplateMailCommand();
-        $emailCommand->email        = $command->registration->getEmail();
-        $emailCommand->template     = 'RegistrationConfirmation';
-        $emailCommand->templateData = array(
-            'registration'      => $command->registration,
-            'confirmation_link' => rtrim($command->schemeAndHost, '/') . $this->router->generate('bcrm_registration_confirm', array('id' => $command->registration->getId(), 'key' => $key))
-        );
-        $this->commandBus->handle($emailCommand);
     }
 
     public function sendPaymentNotificationMail(SendPaymentNotificationMailCommand $command)
@@ -162,15 +139,6 @@ class Event implements LoggerAwareInterface
             'payment_link' => rtrim($command->schemeAndHost, '/') . $this->router->generate('bcrmweb_registration_payment', array('id' => $command->registration->getUuid()))
         );
         $this->commandBus->handle($emailCommand);
-    }
-
-    public function confirmRegistration(ConfirmRegistrationCommand $command)
-    {
-        $updateCommand        = new UpdateResourceCommand();
-        $updateCommand->class = '\BCRM\BackendBundle\Entity\Event\Registration';
-        $updateCommand->id    = $command->registration->getId();
-        $updateCommand->data  = array('confirmed' => 1);
-        $this->commandBus->handle($updateCommand);
     }
 
     public function createTicket(CreateTicketCommand $command)

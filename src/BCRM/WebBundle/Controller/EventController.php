@@ -13,7 +13,6 @@ use BCRM\BackendBundle\Entity\Event\RegistrationRepository;
 use BCRM\BackendBundle\Entity\Event\Ticket;
 use BCRM\BackendBundle\Entity\Event\TicketRepository;
 use BCRM\BackendBundle\Entity\Event\UnregistrationRepository;
-use BCRM\BackendBundle\Service\Event\ConfirmRegistrationCommand;
 use BCRM\BackendBundle\Service\Event\ConfirmUnregistrationCommand;
 use BCRM\BackendBundle\Service\Event\RegisterCommand;
 use BCRM\BackendBundle\Service\Event\UnregisterCommand;
@@ -262,18 +261,6 @@ class EventController
             'partialOrder' => $registeredDays !== $numTickets,
             'days'         => $registeredDays
         );
-    }
-
-    public function confirmRegistrationAction($id, $key)
-    {
-        $registration = $this->registrationRepo->getRegistrationByIdAndKey($id, $key);
-        if ($registration->isEmpty()) {
-            throw new NotFoundHttpException('Unknown registration.');
-        }
-        $command               = new ConfirmRegistrationCommand();
-        $command->registration = $registration->get();
-        $this->commandBus->handle($command);
-        return new RedirectResponse($this->router->generate('bcrmweb_registration_confirmed'));
     }
 
     /**

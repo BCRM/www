@@ -13,26 +13,11 @@ use PhpOption\Option;
 interface RegistrationRepository
 {
     /**
-     * Returns the registrations that need to be confirmed
-     *
-     * @return Registration[]
-     */
-    public function getToConfirm();
-
-    /**
      * Returns the registrations that need to be paid
      *
      * @return Registration[]
      */
     public function getToPay();
-
-    /**
-     * @param string $id
-     * @param string $key
-     *
-     * @return \PhpOption\Option
-     */
-    public function getRegistrationByIdAndKey($id, $key);
 
     /**
      * @param string $uuid

@@ -54,7 +54,6 @@ class VipTicketsTest extends Base
         $john->setEvent($event);
         $john->setEmail('john@domain.com');
         $john->setSaturday(true);
-        $john->setConfirmed(true);
         $john->setPayment($johnPays);
         $em->persist($john);
 
@@ -68,7 +67,6 @@ class VipTicketsTest extends Base
         $mary->setEvent($event);
         $mary->setEmail('mary@domain.com');
         $mary->setSaturday(true);
-        $mary->setConfirmed(true);
         $mary->setPayment($maryPays);
         $em->persist($mary);
 
@@ -88,7 +86,6 @@ class VipTicketsTest extends Base
         $vip->setEvent($event);
         $vip->setEmail('vip@domain.com');
         $vip->setSaturday(true);
-        $vip->setConfirmed(true);
         $vip->setType(Registration::TYPE_VIP);
         $em->persist($vip);
 
@@ -99,7 +96,6 @@ class VipTicketsTest extends Base
         $sponsor->setEvent($event);
         $sponsor->setEmail('sponsor@domain.com');
         $sponsor->setSaturday(true);
-        $sponsor->setConfirmed(true);
         $sponsor->setType(Registration::TYPE_SPONSOR);
         $em->persist($sponsor);
 
@@ -144,7 +140,6 @@ class VipTicketsTest extends Base
         $joe->setEvent($event);
         $joe->setEmail('joe@domain.com');
         $joe->setSaturday(true);
-        $joe->setConfirmed(true);
         $joe->setPayment($joePays);
         $em->persist($joe);
         $jillPays = new Payment();
@@ -157,7 +152,6 @@ class VipTicketsTest extends Base
         $jill->setEvent($event);
         $jill->setEmail('jill@domain.com');
         $jill->setSaturday(true);
-        $jill->setConfirmed(true);
         $jill->setPayment($jillPays);
         $em->persist($jill);
         $em->flush();
@@ -195,7 +189,6 @@ class VipTicketsTest extends Base
         $sponsor2->setEvent($event);
         $sponsor2->setEmail('sponsor2@domain.com');
         $sponsor2->setSaturday(true);
-        $sponsor2->setConfirmed(true);
         $sponsor2->setType(Registration::TYPE_SPONSOR);
         $em->persist($sponsor2);
 

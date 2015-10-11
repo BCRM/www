@@ -12,7 +12,6 @@ use BCRM\BackendBundle\Command\SendTicketsMailCommand;
 use BCRM\BackendBundle\Entity\Event\Ticket;
 use BCRM\BackendBundle\Entity\Event\Registration;
 use BCRM\BackendBundle\Entity\Event\Unregistration;
-use BCRM\BackendBundle\Command\SendConfirmRegistrationMailCommand;
 use BCRM\BackendBundle\Command\SendConfirmUnregistrationMailCommand;
 use BCRM\BackendBundle\Command\CreateTicketsCommand;
 use BCRM\BackendBundle\Command\ProcessUnregistrationsCommand;
@@ -71,42 +70,6 @@ class EventControllerTest extends Base
      * @test
      * @group   functional
      * @depends eventRegistration
-     */
-    public function confirmEventRegistration($email)
-    {
-        $client    = static::createClient();
-        $container = $client->getContainer();
-
-        $this->confirmRegistrationCommand($container);
-
-        // Confirm registration key
-        /* @var $em \Doctrine\Common\Persistence\ObjectManager */
-        $em = $container
-            ->get('doctrine')
-            ->getManager();
-
-        /* @var $registration Registration */
-        $registration = $em->getRepository('BCRMBackendBundle:Event\Registration')->findOneBy(array(
-            'email' => $email
-        ));
-
-        // Confirm
-        $client->request('GET', sprintf('/anmeldung/bestaetigen/%d/%s', $registration->getId(), $registration->getConfirmationKey()));
-        $response = $client->getResponse();
-        $this->assertEquals(302, $response->getStatusCode());
-        $this->assertTrue($response->isRedirect('/anmeldung/aktiviert'), sprintf('Unexpected redirect to %s', $response->headers->get('Location')));
-        return $registration->getEmail();
-    }
-
-    protected function confirmRegistrationCommand(ContainerInterface $container)
-    {
-        $this->runCommand($container, new SendConfirmRegistrationMailCommand(), 'bcrm:registration:confirm');
-    }
-
-    /**
-     * @test
-     * @group   functional
-     * @depends confirmEventRegistration
      */
     public function createTickets($email)
     {
@@ -251,7 +214,6 @@ class EventControllerTest extends Base
 
         $this->confirmUnregistrationCommand($container);
 
-        // Confirm registration key
         /* @var $em \Doctrine\Common\Persistence\ObjectManager */
         $em = $container
             ->get('doctrine')
@@ -326,7 +288,7 @@ class EventControllerTest extends Base
 
         $event = $em->getRepository('BCRMBackendBundle:Event\Event')->findAll()[0];
 
-        // Create confirmed registrations
+        // Create registrations
         for ($i = 1; $i <= 5; $i++) {
             $email        = 'john.doe.198' . $i . '@domain.com';
             $registration = new Registration();
@@ -334,7 +296,6 @@ class EventControllerTest extends Base
             $registration->setEvent($event);
             $registration->setEmail($email);
             $registration->setSaturday(true);
-            $registration->setConfirmed(true);
             $registration->setUuid($email);
             $payment = new Payment();
             $payment->setMethod('cash');

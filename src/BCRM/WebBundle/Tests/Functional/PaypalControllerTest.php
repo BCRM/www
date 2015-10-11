@@ -7,15 +7,7 @@
 
 namespace BCRM\WebBundle\Tests\Functional;
 
-use BCRM\BackendBundle\Entity\Event\Ticket;
-use BCRM\BackendBundle\Entity\Event\Registration;
-use BCRM\BackendBundle\Entity\Event\Unregistration;
-use BCRM\BackendBundle\Command\SendConfirmRegistrationMailCommand;
-use BCRM\BackendBundle\Command\SendConfirmUnregistrationMailCommand;
-use BCRM\BackendBundle\Command\CreateTicketsCommand;
-use BCRM\BackendBundle\Command\ProcessUnregistrationsCommand;
 use BCRM\BackendBundle\Entity\Payment;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PaypalControllerTest extends Base
 {

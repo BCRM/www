@@ -33,8 +33,6 @@ class RegisterCommand
 
     public $participantList = false;
 
-    public $confirmed = false;
-
     public $payment;
 
     public $donation;

@@ -95,12 +95,6 @@ class Registration extends AggregateResource
     protected $sunday = false;
 
     /**
-     * @ORM\Column(type="string", nullable=true, name="confirmation_key")
-     * @var string Login-Key
-     */
-    protected $confirmationKey;
-
-    /**
      * @var string
      * @ORM\Column(type="string", nullable=true)
      */
@@ -112,13 +106,6 @@ class Registration extends AggregateResource
      * @ORM\Column(type="boolean")
      */
     protected $participantList = false;
-
-    /**
-     * @var boolean
-     * @Assert\Type(type="boolean")
-     * @ORM\Column(type="boolean")
-     */
-    protected $confirmed = false;
 
     /**
      * @var integer
@@ -211,22 +198,6 @@ class Registration extends AggregateResource
     public function setEmail($email)
     {
         $this->email = strtolower($email);
-    }
-
-    /**
-     * @return string
-     */
-    public function getConfirmationKey()
-    {
-        return $this->confirmationKey;
-    }
-
-    /**
-     * @param string $confirmationKey
-     */
-    public function setConfirmationKey($confirmationKey)
-    {
-        $this->confirmationKey = $confirmationKey;
     }
 
     /**
@@ -330,14 +301,6 @@ class Registration extends AggregateResource
     }
 
     /**
-     * @param boolean $confirmed
-     */
-    public function setConfirmed($confirmed)
-    {
-        $this->confirmed = (bool)$confirmed;
-    }
-
-    /**
      * @return string
      */
     public function getTags()
@@ -370,14 +333,6 @@ class Registration extends AggregateResource
     public function getType()
     {
         return $this->type;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isConfirmed()
-    {
-        return $this->confirmed;
     }
 
     /**

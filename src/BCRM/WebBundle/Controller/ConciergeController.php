@@ -77,7 +77,6 @@ class ConciergeController
         $event        = $this->eventRepo->getNextEvent()->getOrThrow(new AccessDeniedHttpException('No event.'));
         $registration = new Registration();
         $registration->setEvent($event);
-        $registration->setConfirmed(true);
         $form = $this->formFactory->create(new TicketType(), $registration, array('action' => $request->getPathInfo()));
         $form->handleRequest($request);
         if ($form->isValid()) {
@@ -92,7 +91,6 @@ class ConciergeController
             $registerCommand->sunday    = $formData->getSunday();
             $registerCommand->tags      = $formData->getTags();
             $registerCommand->type      = $formData->getType();
-            $registerCommand->confirmed = $formData->isConfirmed();
             $this->commandBus->handle($registerCommand);
             /* @var FlashBagInterface $fb */
             $fb = $request->getSession()->getFlashBag();

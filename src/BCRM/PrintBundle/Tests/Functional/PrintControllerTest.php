@@ -34,7 +34,6 @@ class ConciergeControllerTest extends Base
         $client    = static::createClient();
         $container = $client->getContainer();
 
-        // Confirm registration key
         /* @var $em \Doctrine\Common\Persistence\ObjectManager */
         $em    = $container
             ->get('doctrine')
@@ -52,7 +51,6 @@ class ConciergeControllerTest extends Base
             $registration->setEmail(sprintf('john.doe.198%d@domain.com', $i));
             $registration->setName(sprintf('John Doe %d', $i));
             $registration->setEvent($event);
-            $registration->setConfirmed(true);
             $registration->setSaturday(false);
             $registration->setSunday(true);
             $registration->setTags(sprintf('#johndoe%d', $i));

@@ -20,40 +20,12 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
     /**
      * @return Registration[]
      */
-    public function getToConfirm()
-    {
-        $qb = $this->createQueryBuilder('r');
-        $qb->andWhere('r.confirmed=0');
-        $qb->andWhere('r.confirmationKey IS NULL');
-        $qb->groupBy('r.email');
-        return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * @return Registration[]
-     */
     public function getToPay()
     {
         $qb = $this->createQueryBuilder('r');
-        $qb->andWhere('r.confirmed=1');
         $qb->andWhere('r.payment IS NULL');
         $qb->andWhere('r.paymentNotified IS NULL');
         return $qb->getQuery()->getResult();
-    }
-
-    /**
-     * @param string $id
-     * @param string $key
-     *
-     * @return \PhpOption\Option
-     */
-    public function getRegistrationByIdAndKey($id, $key)
-    {
-        $qb = $this->createQueryBuilder('r');
-        $qb->andWhere('r.id = :id')->setParameter('id', $id);
-        $qb->andWhere('r.confirmationKey = :key')->setParameter('key', $key);
-        $subscription = $qb->getQuery()->getOneOrNullResult();
-        return $subscription === null ? None::create() : new Some($subscription);
     }
 
     /**
@@ -80,7 +52,7 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
         $type          = Registration::TYPE_NORMAL;
         $eventId       = $event->getId();
         $dayName       = $day == Ticket::DAY_SATURDAY ? 'saturday' : 'sunday';
-        $registrations = "SELECT MAX(id) FROM registration WHERE confirmed = 1 AND type = $type AND event_id = $eventId GROUP BY event_id, email ORDER BY created ASC, id ASC";
+        $registrations = "SELECT MAX(id) FROM registration WHERE type = $type AND event_id = $eventId GROUP BY event_id, email ORDER BY created ASC, id ASC";
         $sql           = "SELECT * FROM registration WHERE id IN ($registrations) AND email NOT IN (SELECT email FROM ticket WHERE day = $day AND event_id = $eventId) AND $dayName = 1 LIMIT $capacity";
         $query         = $this->_em->createNativeQuery(
             $sql,
@@ -99,7 +71,7 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
         $types         = join(',', array(Registration::TYPE_SPONSOR, Registration::TYPE_VIP));
         $eventId       = $event->getId();
         $dayName       = $day == Ticket::DAY_SATURDAY ? 'saturday' : 'sunday';
-        $registrations = "SELECT MAX(id) FROM registration WHERE confirmed = 1 AND type IN ($types) AND event_id = $eventId GROUP BY event_id, email ORDER BY created ASC, id ASC";
+        $registrations = "SELECT MAX(id) FROM registration WHERE type IN ($types) AND event_id = $eventId GROUP BY event_id, email ORDER BY created ASC, id ASC";
         $sql           = "SELECT * FROM registration WHERE id IN ($registrations) AND email NOT IN (SELECT email FROM ticket WHERE day = $day AND event_id = $eventId) AND $dayName = 1";
         $query         = $this->_em->createNativeQuery(
             $sql,
@@ -120,7 +92,6 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
         return Option::fromValue($this->createQueryBuilder('r')
             ->andWhere('r.event = :event')->setParameter('event', $event)
             ->andWhere('r.email = :email')->setParameter('email', $email)
-            ->andWhere('r.confirmed = 1')
             ->andWhere('r.payment IS NOT NULL')
             ->orderBy('r.created', 'DESC')
             ->setMaxResults(1)
@@ -148,7 +119,6 @@ class DoctrineRegistrationRepository extends EntityRepository implements Registr
                     ->select('MAX(r2.id)')
                     ->where('r2.event = :event')->setParameter('event', $event)
                     ->andWhere('r2.participantList = 1')
-                    ->andWhere('r2.confirmed = 1')
                     ->andWhere('r2.payment IS NOT NULL')
                     ->groupBy('r2.email')
                     ->getDQL()
