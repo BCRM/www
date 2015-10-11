@@ -14,7 +14,7 @@
         <script async="async" src="https://www.paypalobjects.com/js/external/paypal-button.min.js?merchant={{ paypal_merchant_id }}"
                 data-button="buynow"
                 data-name="{{ text }}"
-                data-quantity="{% if registration.days == 3 %}2{% else %}1{% endif %}"
+                data-quantity="{% if days == 3 %}2{% else %}1{% endif %}"
                 data-amount="{{ (total / 100)|number_format(2, '.') }}"
                 data-currency="EUR"
                 data-shipping="0"
