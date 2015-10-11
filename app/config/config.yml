@@ -40,6 +40,8 @@ twig:
           barcamp_location_longitude: %barcamp_location_longitude%
           barcamp_location_latitude: %barcamp_location_latitude%
           twitter_widget_id: %twitter_widget_id%
+          paypal_merchant_id: %paypal_merchant_id%
+          paypal_sandbox: %paypal_sandbox%
 
 # Assetic Configuration
 assetic:
@@ -93,8 +95,3 @@ bcrm_web:
 
 coderbyheart_mail_chimp:
   api_key: %mailchimp.api_key%
-
-twig:
-  globals:
-    paypal_merchant_id: %paypal_merchant_id%
-    paypal_sandbox: %paypal_sandbox%
