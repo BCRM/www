@@ -91,9 +91,9 @@
             <!-- <a href="{{ path('bcrmweb_stats') }}"
                {% if app.request.get('_route') == 'bcrmweb_stats' %}class="active"{% endif %}
                     >Statistiken</a> -->
-            <!-- {{ pagemacro.pagelink('Location', 'Location', app.request.get('path')) }} -->
+            {{ pagemacro.pagelink('Location', 'Location', app.request.get('path')) }}
             {{ pagemacro.pagelink('Sponsoren', 'Sponsoren', app.request.get('path')) }}
-            <!-- <a href="{{ path('bcrmweb_participant_list') }}">Teilnehmer</a> -->
+            <a href="{{ path('bcrmweb_participant_list') }}">Teilnehmer</a>
         </nav>
         <hr>
         <nav class="main">
