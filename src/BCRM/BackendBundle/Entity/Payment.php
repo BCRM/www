@@ -136,4 +136,12 @@ class Payment extends AggregateResource
     {
         $this->method = $method;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getTransactionId();
+    }
 }

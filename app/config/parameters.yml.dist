@@ -44,3 +44,4 @@ parameters:
 
     paypal_merchant_id: MADLHS6XJAZFS
     paypal_sandbox: true
+    paypal_identity_token: some_token

@@ -17,6 +17,7 @@ use LiteCQRS\Plugin\CRUD\Model\Commands\UpdateResourceCommand;
 use PhpOption\Option;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 class Payment implements LoggerAwareInterface
 {
@@ -31,13 +32,19 @@ class Payment implements LoggerAwareInterface
     private $logger;
 
     /**
+     * @var string
+     */
+    private $paypalIdentityToken;
+
+    /**
      * @param CommandBus      $commandBus
      * @param EventMessageBus $eventMessageBus
      */
-    public function __construct(CommandBus $commandBus, EventMessageBus $eventMessageBus)
+    public function __construct(CommandBus $commandBus, EventMessageBus $eventMessageBus, $paypalIdentityToken)
     {
-        $this->commandBus      = $commandBus;
-        $this->eventMessageBus = $eventMessageBus;
+        $this->commandBus          = $commandBus;
+        $this->eventMessageBus     = $eventMessageBus;
+        $this->paypalIdentityToken = $paypalIdentityToken;
     }
 
     /**
@@ -68,29 +75,30 @@ class Payment implements LoggerAwareInterface
     public function checkPayment(CheckPaymentCommand $command)
     {
         // Verify transaction
-        $payment     = $command->payment;
-        $data        = $payment->getPayload()->toArray();
-        $data['cmd'] = '_notify-validate';
+        $payment = $command->payment;
 
-        $context = array(
-            'http' => array(
-                'method'  => "POST",
-                'header'  => 'Content-type: application/x-www-form-urlencoded',
-                'content' => http_build_query($data),
-            )
-        );
-        $url     = $command->sandbox ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
-        $res     = file_get_contents($url, null, stream_context_create($context));
+        $url = $command->sandbox ? 'https://www.sandbox.paypal.com/cgi-bin/webscr' : 'https://www.paypal.com/cgi-bin/webscr';
+        $url .= sprintf('?tx=%s&at=%s&cmd=_notify-synch', $payment->getTransactionId(), $this->paypalIdentityToken);
+
+        $res = file_get_contents($url);
+
+        $data = array();
+        foreach (explode("\n", $res) as $line) {
+            if (!strpos($line, '=')) continue;
+            list($key, $value) = explode('=', $line);
+            $data[$key] = $value;
+        }
 
         $updateCommand        = new UpdateResourceCommand();
         $updateCommand->class = '\BCRM\BackendBundle\Entity\Payment';
         $updateCommand->id    = $payment->getId();
         $updateCommand->data  = array('checked' => new \DateTime());
 
-        if (strcmp($res, "VERIFIED") == 0) {
+        if (substr($res, 0, 7) === 'SUCCESS' && $data['payment_status'] === 'Completed') {
             $updateCommand->data['verified'] = true;
             $event                           = new PaymentVerifiedEvent();
             $event->payment                  = $payment;
+            $payment->setPayload(new ArrayCollection($data));
             $this->eventMessageBus->publish($event);
             Option::fromValue($this->logger)->map(function (LoggerInterface $logger) use ($payment) {
                 $logger->info(sprintf('Payment "%s" is verified.', $payment->getId()), array($payment));
