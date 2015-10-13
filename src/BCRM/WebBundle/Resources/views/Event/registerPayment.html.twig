@@ -10,7 +10,7 @@
         <p>
             Klicke nun auf den folgende Button um den ausstehenden Betrag mit Paypal zu begleichen.
         </p>
-        {% set text %}{% spaceless %}{{ event.name }} Ticket {{ registration.name }} ({% if days == 2 %}beide Tage{% elseif registration.getSaturday() %}Sonntag{% else %}Samstag{% endif %}){% endspaceless %}{% endset %}
+        {% set text %}{% spaceless %}{{ event.name }} Ticket {{ registration.name }} ({% if days == 2 %}beide Tage{% elseif registration.getSaturday() %}Samstag{% else %}Sonntag{% endif %}){% endspaceless %}{% endset %}
         <script async="async" src="https://www.paypalobjects.com/js/external/paypal-button.min.js?merchant={{ paypal_merchant_id }}"
                 data-button="buynow"
                 data-name="{{ text }}"
