@@ -43,7 +43,7 @@ class EventRegisterType extends AbstractType
             ->add('email', 'email', array('label' => 'E-Mail', 'required' => true, 'attr' => array('placeholder' => 'z.B. "name@domain.de"')))
             ->add('name', 'text', array('label' => 'Name', 'required' => true, 'trim' => true, 'attr' => array('placeholder' => 'z.B. "Max Musterman"')))
             ->add('twitter', 'text', array('label' => 'Twitter-Handle', 'required' => false, 'trim' => true, 'attr' => array('placeholder' => 'z.B. "@max_mustermann"', 'pattern' => '@[a-zA-Z0-9_]{1,15}')))
-            ->add('tags', 'text', array('label' => 'Beschreibe deine Interesse in maximal 3 Tags (je maximal 25 Zeichen)', 'required' => false, 'trim' => true, 'attr' => array('placeholder' => 'z.B. "#foo #bar"', 'pattern' => '#[^\s]{1,25}( #[^\s]{1,25}){0,2}')))
+            ->add('tags', 'text', array('label' => 'Beschreibe deine Interessen in maximal 3 Tags (je maximal 25 Zeichen)', 'required' => false, 'trim' => true, 'attr' => array('placeholder' => 'z.B. "#foo #bar"', 'pattern' => '#[^\s]{1,25}( #[^\s]{1,25}){0,2}')))
             ->add('days', 'choice', array('label' => 'An welchen Tagen möchtest Du am BarCamp teilnehmen?', 'required' => true, 'choices' => $days, 'expanded' => true))
             ->add('donationEur', 'text', array('label' => 'Freiwillige Spende? (in €)', 'required' => false, 'pattern' => '^[0-9]+(,[0-9]{2})?$'))
             // ->add('payment', 'choice', array('label' => 'Wie möchtest Du bezahlen?', 'required' => true, 'choices' => $payment, 'expanded' => true))
