@@ -7,10 +7,17 @@
 
 namespace BCRM\BackendBundle\Entity;
 
+use PhpOption\Option;
+
 interface PaymentRepository
 {
     /**
      * @return Payment[]
      */
     public function getUnchecked();
+
+    /**
+     * @return Option of Payment
+     */
+    public function findByTxId($txId);
 }

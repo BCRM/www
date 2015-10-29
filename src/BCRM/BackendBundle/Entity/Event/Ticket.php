@@ -69,7 +69,6 @@ class Ticket extends AggregateResource
     protected $code;
 
     /**
-     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="BCRM\BackendBundle\Entity\Payment")
      * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", nullable=true)
      * @var Payment

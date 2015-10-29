@@ -29,7 +29,10 @@
         <service id="bcrm.backend.conciergeservice" class="%bcrm.backend.conciergeservice.class%">
             <argument type="service" id="command_bus"/>
             <argument type="service" id="litecqrs.event_message_bus"/>
+            <argument type="service" id="bcrm.backend.repo.payment"/>
+            <argument type="service" id="bcrm.backend.repo.registration"/>
             <tag name="lite_cqrs.command_handler"/>
+            <tag name="lite_cqrs.event_handler"/>
         </service>
         <service id="bcrm.backend.mailservice" class="%bcrm.backend.mailservice.class%">
             <argument type="service" id="mailer"/>

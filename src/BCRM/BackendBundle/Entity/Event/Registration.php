@@ -124,14 +124,12 @@ class Registration extends AggregateResource
 
     /**
      * @var string Payment method
-     * @Assert\NotBlank()
      * @ORM\Column(name="payment_method", type="string", nullable=true)
      * @Assert\Choice(choices={"barzahlen.de", "paypal"})
      */
     protected $paymentMethod;
 
     /**
-     * @Assert\NotBlank()
      * @ORM\ManyToOne(targetEntity="BCRM\BackendBundle\Entity\Payment")
      * @ORM\JoinColumn(name="payment_id", referencedColumnName="id", nullable=true)
      * @var Payment

@@ -8,6 +8,7 @@
 namespace BCRM\BackendBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
+use PhpOption\Option;
 
 class DoctrinePaymentRepository extends EntityRepository implements PaymentRepository
 {
@@ -19,6 +20,17 @@ class DoctrinePaymentRepository extends EntityRepository implements PaymentRepos
         $qb = $this->createQueryBuilder('p');
         $qb->andWhere('p.checked IS NULL');
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @return Option of Payment
+     */
+    public function findByTxId($txId)
+    {
+        return Option::fromValue($this->createQueryBuilder('p')
+            ->andWhere('p.txId = :txId')->setParameter('txId', $txId)
+            ->getQuery()
+            ->getOneOrNullResult());
     }
 
 }

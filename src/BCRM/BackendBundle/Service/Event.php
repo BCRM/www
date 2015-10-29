@@ -118,7 +118,7 @@ class Event implements LoggerAwareInterface
             'participantList' => $command->participantList,
             'uuid'            => $command->uuid,
             'paymentMethod'   => $command->payment,
-            'donation'        => $command->donation
+            'donation'        => (int)$command->donation
         );
         $this->commandBus->handle($createRegistrationCommand);
     }

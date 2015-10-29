@@ -13,6 +13,7 @@ use BCRM\BackendBundle\Entity\Event\Registration;
 use BCRM\BackendBundle\Entity\Event\Ticket;
 use BCRM\BackendBundle\Entity\Event\TicketRepository;
 use BCRM\BackendBundle\Service\Concierge\CheckinCommand;
+use BCRM\BackendBundle\Service\Concierge\PayRegistrationConciergeCommand;
 use BCRM\BackendBundle\Service\Event\CreateTicketCommand;
 use BCRM\BackendBundle\Service\Event\RegisterCommand;
 use BCRM\WebBundle\Content\ContentReader;
@@ -31,13 +32,19 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Security\Core\Util\SecureRandom;
 
 /**
  * Dashboard for the event concierge.
  */
 class ConciergeController
 {
-    public function __construct(EventRepository $eventRepo, TicketRepository $ticketRepo, CommandBus $commandBus, FormFactoryInterface $formFactory, RouterInterface $router)
+    public function __construct(
+        EventRepository $eventRepo,
+        TicketRepository $ticketRepo,
+        CommandBus $commandBus,
+        FormFactoryInterface $formFactory,
+        RouterInterface $router)
     {
         $this->eventRepo   = $eventRepo;
         $this->ticketRepo  = $ticketRepo;
@@ -77,21 +84,27 @@ class ConciergeController
         $event        = $this->eventRepo->getNextEvent()->getOrThrow(new AccessDeniedHttpException('No event.'));
         $registration = new Registration();
         $registration->setEvent($event);
+        $generator = new SecureRandom();
+        $registration->setUuid(sha1($generator->nextBytes(16)));
         $form = $this->formFactory->create(new TicketType(), $registration, array('action' => $request->getPathInfo()));
         $form->handleRequest($request);
         if ($form->isValid()) {
             /* @var Registration $formData */
-            $formData                   = $form->getData();
-            $registerCommand            = new RegisterCommand();
-            $registerCommand->event     = $event;
-            $registerCommand->email     = $formData->getEmail();
-            $registerCommand->name      = $formData->getName();
-            $registerCommand->twitter   = $formData->getTwitter();
-            $registerCommand->saturday  = $formData->getSaturday();
-            $registerCommand->sunday    = $formData->getSunday();
-            $registerCommand->tags      = $formData->getTags();
-            $registerCommand->type      = $formData->getType();
+            $formData                  = $form->getData();
+            $registerCommand           = new RegisterCommand();
+            $registerCommand->event    = $event;
+            $registerCommand->email    = $formData->getEmail();
+            $registerCommand->name     = $formData->getName();
+            $registerCommand->twitter  = $formData->getTwitter();
+            $registerCommand->saturday = $formData->getSaturday();
+            $registerCommand->sunday   = $formData->getSunday();
+            $registerCommand->tags     = $formData->getTags();
+            $registerCommand->type     = $formData->getType();
+            $registerCommand->uuid     = $formData->getUuid();
+            $registerCommand->payment  = 'concierge';
             $this->commandBus->handle($registerCommand);
+
+            // Create tickets
             /* @var FlashBagInterface $fb */
             $fb = $request->getSession()->getFlashBag();
             foreach (
@@ -114,6 +127,12 @@ class ConciergeController
                     )
                 );
             }
+
+            // Create payment
+            $paymentCommand = new PayRegistrationConciergeCommand();
+            $paymentCommand->uuid = $registerCommand->uuid;
+            $this->commandBus->handle($paymentCommand);
+
             return new RedirectResponse($this->router->generate('bcrmweb_concierge_index'));
         }
         return array(
