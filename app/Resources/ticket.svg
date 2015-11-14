@@ -11,7 +11,7 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg2985"
    version="1.1"
-   inkscape:version="0.48.5 r10040"
+   inkscape:version="0.91 r13725"
    width="283.4625"
    height="177.1625"
    xml:space="preserve"
@@ -33,14 +33,14 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1366"
-     inkscape:window-height="721"
+     inkscape:window-height="712"
      id="namedview2987"
      showgrid="false"
      inkscape:zoom="2.6642207"
-     inkscape:cx="158.72178"
+     inkscape:cx="148.43577"
      inkscape:cy="84.307432"
-     inkscape:window-x="-4"
-     inkscape:window-y="-4"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
      inkscape:window-maximized="1"
      inkscape:current-layer="g2993" /><g
      id="g2993"
@@ -81,7 +81,7 @@
        style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
        id="text3053"><text
          xml:space="preserve"
-         style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+         style="font-style:normal;font-weight:normal;font-size:32px;line-height:125%;font-family:Sans;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
          x="23.375935"
          y="-119.7523"
          id="text3068"
@@ -90,7 +90,7 @@
            id="tspan3070"
            x="23.375935"
            y="-119.7523"
-           style="font-size:11.19999981px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu">BarCamp RheinMain | Frankfurt 2014</tspan></text>
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:11.19999981px;font-family:Ubuntu;-inkscape-font-specification:Ubuntu">BarCamp RheinMain | Bingen 2015</tspan></text>
 </g><g
        id="g3072"
        style="font-size:32px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
