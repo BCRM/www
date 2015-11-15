@@ -255,19 +255,20 @@ class Event implements LoggerAwareInterface
             /** @var Registration $r */
             $r                = $registration->get();
             $registrationData = array(
-                'event'         => $command->event,
-                'email'         => $command->unregistration->getEmail(),
-                'name'          => $r->getName(),
-                'twitter'       => $r->getTwitter(),
-                'food'          => $r->getFood(),
-                'tags'          => $r->getTags(),
-                'confirmed'     => 1,
-                'saturday'      => $r->getSaturday(),
-                'sunday'        => $r->getSunday(),
-                'uuid'          => $r->getUuid(),
-                'donation'      => $r->getDonation(),
-                'payment'       => $r->getPayment(),
-                'paymentMethod' => $r->getPaymentMethod(),
+                'event'           => $command->event,
+                'email'           => $command->unregistration->getEmail(),
+                'name'            => $r->getName(),
+                'twitter'         => $r->getTwitter(),
+                'food'            => $r->getFood(),
+                'tags'            => $r->getTags(),
+                'confirmed'       => 1,
+                'saturday'        => $r->getSaturday(),
+                'sunday'          => $r->getSunday(),
+                'participantList' => $r->isParticipantList(),
+                'uuid'            => $r->getUuid(),
+                'donation'        => $r->getDonation(),
+                'payment'         => $r->getPayment(),
+                'paymentMethod'   => $r->getPaymentMethod(),
             );
             if ($command->unregistration->getSaturday()) {
                 $registrationData['saturday'] = false;
