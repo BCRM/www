@@ -9,6 +9,7 @@ namespace BCRM\WebBundle\Controller;
 
 use BCRM\BackendBundle\Entity\Event\Event;
 use BCRM\BackendBundle\Entity\Event\EventRepository;
+use BCRM\BackendBundle\Entity\Event\RegistrationRepository;
 use BCRM\BackendBundle\Entity\Event\Ticket;
 use BCRM\BackendBundle\Entity\Event\TicketRepository;
 use BCRM\BackendBundle\Service\Concierge\CheckinCommand;
@@ -30,11 +31,17 @@ use Symfony\Component\Validator\Constraints\DateTime;
  */
 class CheckinController
 {
-    public function __construct(EventRepository $eventRepo, TicketRepository $ticketRepo, CommandBus $commandBus)
+    public function __construct(
+        EventRepository $eventRepo,
+        TicketRepository $ticketRepo,
+        RegistrationRepository $registrationRepo,
+        CommandBus $commandBus
+    )
     {
-        $this->ticketRepo = $ticketRepo;
-        $this->eventRepo  = $eventRepo;
-        $this->commandBus = $commandBus;
+        $this->ticketRepo       = $ticketRepo;
+        $this->eventRepo        = $eventRepo;
+        $this->registrationRepo = $registrationRepo;
+        $this->commandBus       = $commandBus;
     }
 
     /**
@@ -70,13 +77,17 @@ class CheckinController
             throw new BadRequestException('Wrong day!');
         }
 
+        $registrationOption = $this->registrationRepo->getRegistrationForEmail($ticket->getEvent(), $ticket->getEmail());
+
+
         // Record checkin
         $command         = new CheckinCommand();
         $command->ticket = $ticket;
         $this->commandBus->handle($command);
 
         return array(
-            'ticket' => $ticket
+            'ticket'       => $ticket,
+            'registration' => $registrationOption->getOrElse(null),
         );
     }
 }
