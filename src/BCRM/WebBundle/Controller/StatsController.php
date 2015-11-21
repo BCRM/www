@@ -167,6 +167,7 @@ class StatsController
             return $count + (
             $ticket->getType() === Registration::TYPE_NORMAL
             && !$ticket->isCheckedIn()
+            && $ticket->getPayment() !== null
             && $ticket->getDay() == $day
                 ? 1 : 0);
         }, 0);

@@ -23,7 +23,7 @@ var Stats = function (parent) {
                 ]);
 
                 var options = {
-                    title: 'Checkins pro Tag',
+                    title: 'Teilnehmer-Checkins pro Tag',
                     vAxis: {
                         minValue: 0
                     },
@@ -71,7 +71,7 @@ var Stats = function (parent) {
                 }
 
                 var optionsCheckinHour = {
-                    title: 'Checkins pro Stunde',
+                    title: 'Checkins pro Stunde (inkl. Team, VIP, Sponsoren)',
                     interpolateNulls: true,
                     vAxis: {
                         minValue: 0,
