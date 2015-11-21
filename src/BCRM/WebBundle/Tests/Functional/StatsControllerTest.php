@@ -9,6 +9,7 @@ namespace BCRM\WebBundle\Tests\Functional;
 
 use BCRM\BackendBundle\Entity\Event\Registration;
 use BCRM\BackendBundle\Entity\Event\Ticket;
+use BCRM\BackendBundle\Entity\Payment;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -77,6 +78,16 @@ class StatsControllerTest extends Base
             ->get('doctrine')
             ->getManager();
 
+        // Create a payment
+        $txId = sha1('someid' . $email);
+        $payment  = $em->getRepository('BCRMBackendBundle:Payment')->findOneByTxId($txId);
+        if (!$payment) {
+            $payment = new Payment();
+            $payment->setTransactionId($txId);
+            $payment->setMethod('somemethod');
+            $em->persist($payment);
+        }
+
         // Create a ticket
         $event  = $em->getRepository('BCRMBackendBundle:Event\Event')->findAll()[0];
         $ticket = new Ticket();
@@ -86,6 +97,7 @@ class StatsControllerTest extends Base
         $ticket->setDay($day);
         $ticket->setCode(sprintf('STATS%d', $this->ticketCounter++));
         $ticket->setCheckedIn($checkedIn);
+        $ticket->setPayment($payment);
         $em->persist($ticket);
         $em->flush();
         return $email;

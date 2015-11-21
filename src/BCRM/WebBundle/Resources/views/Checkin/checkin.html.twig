@@ -19,7 +19,7 @@
 </head>
 <body>
     <h1>{{ ticket.name }}{% if ticket.label %}<br>({{ ticket.label }}){% endif %}</h1>
-    {% if registration.donation > 0 %}<h2>**SPENDER**</h2>{% endif %}
+    {% if registration and registration.donation > 0 %}<h2>**SPENDER**</h2>{% endif %}
     <dl>
         <dt>Tag</dt>
         <dd>{% if ticket.day == 1 %}Samstag{% else %}Sonntag{% endif %}</dd>
