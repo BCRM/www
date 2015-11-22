@@ -78,7 +78,7 @@ class StatsController
     protected function statsJson(Request $request)
     {
         $response = new Response();
-        $response->setTtl(60 * 5);
+        $response->setTtl(10);
         $response->setPublic();
         if ($response->isNotModified($request)) {
             return $response;
