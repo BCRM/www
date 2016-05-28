@@ -23,6 +23,7 @@
         "sensio/generator-bundle": "2.3.*",
         "incenteev/composer-parameter-handler": "~2.0",
         "leafo/scssphp": "dev-master",
+        "ocramius/proxy-manager": "1.x",
         "ornicar/gravatar-bundle": "dev-master",
         "gedmo/doctrine-extensions": "dev-master",
         "doctrine/migrations": "1.3.*",
