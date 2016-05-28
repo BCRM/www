@@ -1,6 +1,8 @@
 # BarCamp RheinMain – Website
 
-[![Build Status](https://travis-ci.org/BCRM/www.png)](https://travis-ci.org/BCRM/www) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/BCRM/www/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/BCRM/www/?branch=master)
+[![Build Status](https://travis-ci.org/BCRM/www.png)](https://travis-ci.org/BCRM/www) 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/BCRM/www/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/BCRM/www/?branch=master)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/dc346f9095494716a806ad8780f05fca)](https://www.codacy.com/app/coderbyheart/www?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=BCRM/www&amp;utm_campaign=Badge_Grade)
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/40ee3236-6312-42b7-a1e9-1d54b249ff34/big.png)](https://insight.sensiolabs.com/projects/40ee3236-6312-42b7-a1e9-1d54b249ff34)
 
