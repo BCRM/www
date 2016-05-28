@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "567e064df3c827c758425fe7dacd0ff8",
-    "content-hash": "39990d60f59de6b6eb4150c8ff5eda6c",
+    "hash": "c7ecdff9c91fc1fd0997ed8ab56b5ab8",
+    "content-hash": "30f5273f34b54f3b009c756abace89aa",
     "packages": [
         {
             "name": "bcrm/www-content",
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/BCRM/www-content.git",
-                "reference": "5ca0b01220bdda042bdce0fdf5baf405c25ea334"
+                "reference": "4d38b1e265e4dcbb017105b2d9b6bc9610eb29ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/BCRM/www-content/zipball/5ca0b01220bdda042bdce0fdf5baf405c25ea334",
-                "reference": "5ca0b01220bdda042bdce0fdf5baf405c25ea334",
+                "url": "https://api.github.com/repos/BCRM/www-content/zipball/4d38b1e265e4dcbb017105b2d9b6bc9610eb29ca",
+                "reference": "4d38b1e265e4dcbb017105b2d9b6bc9610eb29ca",
                 "shasum": ""
             },
             "type": "library",
@@ -33,10 +33,10 @@
             ],
             "description": "Content for http://2015.barcamp-rheinmain.de/ based on simple Markdown files.",
             "support": {
-                "source": "https://github.com/BCRM/www-content/tree/bcrm15",
+                "source": "https://github.com/BCRM/www-content/tree/master",
                 "issues": "https://github.com/BCRM/www-content/issues"
             },
-            "time": "2015-12-01 08:02:47"
+            "time": "2016-05-28 12:07:19"
         },
         {
             "name": "beberlei/lite-cqrs",
@@ -926,16 +926,16 @@
         },
         {
             "name": "doctrine/migrations",
-            "version": "dev-master",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/migrations.git",
-                "reference": "e599b075890bc55aa22197f3f7a7be28ee720b0e"
+                "reference": "0d0ff5da10c5d30846da32060bd9e357abf70a05"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/migrations/zipball/e599b075890bc55aa22197f3f7a7be28ee720b0e",
-                "reference": "e599b075890bc55aa22197f3f7a7be28ee720b0e",
+                "url": "https://api.github.com/repos/doctrine/migrations/zipball/0d0ff5da10c5d30846da32060bd9e357abf70a05",
+                "reference": "0d0ff5da10c5d30846da32060bd9e357abf70a05",
                 "shasum": ""
             },
             "require": {
@@ -995,7 +995,7 @@
                 "database",
                 "migrations"
             ],
-            "time": "2016-05-26 11:51:28"
+            "time": "2016-03-14 12:29:11"
         },
         {
             "name": "doctrine/orm",
@@ -3802,7 +3802,6 @@
         "leafo/scssphp": 20,
         "ornicar/gravatar-bundle": 20,
         "gedmo/doctrine-extensions": 20,
-        "doctrine/migrations": 20,
         "doctrine/doctrine-migrations-bundle": 20,
         "knplabs/knp-markdown-bundle": 20,
         "beberlei/lite-cqrs": 20,
