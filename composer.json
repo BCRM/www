@@ -2,7 +2,7 @@
     "name": "symfony/framework-standard-edition",
     "license": "MIT",
     "type": "project",
-    "version": "2.1.5",
+    "version": "2.1.6",
     "description": "The \"Symfony Standard Edition\" distribution",
     "autoload": {
         "psr-0": {
