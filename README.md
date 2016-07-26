@@ -10,7 +10,7 @@ This is the source code for [barcamp-rheinmain.de](http://barcamp-rheinmain.de/)
 
 Design: [Martin Kraft](http://martinkraft.com/)  
 Webdesign: [Alex Wenz](http://alexwenz.de/)  
-Development: [Markus Tacker](https://cto.hiv/)
+Development: [Markus Tacker](https://coderbyheart.com/)
 
 ## Setup
 

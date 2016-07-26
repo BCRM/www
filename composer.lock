@@ -28,7 +28,7 @@
             "authors": [
                 {
                     "name": "Markus Tacker",
-                    "email": "m@cto.hiv"
+                    "email": "m@coderbyheart.com"
                 }
             ],
             "description": "Content for http://2015.barcamp-rheinmain.de/ based on simple Markdown files.",
@@ -152,7 +152,7 @@
             "authors": [
                 {
                     "name": "Markus Tacker",
-                    "email": "m@cto.hiv"
+                    "email": "m@coderbyheart.com"
                 }
             ],
             "description": "Thin abstraction layer for the MailChimp API 2.0.",
