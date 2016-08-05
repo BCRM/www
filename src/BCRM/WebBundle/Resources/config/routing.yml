@@ -59,6 +59,13 @@ bcrmweb_registration_ok:
         _controller: bcrm.web.controller.web:pageAction
         path: Registrierung/Ok
 
+bcrmweb_registration_comingsoon:
+    path: /anmeldung/geduld
+    methods: [GET]
+    defaults:
+        _controller: bcrm.web.controller.web:pageAction
+        path: Registrierung/ComingSoon
+
 bcrmweb_event_unregister:
     path: /stornierung
     methods: [GET,POST]

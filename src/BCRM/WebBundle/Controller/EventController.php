@@ -112,7 +112,11 @@ class EventController
      */
     public function registerAction(Request $request)
     {
-        $event = $this->eventRepo->getNextEvent()->getOrThrow(new AccessDeniedHttpException('No event.'));
+        $eventOptional = $this->eventRepo->getNextEvent();
+        if (!$eventOptional->isDefined()) {
+            return new RedirectResponse($this->router->generate('bcrmweb_registration_comingsoon'));
+        }
+        $event = $eventOptional->get();
         if (Carbon::createFromTimestamp($event->getRegistrationEnd()->getTimestamp())->isPast()) {
             throw new AccessDeniedHttpException('Registration not possible.');
         }
