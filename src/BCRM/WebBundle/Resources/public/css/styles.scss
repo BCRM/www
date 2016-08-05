@@ -594,6 +594,9 @@ footer {
           img {
             width: 100%;
           }
+          img[src$=".svg"] {
+            padding: 10px;
+          }
         }
       }
     }
