@@ -590,12 +590,16 @@ footer {
         width: floor(99%/7);
         min-width: 80px;
         max-width: 126px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         a {
           img {
             width: 100%;
           }
           img[src$=".svg"] {
             padding: 10px;
+            max-height: 50px;
           }
         }
       }
