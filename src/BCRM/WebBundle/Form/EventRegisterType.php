@@ -40,7 +40,7 @@ class EventRegisterType extends AbstractType
         );
         $builder
             ->setMethod('POST')
-            ->add('email', 'email', array('label' => 'E-Mail', 'required' => true, 'attr' => array('placeholder' => 'z.B. "name@domain.de"')))
+            ->add('email', 'email', array('label' => 'E-Mail (bitte nicht mehrfach für verschiedene Personen Registrierungen mit der selben E-Mail-Adresse registrieren)', 'required' => true, 'attr' => array('placeholder' => 'z.B. "name@domain.de"')))
             ->add('name', 'text', array('label' => 'Name', 'required' => true, 'trim' => true, 'attr' => array('placeholder' => 'z.B. "Max Musterman"')))
             ->add('twitter', 'text', array('label' => 'Twitter-Handle', 'required' => false, 'trim' => true, 'attr' => array('placeholder' => 'z.B. "@max_mustermann"', 'pattern' => '@[a-zA-Z0-9_]{1,15}')))
             ->add('tags', 'text', array('label' => 'Beschreibe deine Interessen in maximal 3 Tags (je maximal 25 Zeichen)', 'required' => false, 'trim' => true, 'attr' => array('placeholder' => 'z.B. "#foo #bar"', 'pattern' => '#[^\s]{1,25}( #[^\s]{1,25}){0,2}')))
