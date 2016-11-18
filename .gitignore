@@ -17,3 +17,6 @@ app/config/parameters.yml
 /src/BCRM/WebBundle/Resources/public/css/styles.css
 /src/BCRM/WebBundle/Resources/public/css/checkin.css
 /app/spool
+/www.iml
+/www.ipr
+/www.iws
