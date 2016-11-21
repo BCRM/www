@@ -6,7 +6,7 @@
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/40ee3236-6312-42b7-a1e9-1d54b249ff34/big.png)](https://insight.sensiolabs.com/projects/40ee3236-6312-42b7-a1e9-1d54b249ff34)
 
-This is the source code for [barcamp-rheinmain.de](http://barcamp-rheinmain.de/).
+This is the source code for the Symfony based website, which powered [barcamp-rheinmain.de](http://barcamp-rheinmain.de/) until 2016. It has been succeeded by a Jekyll powered static version which you can find [here](https://github.com/BCRM/static). 
 
 Design: [Martin Kraft](http://martinkraft.com/)  
 Webdesign: [Alex Wenz](http://alexwenz.de/)  
